@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
@@ -7,7 +7,10 @@ import { ScatterPlot } from './components/ScatterPlot';
 import { skillsMasterList as initialSkills, BJJConcept, categories as masterCategories } from './data/SkillsMasterList';
 
 function App() {
-  const [concepts, setConcepts] = useState<BJJConcept[]>(initialSkills);
+  const [concepts, setConcepts] = useState<BJJConcept[]>(() => {
+    const saved = localStorage.getItem('bjj-concepts');
+    return saved ? JSON.parse(saved) : initialSkills;
+  });
   const [categories, setCategories] = useState<{ name: string; color: string; }[]>(masterCategories);
   const [createMode, setCreateMode] = useState(false);
   const [createAt, setCreateAt] = useState<{ x: number; y: number } | null>(null);
@@ -15,6 +18,10 @@ function App() {
   const [filterBrightness, setFilterBrightness] = useState(0);
   const [filterSize, setFilterSize] = useState(0);
   const [labelSize, setLabelSize] = useState(16);
+
+  useEffect(() => {
+    localStorage.setItem('bjj-concepts', JSON.stringify(concepts));
+  }, [concepts]);
 
   // Filter concepts based on selected filters
   const filteredConcepts = concepts.filter(concept => {
