@@ -4,14 +4,13 @@ import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
-import { skillsMasterList as initialSkills, BJJConcept, categories as masterCategories } from './data/SkillsMasterList';
+import { BJJConcept } from './data/SkillsMasterList';
+import skillsMasterList from './data/SkillsMasterList';
+import { categories as defaultCategories } from './data/SkillsMasterList';
 
 function App() {
-  const [concepts, setConcepts] = useState<BJJConcept[]>(() => {
-    const saved = localStorage.getItem('bjj-concepts');
-    return saved ? JSON.parse(saved) : initialSkills;
-  });
-  const [categories, setCategories] = useState<{ name: string; color: string; }[]>(masterCategories);
+  const [concepts, setConcepts] = useState<BJJConcept[]>(skillsMasterList);
+  const [categories, setCategories] = useState<{ name: string; color: string; }[]>(defaultCategories);
   const [createMode, setCreateMode] = useState(false);
   const [createAt, setCreateAt] = useState<{ x: number; y: number } | null>(null);
   const [filterCategory, setFilterCategory] = useState('');
@@ -20,8 +19,39 @@ function App() {
   const [labelSize, setLabelSize] = useState(16);
 
   useEffect(() => {
-    localStorage.setItem('bjj-concepts', JSON.stringify(concepts));
-  }, [concepts]);
+    fetch('/api/concepts')
+      .then(res => res.json())
+      .then(data => setConcepts(data));
+  }, []);
+
+  const fetchConcepts = () => {
+    fetch('/api/concepts')
+      .then(res => res.json())
+      .then(data => setConcepts(data));
+  };
+
+  const addConcept = async (concept: Omit<BJJConcept, 'id'>) => {
+    await fetch('/api/concepts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(concept),
+    });
+    fetchConcepts();
+  };
+
+  const updateConcept = async (id: string, updates: Partial<BJJConcept>) => {
+    await fetch(`/api/concepts/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    fetchConcepts();
+  };
+
+  const deleteConcept = async (id: string) => {
+    await fetch(`/api/concepts/${id}`, { method: 'DELETE' });
+    fetchConcepts();
+  };
 
   // Filter concepts based on selected filters
   const filteredConcepts = concepts.filter(concept => {
@@ -37,7 +67,9 @@ function App() {
       sidebar={
         <Sidebar
           concepts={filteredConcepts}
-          setConcepts={setConcepts}
+          addConcept={addConcept}
+          updateConcept={updateConcept}
+          deleteConcept={deleteConcept}
           categories={categories}
           setCategories={setCategories}
           createMode={createMode}
@@ -55,7 +87,9 @@ function App() {
     >
       <ScatterPlot
         concepts={filteredConcepts}
-        setConcepts={setConcepts}
+        addConcept={addConcept}
+        updateConcept={updateConcept}
+        deleteConcept={deleteConcept}
         categories={categories}
         setCategories={setCategories}
         createMode={createMode}

@@ -3,7 +3,9 @@ import { BJJConcept, categories } from '../data/SkillsMasterList';
 
 type SidebarProps = {
   concepts: BJJConcept[];
-  setConcepts: React.Dispatch<React.SetStateAction<BJJConcept[]>>;
+  addConcept: (concept: Omit<BJJConcept, 'id'>) => Promise<void>;
+  updateConcept: (id: string, updates: Partial<BJJConcept>) => Promise<void>;
+  deleteConcept: (id: string) => Promise<void>;
   categories: { name: string; color: string; }[];
   setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; }[]>>;
   createMode: boolean;
@@ -18,7 +20,7 @@ type SidebarProps = {
   setLabelSize: (v: number) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ concepts, setConcepts, categories, setCategories, createMode, setCreateMode, filterCategory, setFilterCategory, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
+const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, createMode, setCreateMode, filterCategory, setFilterCategory, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
   const [showExport, setShowExport] = useState(false);
   const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
   const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
@@ -63,19 +65,23 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, setConcepts, categories, se
   };
 
   // Upload JSON handler (expect categories and sampleConcepts)
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setUploadError(null);
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       try {
         const json = JSON.parse(event.target?.result as string);
         if (Array.isArray(json.sampleConcepts) && Array.isArray(json.categories)) {
-          setConcepts(json.sampleConcepts);
           setCategories(json.categories);
+          for (const concept of json.sampleConcepts) {
+            await addConcept(concept);
+          }
         } else if (Array.isArray(json) && json.every(obj => obj.id && obj.concept)) {
-          setConcepts(json);
+          for (const concept of json) {
+            await addConcept(concept);
+          }
         } else {
           setUploadError('Invalid JSON format: must be an object with categories and sampleConcepts, or an array of concepts.');
         }
@@ -87,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, setConcepts, categories, se
   };
 
   const handleApplyUpload = () => {
-    setUploadPreview(null);
+    // Removed setUploadPreview(null) as it is no longer needed
   };
 
   // Category management handlers

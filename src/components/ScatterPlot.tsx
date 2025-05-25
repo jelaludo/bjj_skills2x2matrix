@@ -113,7 +113,9 @@ const margin = 40;
 
 interface ScatterPlotProps {
   concepts: BJJConcept[];
-  setConcepts: React.Dispatch<React.SetStateAction<BJJConcept[]>>;
+  addConcept: (concept: Omit<BJJConcept, 'id'>) => Promise<void>;
+  updateConcept: (id: string, updates: Partial<BJJConcept>) => Promise<void>;
+  deleteConcept: (id: string) => Promise<void>;
   categories: { name: string; color: string; }[];
   setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; }[]>>;
   createMode: boolean;
@@ -125,7 +127,9 @@ interface ScatterPlotProps {
 
 export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   concepts,
-  setConcepts,
+  addConcept,
+  updateConcept,
+  deleteConcept,
   categories,
   setCategories,
   createMode,
@@ -186,8 +190,8 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   };
 
   // Handle save for new node
-  const handleCreateSave = (newConcept: BJJConcept) => {
-    setConcepts([...concepts, newConcept]);
+  const handleCreateSave = async (newConcept: Omit<BJJConcept, 'id'>) => {
+    await addConcept(newConcept);
     setCreateModal(null);
     setCreateMode(false);
   };
@@ -322,7 +326,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   }, [hovered, concepts, size, labelSize]);
 
   const handleSave = (updated: BJJConcept) => {
-    setConcepts(concepts => concepts.map(c => c.id === updated.id ? updated : c));
+    updateConcept(updated.id, updated);
     setSelected(null);
   };
 
