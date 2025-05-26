@@ -111,4 +111,3 @@ General Best Practices
 Always use vercel dev for local development to mirror production.
 Keep backup files (with _id) outside of src to avoid TypeScript build errors.
 Regularly export and commit backups for versioning if needed.
-This section documents the main compatibility hurdles and their solutions, helping future contributors avoid common pitfalls!
