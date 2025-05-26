@@ -1,5 +1,31 @@
 # Getting Started with Create React App
 
+Tech Stack
+Frontend: React (TypeScript)
+Backend/API: Vercel Serverless Functions (Node.js, CommonJS)
+Database: MongoDB Atlas (Cloud)
+Deployment: Vercel
+
+Development Workflow
+Local Development:
+Use vercel dev (not npm start) to run both the React frontend and API endpoints locally, mirroring the production environment.
+MongoDB Integration:
+All concepts (nodes) and categories are stored in a MongoDB Atlas database.
+Environment variables (MONGODB_URI, MONGODB_DB) must be set both locally (.env.local) and in Vercel’s dashboard for production.
+Master List Logic:
+The skillsMasterList.js file is used only for initial seeding or as a fallback if the database is empty.
+All live data (nodes and categories) is read from and written to MongoDB.
+Adding, editing, or deleting nodes/categories in the app updates MongoDB directly.
+The master list file is not automatically updated when you make changes in the app.
+To back up or version your data, use the app’s export feature and commit the exported file to GitHub manually.
+Production Deployment
+The app is deployed on Vercel and uses the same MongoDB database as local development (if environment variables are set correctly).
+All changes made in the app are immediately reflected in MongoDB and visible to all users.
+Tip:
+If you update your environment variables in Vercel, always trigger a redeploy for changes to take effect.
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
