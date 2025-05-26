@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB || 'BJJSkillMatrix';
 console.log("Using database name:", dbName);
+console.log('MONGODB_DB value:', JSON.stringify(process.env.MONGODB_DB));
 const options = {};
 
 let client;
