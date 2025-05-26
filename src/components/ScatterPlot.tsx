@@ -5,6 +5,7 @@ interface ModalProps {
   concept: BJJConcept | null;
   onClose: () => void;
   onSave: (updated: BJJConcept) => void;
+  onDelete?: (id: string) => void;
   categories: { name: string; color: string; }[];
 }
 
@@ -21,7 +22,7 @@ type BJJConcept = {
   size: number;
 };
 
-const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, categories }) => {
+const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, onDelete, categories }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
   const [categoryMode, setCategoryMode] = useState<'select' | 'custom'>('select');
@@ -112,7 +113,29 @@ const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, categori
           <label style={{ display: 'block', marginBottom: 4 }}>Size (1-10):</label>
           <input type="number" min={1} max={10} value={edit.size} onChange={e => setEdit({ ...edit, size: parseInt(e.target.value) })} style={{ width: 100, padding: 6, marginBottom: 8 }} />
         </div>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 24 }}>
+          {onDelete && concept && (
+            <button 
+              type="button" 
+              onClick={() => {
+                if (window.confirm('Are you sure you want to delete this concept?')) {
+                  onDelete(concept.id);
+                  onClose();
+                }
+              }}
+              style={{ 
+                background: '#F74F4F', 
+                color: '#fff', 
+                border: 'none', 
+                borderRadius: 4, 
+                padding: '8px 18px', 
+                cursor: 'pointer',
+                marginRight: 'auto'
+              }}
+            >
+              Delete
+            </button>
+          )}
           <button type="button" onClick={onClose} style={{ background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 18px', cursor: 'pointer' }}>Cancel</button>
           <button type="submit" style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 18px', cursor: 'pointer' }}>Save</button>
         </div>
@@ -210,13 +233,16 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
 
   // Generate a new unique ID
   const generateId = (): string => {
-    let idx = 1;
-    let id: string;
-    do {
-      id = `BJJ-${String(idx).padStart(3, '0')}`;
-      idx++;
-    } while (concepts.some(c => c.id === id));
-    return id;
+    // Find the highest BJJ-XXX number in existing concepts
+    const maxNum = concepts.reduce((max, c) => {
+      const match = c.id && c.id.match(/^BJJ-(\d{3})$/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        return Math.max(max, num);
+      }
+      return max;
+    }, 0);
+    return `BJJ-${String(maxNum + 1).padStart(3, '0')}`;
   };
 
   useEffect(() => {
@@ -342,6 +368,11 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
     setSelected(null);
   };
 
+  const handleDelete = async (id: string) => {
+    await deleteConcept(id);
+    setSelected(null);
+  };
+
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <svg
@@ -355,6 +386,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
         concept={selected}
         onClose={() => setSelected(null)}
         onSave={handleSave}
+        onDelete={handleDelete}
         categories={categories}
       />
       {createModal && (

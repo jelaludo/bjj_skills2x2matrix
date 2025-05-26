@@ -12,7 +12,10 @@ module.exports = async function handler(req, res) {
       res.status(200).json(concepts);
     } else if (req.method === 'POST') {
       const concept = req.body;
-      const result = await collection.insertOne(concept);
+      const result = await collection.insertOne({
+        ...concept,
+        id: concept.id || `BJJ-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`
+      });
       res.status(201).json(result.ops ? result.ops[0] : { ...concept, _id: result.insertedId });
     } else {
       res.setHeader('Allow', ['GET', 'POST']);
