@@ -42,7 +42,9 @@ export interface BJJConcept {
   size: number;
 }
 
-export const skillsMasterList: BJJConcept[] = [
+export type BJJConceptWithId = BJJConcept & { _id?: string };
+
+export const skillsMasterList: BJJConceptWithId[] = [
   {
     "id": "BJJ-001",
     "concept": "Dilemmas",
