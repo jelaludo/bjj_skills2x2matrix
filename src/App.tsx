@@ -4,7 +4,6 @@ import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
-import skillsMasterList from './data/skillsMasterList.js';
 
 type BJJConcept = {
   id: string;
@@ -40,20 +39,16 @@ function App() {
         
         if (!conceptsRes.ok || !categoriesRes.ok) {
           console.error('Failed to fetch data');
-          // Fallback to local data if API fails
-          setConcepts(skillsMasterList);
           return;
         }
 
         const conceptsData = await conceptsRes.json();
         const categoriesData = await categoriesRes.json();
 
-        setConcepts(conceptsData.length > 0 ? conceptsData : skillsMasterList);
+        setConcepts(conceptsData.length > 0 ? conceptsData : []);
         setCategories(categoriesData);
       } catch (error) {
         console.error('Error fetching data:', error);
-        // Fallback to local data if API fails
-        setConcepts(skillsMasterList);
       }
     };
 
