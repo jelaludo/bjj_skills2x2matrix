@@ -70,3 +70,45 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+
+
+Bugs so far:
+ Compatibility Issues & Solutions
+Node.js Version
+Issue: Vercel now requires Node.js 18.x for builds and serverless functions. Older versions (16.x) are deprecated, and newer (22.x) are not yet supported by all tools.
+Solution:
+Set "engines": { "node": "18.x" } in package.json.
+Ensure your local development environment matches, or use nvm to switch Node versions.
+Webpack/OpenSSL Error
+Issue:
+Apply to README.md
+This occurs when using Webpack 4 (used by react-scripts@3) on Node 17+ due to OpenSSL 3 changes.
+Solution:
+Set the environment variable NODE_OPTIONS=--openssl-legacy-provider in Vercel.
+Best fix: Upgrade to react-scripts@5, which is fully compatible with Node 18+ and does not require this workaround.
+TypeScript & MongoDB _id Field
+Issue:
+MongoDB adds an _id field to every document.
+TypeScript types (BJJConcept) did not include _id, causing build errors when backup files included it.
+Solution:
+Use a “loose” type for backups:
+Apply to README.md
+Use BJJConceptWithId[] for backup/import/export files, and keep app logic using the strict BJJConcept type.
+Fallback Data Files
+Issue:
+Having both skillsMasterList.js and SkillsMasterList.ts in the repo caused case-sensitivity and import issues, especially on case-sensitive file systems and in CI/CD.
+Solution:
+Remove all fallback logic and references to local master list files.
+Rely solely on MongoDB as the source of truth, with manual backups as needed.
+Environment Variables
+Issue:
+Missing or misconfigured MONGODB_URI and MONGODB_DB in Vercel led to empty data or connection errors.
+Solution:
+Set these variables in both local .env.local and Vercel’s dashboard for all environments.
+General Best Practices
+Always use vercel dev for local development to mirror production.
+Keep backup files (with _id) outside of src to avoid TypeScript build errors.
+Regularly export and commit backups for versioning if needed.
+This section documents the main compatibility hurdles and their solutions, helping future contributors avoid common pitfalls!
