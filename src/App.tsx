@@ -4,13 +4,24 @@ import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
-import { BJJConcept } from './data/SkillsMasterList';
-import skillsMasterList from './data/SkillsMasterList';
-import { categories as defaultCategories } from './data/SkillsMasterList';
+import skillsMasterList from './data/skillsMasterList.js';
+
+type BJJConcept = {
+  id: string;
+  concept: string;
+  description: string;
+  short_description: string;
+  category: string;
+  color: string;
+  axis_self_opponent: number;
+  axis_mental_physical: number;
+  brightness: number;
+  size: number;
+};
 
 function App() {
-  const [concepts, setConcepts] = useState<BJJConcept[]>(skillsMasterList);
-  const [categories, setCategories] = useState<{ name: string; color: string; }[]>(defaultCategories);
+  const [concepts, setConcepts] = useState<BJJConcept[]>([]);
+  const [categories, setCategories] = useState<{ name: string; color: string; _id?: string }[]>([]);
   const [createMode, setCreateMode] = useState(false);
   const [createAt, setCreateAt] = useState<{ x: number; y: number } | null>(null);
   const [filterCategory, setFilterCategory] = useState('');
@@ -18,16 +29,47 @@ function App() {
   const [filterSize, setFilterSize] = useState(0);
   const [labelSize, setLabelSize] = useState(16);
 
+  // Initial data fetch
   useEffect(() => {
-    fetch('/api/concepts')
-      .then(res => res.json())
-      .then(data => setConcepts(data));
+    const fetchData = async () => {
+      try {
+        const [conceptsRes, categoriesRes] = await Promise.all([
+          fetch('/api/concepts'),
+          fetch('/api/categories')
+        ]);
+        
+        if (!conceptsRes.ok || !categoriesRes.ok) {
+          console.error('Failed to fetch data');
+          // Fallback to local data if API fails
+          setConcepts(skillsMasterList);
+          return;
+        }
+
+        const conceptsData = await conceptsRes.json();
+        const categoriesData = await categoriesRes.json();
+
+        setConcepts(conceptsData.length > 0 ? conceptsData : skillsMasterList);
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Fallback to local data if API fails
+        setConcepts(skillsMasterList);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const fetchConcepts = () => {
     fetch('/api/concepts')
       .then(res => res.json())
       .then(data => setConcepts(data));
+  };
+
+  const fetchCategories = () => {
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data));
   };
 
   const addConcept = async (concept: Omit<BJJConcept, 'id'>) => {
@@ -53,6 +95,30 @@ function App() {
     fetchConcepts();
   };
 
+  // Category CRUD
+  const addCategory = async (cat: { name: string; color: string }) => {
+    await fetch('/api/categories', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cat),
+    });
+    fetchCategories();
+  };
+
+  const updateCategory = async (id: string, updates: { name: string; color: string }) => {
+    await fetch(`/api/categories/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates),
+    });
+    fetchCategories();
+  };
+
+  const deleteCategory = async (id: string) => {
+    await fetch(`/api/categories/${id}`, { method: 'DELETE' });
+    fetchCategories();
+  };
+
   // Filter concepts based on selected filters
   const filteredConcepts = concepts.filter(concept => {
     if (filterCategory && concept.category !== filterCategory) return false;
@@ -72,6 +138,9 @@ function App() {
           deleteConcept={deleteConcept}
           categories={categories}
           setCategories={setCategories}
+          addCategory={addCategory}
+          updateCategory={updateCategory}
+          deleteCategory={deleteCategory}
           createMode={createMode}
           setCreateMode={setCreateMode}
           filterCategory={filterCategory}

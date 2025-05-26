@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
-import { BJJConcept, categories } from '../data/SkillsMasterList';
+
+type BJJConcept = {
+  id: string;
+  concept: string;
+  description: string;
+  short_description: string;
+  category: string;
+  color: string;
+  axis_self_opponent: number;
+  axis_mental_physical: number;
+  brightness: number;
+  size: number;
+};
 
 type SidebarProps = {
   concepts: BJJConcept[];
   addConcept: (concept: Omit<BJJConcept, 'id'>) => Promise<void>;
   updateConcept: (id: string, updates: Partial<BJJConcept>) => Promise<void>;
   deleteConcept: (id: string) => Promise<void>;
-  categories: { name: string; color: string; }[];
-  setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; }[]>>;
+  categories: { name: string; color: string; _id?: string }[];
+  setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; _id?: string }[]>>;
+  addCategory: (cat: { name: string; color: string }) => Promise<void>;
+  updateCategory: (id: string, updates: { name: string; color: string }) => Promise<void>;
+  deleteCategory: (id: string) => Promise<void>;
   createMode: boolean;
   setCreateMode: (v: boolean) => void;
   filterCategory: string;
@@ -20,7 +35,7 @@ type SidebarProps = {
   setLabelSize: (v: number) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, createMode, setCreateMode, filterCategory, setFilterCategory, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
+const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, filterCategory, setFilterCategory, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
   const [showExport, setShowExport] = useState(false);
   const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
   const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
@@ -29,6 +44,9 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
   const [newCategory, setNewCategory] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [editCategoryId, setEditCategoryId] = useState<string | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState('');
+  const [editCategoryColor, setEditCategoryColor] = useState('#888888');
 
   // Filter concepts based on search text
   const searchResults = searchText.trim() ? concepts.filter(concept => 
@@ -97,15 +115,28 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
   };
 
   // Category management handlers
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     const cat = newCategory.trim();
     if (cat && !categories.some(c => c.name === cat)) {
-      setCategories([...categories, { name: cat, color: '#888888' }]); // Default gray color
+      await addCategory({ name: cat, color: '#888888' });
       setNewCategory('');
     }
   };
-  const handleRemoveCategory = (catName: string) => {
-    setCategories(categories.filter(c => c.name !== catName));
+  const handleRemoveCategory = async (catId: string) => {
+    await deleteCategory(catId);
+  };
+  const handleEditCategory = (cat: { _id?: string; name: string; color: string }) => {
+    setEditCategoryId(cat._id || '');
+    setEditCategoryName(cat.name);
+    setEditCategoryColor(cat.color);
+  };
+  const handleUpdateCategory = async () => {
+    if (editCategoryId) {
+      await updateCategory(editCategoryId, { name: editCategoryName, color: editCategoryColor });
+      setEditCategoryId(null);
+      setEditCategoryName('');
+      setEditCategoryColor('#888888');
+    }
   };
 
   return (
@@ -129,24 +160,57 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
             All
           </button>
           {categories.map(cat => (
-            <button
-              key={cat.name}
-              onClick={() => setFilterCategory(cat.name)}
-              style={{
-                background: filterCategory === cat.name ? cat.color : 'transparent',
-                color: filterCategory === cat.name ? '#fff' : '#aaa',
-                border: `1px solid ${cat.color}`,
-                padding: '8px 12px',
-                borderRadius: 4,
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.2s',
-              }}
-            >
-              {cat.name}
-            </button>
+            <div key={cat._id || cat.name} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <button
+                onClick={() => setFilterCategory(cat.name)}
+                style={{
+                  background: filterCategory === cat.name ? cat.color : 'transparent',
+                  color: filterCategory === cat.name ? '#fff' : '#aaa',
+                  border: `1px solid ${cat.color}`,
+                  padding: '8px 12px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s',
+                  flex: 1,
+                }}
+              >
+                {cat.name}
+              </button>
+              <button onClick={() => handleEditCategory(cat)} style={{ color: '#FFD700', background: 'none', border: 'none', cursor: 'pointer' }}>✏️</button>
+              <button onClick={() => handleRemoveCategory(cat._id || '')} style={{ color: '#F74F4F', background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+            </div>
           ))}
         </div>
+        <div style={{ marginTop: 12, display: 'flex', gap: 4 }}>
+          <input
+            type="text"
+            value={newCategory}
+            onChange={e => setNewCategory(e.target.value)}
+            placeholder="Add category"
+            style={{ flex: 1, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
+          />
+          <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Add</button>
+        </div>
+        {editCategoryId && (
+          <div style={{ marginTop: 8, background: '#333', padding: 8, borderRadius: 4 }}>
+            <input
+              type="text"
+              value={editCategoryName}
+              onChange={e => setEditCategoryName(e.target.value)}
+              placeholder="Category name"
+              style={{ marginRight: 4, padding: 6, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff' }}
+            />
+            <input
+              type="color"
+              value={editCategoryColor}
+              onChange={e => setEditCategoryColor(e.target.value)}
+              style={{ marginRight: 4 }}
+            />
+            <button onClick={handleUpdateCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', marginRight: 4 }}>Save</button>
+            <button onClick={() => setEditCategoryId(null)} style={{ background: '#888', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Cancel</button>
+          </div>
+        )}
       </div>
       <section style={{ position: 'relative', marginBottom: 24 }}>
         <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Search</h3>
@@ -285,7 +349,7 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
               {categories.map(cat => (
                 <div key={cat.name} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
                   <span style={{ flex: 1 }}>{cat.name}</span>
-                  <button onClick={() => handleRemoveCategory(cat.name)} style={{ marginLeft: 8, background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '2px 8px', cursor: 'pointer' }}>Remove</button>
+                  <button onClick={() => handleRemoveCategory(cat._id || '')} style={{ marginLeft: 8, background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '2px 8px', cursor: 'pointer' }}>Remove</button>
                 </div>
               ))}
             </div>

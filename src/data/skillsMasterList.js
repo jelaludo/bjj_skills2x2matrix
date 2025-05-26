@@ -1,27 +1,4 @@
-export const categories = [
-  { name: 'Technique', color: '#4F8EF7' },
-  { name: 'Biomechanics', color: '#F74F4F' },
-  { name: 'Mental', color: '#4FF74F' },
-  { name: '21 Immutable Principles (Paulo)', color: '#FFD700' },
-  { name: 'Strategy', color: '#FF8C00' },
-  { name: 'Tactic', color: '#8A2BE2' },
-  { name: 'Training', color: '#00CED1' },
-];
-
-export interface BJJConcept {
-  id: string;
-  concept: string;
-  description: string;
-  short_description: string;
-  category: string;
-  color: string;
-  axis_self_opponent: number;
-  axis_mental_physical: number;
-  brightness: number;
-  size: number;
-}
-
-export const skillsMasterList: BJJConcept[] = [
+module.exports = [
   {
     id: 'BJJ-001',
     concept: 'Dilemmas',
@@ -515,5 +492,3 @@ export const skillsMasterList: BJJConcept[] = [
     size: 1,
   },
 ];
-
-export default skillsMasterList;

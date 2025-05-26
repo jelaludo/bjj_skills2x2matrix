@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as d3 from 'd3';
-import { BJJConcept, categories } from '../data/SkillsMasterList';
 
 interface ModalProps {
   concept: BJJConcept | null;
@@ -8,6 +7,19 @@ interface ModalProps {
   onSave: (updated: BJJConcept) => void;
   categories: { name: string; color: string; }[];
 }
+
+type BJJConcept = {
+  id: string;
+  concept: string;
+  description: string;
+  short_description: string;
+  category: string;
+  color: string;
+  axis_self_opponent: number;
+  axis_mental_physical: number;
+  brightness: number;
+  size: number;
+};
 
 const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, categories }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);

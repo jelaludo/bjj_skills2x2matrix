@@ -1,6 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGODB_URI;
+const dbName = process.env.MONGODB_DB || 'BJJSkillMatrix';
 const options = {};
 
 let client;
@@ -20,5 +21,12 @@ if (process.env.NODE_ENV === 'development') {
   client = new MongoClient(uri, options);
   clientPromise = client.connect();
 }
+
+// Add logging to verify connection
+clientPromise.then(() => {
+  console.log('Connected to MongoDB');
+}).catch(err => {
+  console.error('MongoDB connection error:', err);
+});
 
 module.exports = clientPromise; 
