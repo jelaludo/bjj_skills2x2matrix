@@ -25,8 +25,8 @@ type SidebarProps = {
   deleteCategory: (id: string) => Promise<void>;
   createMode: boolean;
   setCreateMode: (v: boolean) => void;
-  filterCategory: string;
-  setFilterCategory: (v: string) => void;
+  selectedCategories: string[];
+  setSelectedCategories: React.Dispatch<React.SetStateAction<string[]>>;
   filterBrightness: number;
   setFilterBrightness: (v: number) => void;
   filterSize: number;
@@ -35,12 +35,12 @@ type SidebarProps = {
   setLabelSize: (v: number) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, filterCategory, setFilterCategory, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
+const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, selectedCategories, setSelectedCategories, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
   const [showExport, setShowExport] = useState(false);
   const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
   const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [showCategories, setShowCategories] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [newCategory, setNewCategory] = useState('');
   const [searchText, setSearchText] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
@@ -139,16 +139,28 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
     }
   };
 
+  // Multi-select toggle logic
+  const handleCategoryToggle = (catName: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(catName)
+        ? prev.filter(name => name !== catName)
+        : [...prev, catName]
+    );
+  };
+  const handleAllClick = () => {
+    setSelectedCategories([]);
+  };
+
   return (
     <div className="sidebar" style={{ padding: 24, background: '#222', height: '100%' }}>
       <div style={{ marginBottom: 24 }}>
-        <h3 style={{ marginBottom: 12 }}>Categories</h3>
+        <h3 style={{ marginBottom: 12, cursor: 'pointer' }} onClick={() => setShowCategoryModal(true)}>Categories</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <button
-            onClick={() => setFilterCategory('')}
+            onClick={handleAllClick}
             style={{
-              background: filterCategory === '' ? '#4F8EF7' : 'transparent',
-              color: filterCategory === '' ? '#fff' : '#aaa',
+              background: selectedCategories.length === 0 ? '#4F8EF7' : 'transparent',
+              color: selectedCategories.length === 0 ? '#fff' : '#aaa',
               border: '1px solid #4F8EF7',
               padding: '8px 12px',
               borderRadius: 4,
@@ -160,55 +172,99 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
             All
           </button>
           {categories.map(cat => (
-            <div key={cat._id || cat.name} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              <button
-                onClick={() => setFilterCategory(cat.name)}
-                style={{
-                  background: filterCategory === cat.name ? cat.color : 'transparent',
-                  color: filterCategory === cat.name ? '#fff' : '#aaa',
-                  border: `1px solid ${cat.color}`,
-                  padding: '8px 12px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s',
-                  flex: 1,
-                }}
-              >
-                {cat.name}
-              </button>
-              <button onClick={() => handleEditCategory(cat)} style={{ color: '#FFD700', background: 'none', border: 'none', cursor: 'pointer' }}>✏️</button>
-              <button onClick={() => handleRemoveCategory(cat._id || '')} style={{ color: '#F74F4F', background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
-            </div>
+            <button
+              key={cat._id || cat.name}
+              onClick={() => handleCategoryToggle(cat.name)}
+              style={{
+                background: selectedCategories.includes(cat.name) ? cat.color : 'transparent',
+                color: selectedCategories.includes(cat.name) ? '#fff' : '#aaa',
+                border: `1px solid ${cat.color}`,
+                padding: '8px 12px',
+                borderRadius: 4,
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.2s',
+                marginBottom: 4,
+              }}
+            >
+              {cat.name}
+            </button>
           ))}
         </div>
-        <div style={{ marginTop: 12, display: 'flex', gap: 4 }}>
-          <input
-            type="text"
-            value={newCategory}
-            onChange={e => setNewCategory(e.target.value)}
-            placeholder="Add category"
-            style={{ flex: 1, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
-          />
-          <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Add</button>
-        </div>
-        {editCategoryId && (
-          <div style={{ marginTop: 8, background: '#333', padding: 8, borderRadius: 4 }}>
-            <input
-              type="text"
-              value={editCategoryName}
-              onChange={e => setEditCategoryName(e.target.value)}
-              placeholder="Category name"
-              style={{ marginRight: 4, padding: 6, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff' }}
-            />
-            <input
-              type="color"
-              value={editCategoryColor}
-              onChange={e => setEditCategoryColor(e.target.value)}
-              style={{ marginRight: 4 }}
-            />
-            <button onClick={handleUpdateCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', marginRight: 4 }}>Save</button>
-            <button onClick={() => setEditCategoryId(null)} style={{ background: '#888', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Cancel</button>
+        {/* Category Management Modal */}
+        {showCategoryModal && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            background: 'rgba(0,0,0,0.6)',
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+            onClick={() => setShowCategoryModal(false)}
+          >
+            <div
+              style={{
+                background: '#232323',
+                padding: 32,
+                borderRadius: 10,
+                minWidth: 350,
+                boxShadow: '0 4px 24px #0008',
+                position: 'relative',
+              }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setShowCategoryModal(false)}
+                style={{ position: 'absolute', top: 12, right: 12, background: 'none', border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer' }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <h2 style={{ color: '#fff', marginBottom: 16 }}>Manage Categories</h2>
+              <div style={{ marginBottom: 16 }}>
+                {categories.map(cat => (
+                  <div key={cat._id || cat.name} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                    <span style={{ flex: 1, color: cat.color }}>{cat.name}</span>
+                    <button onClick={() => handleEditCategory(cat)} style={{ color: '#FFD700', background: 'none', border: 'none', cursor: 'pointer' }}>✏️</button>
+                    <button onClick={() => handleRemoveCategory(cat._id || '')} style={{ color: '#F74F4F', background: 'none', border: 'none', cursor: 'pointer' }}>🗑️</button>
+                  </div>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                <input
+                  type="text"
+                  value={newCategory}
+                  onChange={e => setNewCategory(e.target.value)}
+                  placeholder="Add category"
+                  style={{ flex: 1, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
+                />
+                <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Add</button>
+              </div>
+              {editCategoryId && (
+                <div style={{ marginTop: 8, background: '#333', padding: 8, borderRadius: 4 }}>
+                  <input
+                    type="text"
+                    value={editCategoryName}
+                    onChange={e => setEditCategoryName(e.target.value)}
+                    placeholder="Category name"
+                    style={{ marginRight: 4, padding: 6, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff' }}
+                  />
+                  <input
+                    type="color"
+                    value={editCategoryColor}
+                    onChange={e => setEditCategoryColor(e.target.value)}
+                    style={{ marginRight: 4 }}
+                  />
+                  <button onClick={handleUpdateCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', marginRight: 4 }}>Save</button>
+                  <button onClick={() => setEditCategoryId(null)} style={{ background: '#888', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Cancel</button>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -335,30 +391,6 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
             </button>
           ))}
         </div>
-      </section>
-      <section>
-        <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa', cursor: 'pointer' }} onClick={() => setShowCategories(v => !v)}>
-          Categories
-        </h3>
-        <div style={{ color: '#ccc', fontSize: 14, cursor: 'pointer' }} onClick={() => setShowCategories(v => !v)}>
-          [Category management UI]
-        </div>
-        {showCategories && (
-          <div style={{ background: '#232323', padding: 10, borderRadius: 6, marginTop: 8 }}>
-            <div style={{ marginBottom: 8 }}>
-              {categories.map(cat => (
-                <div key={cat.name} style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
-                  <span style={{ flex: 1 }}>{cat.name}</span>
-                  <button onClick={() => handleRemoveCategory(cat._id || '')} style={{ marginLeft: 8, background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '2px 8px', cursor: 'pointer' }}>Remove</button>
-                </div>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: 6 }}>
-              <input value={newCategory} onChange={e => setNewCategory(e.target.value)} placeholder="Add category" style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }} />
-              <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '4px 12px', cursor: 'pointer' }}>Add</button>
-            </div>
-          </div>
-        )}
       </section>
       <section>
         <button

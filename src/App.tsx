@@ -23,7 +23,7 @@ function App() {
   const [categories, setCategories] = useState<{ name: string; color: string; _id?: string }[]>([]);
   const [createMode, setCreateMode] = useState(false);
   const [createAt, setCreateAt] = useState<{ x: number; y: number } | null>(null);
-  const [filterCategory, setFilterCategory] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filterBrightness, setFilterBrightness] = useState(0);
   const [filterSize, setFilterSize] = useState(0);
   const [labelSize, setLabelSize] = useState(16);
@@ -116,7 +116,7 @@ function App() {
 
   // Filter concepts based on selected filters
   const filteredConcepts = concepts.filter(concept => {
-    if (filterCategory && concept.category !== filterCategory) return false;
+    if (selectedCategories.length > 0 && !selectedCategories.includes(concept.category)) return false;
     if (filterBrightness > 0 && concept.brightness !== filterBrightness) return false;
     if (filterSize > 0 && concept.size !== filterSize) return false;
     return true;
@@ -138,8 +138,8 @@ function App() {
           deleteCategory={deleteCategory}
           createMode={createMode}
           setCreateMode={setCreateMode}
-          filterCategory={filterCategory}
-          setFilterCategory={setFilterCategory}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
           filterBrightness={filterBrightness}
           setFilterBrightness={setFilterBrightness}
           filterSize={filterSize}
