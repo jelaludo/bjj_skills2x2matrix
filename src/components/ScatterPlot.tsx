@@ -182,6 +182,8 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [size, setSize] = useState({ width: 600, height: 600 });
+  const [pingedNodeId, setPingedNodeId] = useState<string | null>(null);
+  const [pingStep, setPingStep] = useState(0);
 
   // Responsive resize
   useEffect(() => {
@@ -248,6 +250,25 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
     }, 0);
     return `BJJ-${String(maxNum + 1).padStart(3, '0')}`;
   };
+
+  // Trigger ping animation when selected changes
+  useEffect(() => {
+    if (selected && selected.id) {
+      setPingedNodeId(selected.id);
+      setPingStep(0);
+      let step = 0;
+      const interval = setInterval(() => {
+        setPingStep(s => s + 1);
+        step++;
+        if (step >= 6) { // 3 pulses (up/down)
+          clearInterval(interval);
+          setPingedNodeId(null);
+          setPingStep(0);
+        }
+      }, 180);
+      return () => clearInterval(interval);
+    }
+  }, [selected]);
 
   useEffect(() => {
     const width = size.width;
@@ -330,9 +351,15 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('cy', d => height - margin - d.axis_self_opponent * (height - 2 * margin))
       .attr('r', d => 4 + d.size * 2)
       .attr('fill', d => d.color)
-      .attr('opacity', d => 0.4 + d.brightness * 0.06)
-      .attr('stroke', d => hovered === d.id ? '#fff' : 'none')
-      .attr('stroke-width', 3)
+      .attr('opacity', d => {
+        if (pingedNodeId === d.id) {
+          // Pulse between 1.0 and 0.5
+          return 0.5 + 0.5 * Math.abs(Math.sin(pingStep));
+        }
+        return 0.4 + d.brightness * 0.06;
+      })
+      .attr('stroke', d => hovered === d.id || (selected && selected.id === d.id) ? '#fff' : 'none')
+      .attr('stroke-width', d => (pingedNodeId === d.id ? 5 : hovered === d.id ? 3 : 0))
       .style('cursor', 'pointer')
       .on('mouseover', (event, d) => setHovered(d.id))
       .on('mouseout', () => setHovered(null))
@@ -365,7 +392,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('font-weight', 'bold')
       .style('pointer-events', 'none')
       .text(item => item.d.concept);
-  }, [hovered, concepts, size, labelSize]);
+  }, [hovered, concepts, size, labelSize, pingedNodeId, pingStep]);
 
   const handleSave = (updated: BJJConcept) => {
     // Remove _id from update object
