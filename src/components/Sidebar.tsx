@@ -371,25 +371,22 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
       </section>
       <section>
         <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Labels</h3>
-        <div style={{ display: 'flex', gap: 8 }}>
-          {labelSizeOptions.map(opt => (
-            <button
-              key={opt.label}
-              onClick={() => setLabelSize(opt.value)}
-              style={{
-                background: labelSize === opt.value ? '#4F8EF7' : 'transparent',
-                color: labelSize === opt.value ? '#fff' : '#aaa',
-                border: '1px solid #4F8EF7',
-                borderRadius: 4,
-                padding: '4px 10px',
-                fontSize: 14,
-                cursor: 'pointer',
-                fontWeight: labelSize === opt.value ? 700 : 400,
-              }}
-            >
-              {opt.label}
-            </button>
-          ))}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <input
+            type="range"
+            min={0}
+            max={3}
+            step={1}
+            value={[0, 12, 16, 22].indexOf(labelSize)}
+            onChange={e => {
+              const idx = Number(e.target.value);
+              setLabelSize([0, 12, 16, 22][idx]);
+            }}
+            style={{ width: '100%' }}
+          />
+          <span style={{ minWidth: 60, fontSize: 13 }}>
+            {labelSize === 0 ? 'OFF' : labelSize === 12 ? 'Small' : labelSize === 16 ? 'Medium' : 'Large'}
+          </span>
         </div>
       </section>
       <section>
