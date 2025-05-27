@@ -159,6 +159,8 @@ interface ScatterPlotProps {
   createAt: { x: number; y: number } | null;
   setCreateAt: (v: { x: number; y: number } | null) => void;
   labelSize: number;
+  selected: BJJConcept | null;
+  setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
 }
 
 export const ScatterPlot: React.FC<ScatterPlotProps> = ({
@@ -173,11 +175,12 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   createAt,
   setCreateAt,
   labelSize,
+  selected,
+  setSelected,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const [selected, setSelected] = useState<BJJConcept | null>(null);
   const [size, setSize] = useState({ width: 600, height: 600 });
 
   // Responsive resize

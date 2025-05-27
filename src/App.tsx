@@ -27,6 +27,7 @@ function App() {
   const [filterBrightness, setFilterBrightness] = useState(0);
   const [filterSize, setFilterSize] = useState(0);
   const [labelSize, setLabelSize] = useState(16);
+  const [selected, setSelected] = useState<BJJConcept | null>(null);
 
   // Initial data fetch
   useEffect(() => {
@@ -148,6 +149,8 @@ function App() {
           setFilterSize={setFilterSize}
           labelSize={labelSize}
           setLabelSize={setLabelSize}
+          selected={selected}
+          setSelected={setSelected}
         />
       }
     >
@@ -163,6 +166,8 @@ function App() {
         createAt={createAt}
         setCreateAt={setCreateAt}
         labelSize={labelSize}
+        selected={selected}
+        setSelected={setSelected}
       />
     </MainLayout>
   );

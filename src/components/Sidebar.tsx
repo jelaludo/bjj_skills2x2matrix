@@ -33,9 +33,11 @@ type SidebarProps = {
   setFilterSize: (v: number) => void;
   labelSize: number;
   setLabelSize: (v: number) => void;
+  selected: BJJConcept | null;
+  setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, selectedCategories, setSelectedCategories, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize }) => {
+const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, selectedCategories, setSelectedCategories, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize, selected, setSelected }) => {
   const [showExport, setShowExport] = useState(false);
   const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
   const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
@@ -59,6 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
   const handleSearchResultClick = (concept: BJJConcept) => {
     setSearchText(concept.concept);
     setShowSearchResults(false);
+    setSelected(concept);
     // TODO: Add visual highlight or focus on the selected concept in the scatter plot
   };
 
