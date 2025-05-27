@@ -10,6 +10,7 @@ interface ModalProps {
 }
 
 type BJJConcept = {
+  _id?: string;
   id: string;
   concept: string;
   description: string;
@@ -364,7 +365,13 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   }, [hovered, concepts, size, labelSize]);
 
   const handleSave = (updated: BJJConcept) => {
-    updateConcept(updated.id, updated);
+    // Remove _id from update object
+    const { _id, ...updates } = updated;
+    if (_id) {
+      updateConcept(_id, updates);
+    } else {
+      updateConcept(updated.id, updates);
+    }
     setSelected(null);
   };
 

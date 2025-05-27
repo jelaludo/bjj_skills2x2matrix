@@ -77,10 +77,12 @@ function App() {
   };
 
   const updateConcept = async (id: string, updates: Partial<BJJConcept>) => {
+    // Remove _id from updates if present
+    const { _id, ...rest } = (updates as any);
     await fetch(`/api/concepts/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updates),
+      body: JSON.stringify(rest),
     });
     fetchConcepts();
   };
