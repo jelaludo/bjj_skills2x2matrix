@@ -15,7 +15,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Roboto, Arial, sans-serif',
+    fontFamily: 'Inter, Roboto, Arial, sans-serif',
     h1: { fontSize: '2.2rem', fontWeight: 700 },
     h2: { fontSize: '1.8rem', fontWeight: 600 },
     h3: { fontSize: '1.4rem', fontWeight: 500 },

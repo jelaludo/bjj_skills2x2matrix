@@ -39,7 +39,7 @@ interface LabelMode {
   description: string;
 }
 
-const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right', vertical?: 'top' | 'bottom', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, side, vertical, containerSize }) => {
+const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', vertical?: 'top' | 'bottom' | 'center', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, side, vertical, containerSize }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
   const [categoryMode, setCategoryMode] = useState<'select' | 'custom'>('select');
@@ -55,14 +55,23 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right', vertical?: 
   const verticalOffset = containerSize ? Math.max(0.15 * containerSize.height, 80) : 100;
 
   if (!edit) return null;
+  
+  // Calculate positioning for mobile centering
+  const isCentered = side === 'center' && vertical === 'center';
+  const left = isCentered ? '50%' : side === 'left' ? 'auto' : horizontalOffset;
+  const right = isCentered ? 'auto' : side === 'left' ? horizontalOffset : 'auto';
+  const top = isCentered ? '50%' : vertical === 'top' ? verticalOffset : 'auto';
+  const bottom = isCentered ? 'auto' : vertical === 'top' ? 'auto' : verticalOffset;
+  const transform = isCentered ? 'translate(-50%, -50%)' : 'none';
+  
   return (
     <div style={{
       position: 'fixed',
-      left: side === 'left' ? 'auto' : horizontalOffset,
-      right: side === 'left' ? horizontalOffset : 'auto',
-      top: vertical === 'top' ? verticalOffset : 'auto',
-      bottom: vertical === 'top' ? 'auto' : verticalOffset,
-      transform: 'none',
+      left,
+      right,
+      top,
+      bottom,
+      transform,
       background: '#222',
       color: '#fff',
       padding: 24,
@@ -550,8 +559,9 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('text-anchor', 'middle')
       .attr('fill', '#fff')
       .attr('font-size', item => item.fontSize)
-      .attr('font-weight', 'bold')
+      .attr('font-weight', 100)
       .style('pointer-events', 'none')
+      .style('font-family', 'Inter, Roboto, Arial, sans-serif')
       .text(item => item.d.concept);
   }, [hovered, concepts, size, labelMode, pingedNodeId, pingStep]);
 
@@ -572,17 +582,32 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   };
 
   // Determine modal position based on selected node's quadrant
-  let modalSide: 'left' | 'right' = 'right';
-  let modalVertical: 'top' | 'bottom' = 'bottom';
-  if (selected) {
+  let modalSide: 'left' | 'right' | 'center' = 'right';
+  let modalVertical: 'top' | 'bottom' | 'center' = 'bottom';
+  let createModalSide: 'left' | 'right' | 'center' = 'right';
+  let createModalVertical: 'top' | 'bottom' | 'center' = 'bottom';
+  
+  // Check if we're on mobile (small screen)
+  const isMobile = size.width < 768; // Standard mobile breakpoint
+  
+  if (selected && !isMobile) {
+    // Desktop positioning: position relative to node
     modalSide = selected.axis_mental_physical < 0.5 ? 'right' : 'left';
     modalVertical = selected.axis_self_opponent < 0.5 ? 'bottom' : 'top';
+  } else if (selected && isMobile) {
+    // Mobile positioning: center on screen
+    modalSide = 'center';
+    modalVertical = 'center';
   }
-  let createModalSide: 'left' | 'right' = 'right';
-  let createModalVertical: 'top' | 'bottom' = 'bottom';
-  if (createModal) {
+  
+  if (createModal && !isMobile) {
+    // Desktop positioning for create modal
     createModalSide = createModal.x < 0.5 ? 'right' : 'left';
     createModalVertical = createModal.y < 0.5 ? 'bottom' : 'top';
+  } else if (createModal && isMobile) {
+    // Mobile positioning for create modal
+    createModalSide = 'center';
+    createModalVertical = 'center';
   }
 
   return (
@@ -652,8 +677,8 @@ interface ConceptViewModalProps {
   onEdit?: () => void;
   categories: { name: string; color: string; }[];
   canEdit?: boolean;
-  side?: 'left' | 'right';
-  vertical?: 'top' | 'bottom';
+  side?: 'left' | 'right' | 'center';
+  vertical?: 'top' | 'bottom' | 'center';
   containerSize?: { width: number; height: number };
 }
 
@@ -662,13 +687,23 @@ const ConceptViewModal: React.FC<ConceptViewModalProps> = ({ concept, onClose, o
   const category = categories.find(c => c.name === concept.category);
   const horizontalOffset = containerSize ? Math.max(0.15 * containerSize.width, 180) : 300;
   const verticalOffset = containerSize ? Math.max(0.15 * containerSize.height, 80) : 100;
+  
+  // Calculate positioning for mobile centering
+  const isCentered = side === 'center' && vertical === 'center';
+  const left = isCentered ? '50%' : side === 'left' ? 'auto' : horizontalOffset;
+  const right = isCentered ? 'auto' : side === 'left' ? horizontalOffset : 'auto';
+  const top = isCentered ? '50%' : vertical === 'top' ? verticalOffset : 'auto';
+  const bottom = isCentered ? 'auto' : vertical === 'top' ? 'auto' : verticalOffset;
+  const transform = isCentered ? 'translate(-50%, -50%)' : 'none';
+  
   return (
     <div style={{
       position: 'fixed',
-      left: side === 'left' ? 'auto' : horizontalOffset,
-      right: side === 'left' ? horizontalOffset : 'auto',
-      top: vertical === 'top' ? verticalOffset : 'auto',
-      bottom: vertical === 'top' ? 'auto' : verticalOffset,
+      left,
+      right,
+      top,
+      bottom,
+      transform,
       background: '#222',
       color: '#fff',
       padding: 24,
@@ -682,29 +717,32 @@ const ConceptViewModal: React.FC<ConceptViewModalProps> = ({ concept, onClose, o
       overflowY: 'auto',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-        <div>
-          <h2 style={{ margin: 0 }}>{concept.concept}</h2>
-          {category && (
-            <span style={{
-              background: category.color,
-              color: '#111',
-              borderRadius: 4,
-              padding: '2px 10px',
-              fontSize: 13,
-              marginLeft: 4
-            }}>{category.name}</span>
-          )}
-        </div>
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
           {canEdit && (
-            <button onClick={onEdit} style={{ background: 'none', border: 'none', color: '#4F8EF7', fontSize: 18, cursor: 'pointer', padding: 0 }} title="Edit">
+            <button onClick={onEdit} style={{ background: 'none', border: 'none', color: '#888', fontSize: 14, cursor: 'pointer', padding: 0 }} title="Edit">
               ✏️
             </button>
           )}
-          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', fontSize: 20, cursor: 'pointer', padding: 0 }} title="Close">×</button>
+          <div>
+            <h2 style={{ margin: 0 }}>{concept.concept}</h2>
+            {category && (
+              <span style={{
+                background: category.color,
+                color: '#111',
+                borderRadius: 4,
+                padding: '2px 10px',
+                fontSize: 13,
+                marginLeft: 4,
+                fontFamily: 'Inter, Roboto, Arial, sans-serif',
+                fontWeight: 400,
+                letterSpacing: '0.01em',
+              }}>{category.name}</span>
+            )}
+          </div>
         </div>
+        <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', fontSize: 28, cursor: 'pointer', padding: 0, lineHeight: 1 }} title="Close">×</button>
       </div>
-      <div style={{ marginTop: 18, fontSize: 16, lineHeight: 1.5, whiteSpace: 'pre-line' }}>
+      <div style={{ marginTop: 18, fontSize: 16, lineHeight: 1.5, whiteSpace: 'pre-line', fontFamily: 'Inter, Roboto, Arial, sans-serif', fontWeight: 300, letterSpacing: '0.01em' }}>
         {concept.description}
       </div>
     </div>
