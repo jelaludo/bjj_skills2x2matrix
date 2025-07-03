@@ -4,6 +4,9 @@ import MainLayout from './layouts/MainLayout';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import theme from './theme/theme';
 
 type BJJConcept = {
   id: string;
@@ -126,50 +129,53 @@ function App() {
   });
 
   return (
-    <MainLayout
-      header={<Header />}
-      sidebar={
-        <Sidebar
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <MainLayout
+        header={<Header />}
+        sidebar={
+          <Sidebar
+            concepts={filteredConcepts}
+            addConcept={addConcept}
+            updateConcept={updateConcept}
+            deleteConcept={deleteConcept}
+            categories={categories}
+            setCategories={setCategories}
+            addCategory={addCategory}
+            updateCategory={updateCategory}
+            deleteCategory={deleteCategory}
+            createMode={createMode}
+            setCreateMode={setCreateMode}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            filterBrightness={filterBrightness}
+            setFilterBrightness={setFilterBrightness}
+            filterSize={filterSize}
+            setFilterSize={setFilterSize}
+            labelSize={labelSize}
+            setLabelSize={setLabelSize}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        }
+      >
+        <ScatterPlot
           concepts={filteredConcepts}
           addConcept={addConcept}
           updateConcept={updateConcept}
           deleteConcept={deleteConcept}
           categories={categories}
           setCategories={setCategories}
-          addCategory={addCategory}
-          updateCategory={updateCategory}
-          deleteCategory={deleteCategory}
           createMode={createMode}
           setCreateMode={setCreateMode}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-          filterBrightness={filterBrightness}
-          setFilterBrightness={setFilterBrightness}
-          filterSize={filterSize}
-          setFilterSize={setFilterSize}
+          createAt={createAt}
+          setCreateAt={setCreateAt}
           labelSize={labelSize}
-          setLabelSize={setLabelSize}
           selected={selected}
           setSelected={setSelected}
         />
-      }
-    >
-      <ScatterPlot
-        concepts={filteredConcepts}
-        addConcept={addConcept}
-        updateConcept={updateConcept}
-        deleteConcept={deleteConcept}
-        categories={categories}
-        setCategories={setCategories}
-        createMode={createMode}
-        setCreateMode={setCreateMode}
-        createAt={createAt}
-        setCreateAt={setCreateAt}
-        labelSize={labelSize}
-        selected={selected}
-        setSelected={setSelected}
-      />
-    </MainLayout>
+      </MainLayout>
+    </ThemeProvider>
   );
 }
 

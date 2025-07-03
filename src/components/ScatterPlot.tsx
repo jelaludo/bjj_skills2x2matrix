@@ -23,7 +23,7 @@ type BJJConcept = {
   size: number;
 };
 
-const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, onDelete, categories }) => {
+const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right', vertical?: 'top' | 'bottom', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, side, vertical, containerSize }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
   const [categoryMode, setCategoryMode] = useState<'select' | 'custom'>('select');
@@ -34,13 +34,19 @@ const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, onDelete
     setCustomCategory('');
   }, [concept]);
 
+  // Calculate dynamic offset
+  const horizontalOffset = containerSize ? Math.max(0.15 * containerSize.width, 180) : 300;
+  const verticalOffset = containerSize ? Math.max(0.15 * containerSize.height, 80) : 100;
+
   if (!edit) return null;
   return (
     <div style={{
       position: 'fixed',
-      top: 80,
-      left: '50%',
-      transform: 'translateX(-50%)',
+      left: side === 'left' ? 'auto' : horizontalOffset,
+      right: side === 'left' ? horizontalOffset : 'auto',
+      top: vertical === 'top' ? verticalOffset : 'auto',
+      bottom: vertical === 'top' ? 'auto' : verticalOffset,
+      transform: 'none',
       background: '#222',
       color: '#fff',
       padding: 24,
@@ -48,6 +54,10 @@ const ConceptModal: React.FC<ModalProps> = ({ concept, onClose, onSave, onDelete
       zIndex: 1000,
       minWidth: 350,
       boxShadow: '0 4px 24px #0008',
+      maxWidth: containerSize ? Math.min(0.6 * containerSize.width, 500) : 500,
+      width: '100%',
+      maxHeight: containerSize ? 0.8 * containerSize.height : undefined,
+      overflowY: 'auto',
     }}>
       <h2>Edit Concept</h2>
       <form onSubmit={e => { e.preventDefault(); if (edit) onSave(edit); }}>
@@ -410,6 +420,20 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
     setSelected(null);
   };
 
+  // Determine modal position based on selected node's quadrant
+  let modalSide: 'left' | 'right' = 'right';
+  let modalVertical: 'top' | 'bottom' = 'bottom';
+  if (selected) {
+    modalSide = selected.axis_mental_physical < 0.5 ? 'right' : 'left';
+    modalVertical = selected.axis_self_opponent < 0.5 ? 'bottom' : 'top';
+  }
+  let createModalSide: 'left' | 'right' = 'right';
+  let createModalVertical: 'top' | 'bottom' = 'bottom';
+  if (createModal) {
+    createModalSide = createModal.x < 0.5 ? 'right' : 'left';
+    createModalVertical = createModal.y < 0.5 ? 'bottom' : 'top';
+  }
+
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <svg
@@ -425,6 +449,9 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
         onSave={handleSave}
         onDelete={handleDelete}
         categories={categories}
+        side={modalSide}
+        vertical={modalVertical}
+        containerSize={size}
       />
       {createModal && (
         <ConceptModal
@@ -443,6 +470,9 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
           onClose={() => { setCreateModal(null); setCreateMode(false); }}
           onSave={handleCreateSave}
           categories={categories}
+          side={createModalSide}
+          vertical={createModalVertical}
+          containerSize={size}
         />
       )}
     </div>
