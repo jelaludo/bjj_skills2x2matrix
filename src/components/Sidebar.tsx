@@ -110,16 +110,29 @@ const Sidebar: React.FC<SidebarProps> = ({
     { type: 'all' as const, description: 'Show all labels' },
   ];
 
-  // Download TypeScript handler (SkillsMasterList.ts format)
+  // Download handler: Export both .ts and .json
   const handleDownload = () => {
+    // --- TypeScript file ---
     const tsString = `\nexport const categories = ${JSON.stringify(categories, null, 2)};\n\nexport interface BJJConcept {\n  id: string;\n  concept: string;\n  description: string;\n  short_description: string;\n  category: string;\n  color: string;\n  axis_self_opponent: number;\n  axis_mental_physical: number;\n  brightness: number;\n  size: number;\n}\n\nexport const skillsMasterList: BJJConcept[] = ${JSON.stringify(concepts, null, 2)};\n`.trim();
-    const blob = new Blob([tsString], { type: 'text/typescript' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = downloadName || 'SkillsMasterList.ts';
-    a.click();
-    URL.revokeObjectURL(url);
+    const tsBlob = new Blob([tsString], { type: 'text/typescript' });
+    const tsUrl = URL.createObjectURL(tsBlob);
+    const tsName = (downloadName.endsWith('.ts') ? downloadName : downloadName.replace(/\.[^.]+$/, '') + '.ts') || 'SkillsMasterList.ts';
+    const aTs = document.createElement('a');
+    aTs.href = tsUrl;
+    aTs.download = tsName;
+    aTs.click();
+    URL.revokeObjectURL(tsUrl);
+
+    // --- JSON file ---
+    const jsonObj = { categories, skillsMasterList: concepts };
+    const jsonBlob = new Blob([JSON.stringify(jsonObj, null, 2)], { type: 'application/json' });
+    const jsonUrl = URL.createObjectURL(jsonBlob);
+    const jsonName = tsName.replace(/\.ts$/, '.json');
+    const aJson = document.createElement('a');
+    aJson.href = jsonUrl;
+    aJson.download = jsonName;
+    aJson.click();
+    URL.revokeObjectURL(jsonUrl);
   };
 
   // Upload JSON handler (expect categories and sampleConcepts)
@@ -522,6 +535,17 @@ const Sidebar: React.FC<SidebarProps> = ({
                   }}
                 />
                 <div style={{ 
+                  fontSize: 11, 
+                  color: '#888',
+                  marginBottom: 6,
+                  padding: 4,
+                  background: '#1a1a1a',
+                  borderRadius: 4,
+                  border: '1px solid #333'
+                }}>
+                  💡 <strong>Note:</strong> Enter only the filename (e.g., "SkillsMasterList.json"), not the full path. The app automatically looks in public\data\local.
+                </div>
+                <div style={{ 
                   marginTop: 4, 
                   fontSize: 11, 
                   color: '#666',
@@ -546,37 +570,48 @@ const Sidebar: React.FC<SidebarProps> = ({
         </button>
       </section>
       <section>
-        <button
-          onClick={() => setShowExport(v => !v)}
-          style={{ width: '100%', background: '#333', color: '#fff', border: 'none', borderRadius: 4, padding: '10px 0', fontWeight: 600, cursor: 'pointer', marginBottom: 8 }}
-        >
-          Download / Import JSON
-        </button>
-        {showExport && (
-          <div style={{ background: '#232323', padding: 12, borderRadius: 8, marginTop: 8 }}>
-            <div style={{ marginBottom: 8, fontSize: 14, color: '#aaa' }}>
-              Download your concepts as JSON, then overwrite <code>bjj-skill-matrix/src/data/SkillsMasterList.ts</code> to update your master data.<br />
-              You can also upload a JSON file to preview and apply it.
+        <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Export or Import Data</h3>
+        <div style={{ background: '#232323', padding: 12, borderRadius: 8, marginTop: 8, marginBottom: 16, maxWidth: 1000, minWidth: 0, overflow: 'visible', boxSizing: 'border-box' }}>
+          <button
+            onClick={() => setShowExport(v => !v)}
+            style={{ width: '100%', background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '10px 0', fontWeight: 600, cursor: 'pointer', marginBottom: 12, fontSize: 15, display: 'block' }}
+          >
+            Export Data (.ts & .json)
+          </button>
+          {showExport && (
+            <div>
+              <div style={{ marginBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 1.5 }}>
+                <strong>Click "Export Data" to generate both:</strong><br />
+                <ul style={{ margin: '8px 0 8px 18px', padding: 0, color: '#aaa', fontSize: 13 }}>
+                  <li>A TypeScript file (<code>.ts</code>) for production/MongoDB use</li>
+                  <li>A JSON file (<code>.json</code>) for local development</li>
+                </ul>
+                Files will be saved to your browser's downloads folder.<br />
+                <br />
+                To update your master data, overwrite the <code>.ts</code> file in <code>bjj-skill-matrix/src/data/</code>.<br />
+                To use local data, select the <code>.json</code> file in the Local Data section.<br />
+                <br />
+                <strong>Import:</strong> You can also upload a JSON file below to preview and apply it.
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+                <input
+                  type="text"
+                  value={downloadName}
+                  onChange={e => setDownloadName(e.target.value)}
+                  style={{ width: 180, minWidth: 120, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
+                  placeholder="Filename (e.g. SkillsMasterList.ts)"
+                />
+                <button onClick={handleDownload} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 14px', cursor: 'pointer', fontWeight: 600, fontSize: 13, minWidth: 120 }}>
+                  Export Data
+                </button>
+              </div>
+              <div style={{ marginBottom: 10 }}>
+                <input type="file" accept="application/json" onChange={handleUpload} style={{ color: '#fff' }} />
+              </div>
+              {uploadError && <div style={{ color: 'red', marginBottom: 8 }}>{uploadError}</div>}
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <input
-                type="text"
-                value={downloadName}
-                onChange={e => setDownloadName(e.target.value)}
-                style={{ width: 180, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
-                placeholder="Filename (e.g. SkillsMasterList.ts)"
-              />
-              <button onClick={handleDownload} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 14px', cursor: 'pointer' }}>
-                Download JSON
-              </button>
-            </div>
-            <div style={{ marginBottom: 8 }}>
-              <input type="file" accept="application/json" onChange={handleUpload} style={{ color: '#fff' }} />
-            </div>
-            {uploadError && <div style={{ color: 'red', marginBottom: 8 }}>{uploadError}</div>}
-            {/* Preview logic can be added here if needed */}
-          </div>
-        )}
+          )}
+        </div>
       </section>
     </div>
   );

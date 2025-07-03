@@ -1,0 +1,155 @@
+[33mcommit 30ae30f96d0f557a7ede9dac2f06014e8ccf2d2d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Thu Jul 3 15:00:27 2025 +0900
+
+    thin Inter font, new cards
+
+[33mcommit d0c946d418a3284e3528c4133c2a1d6e7ebce0a9[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Thu Jul 3 14:07:40 2025 +0900
+
+    new dev local data + new view cards
+
+[33mcommit 94c3d9a40bbc6f03a2a3dff3de361756299d0d38[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Thu Jul 3 12:15:50 2025 +0900
+
+    Mobile Design, Grappling Primitives
+
+[33mcommit e8d928ab03c1c732b453f836ca0d167a13ae9355[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Tue May 27 12:59:15 2025 +0900
+
+    added ping to search
+
+[33mcommit 074a1d98f34d498d7b613d8c00e84a922b3f176a[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Tue May 27 12:55:02 2025 +0900
+
+    Search triggers note
+
+[33mcommit d8c7cb5373e28871b387d2738394a79d4f61d4d2[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Tue May 27 12:39:45 2025 +0900
+
+    Fixed Edits, now reflected
+
+[33mcommit cd099e3f3617c14216c7622c6c8c1d5d291aa74f[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Tue May 27 12:30:31 2025 +0900
+
+    Commit before _id mongo refactor
+
+[33mcommit 6cae92be32cfe702d168857fe5f336be40e4d1d1[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Tue May 27 09:50:50 2025 +0900
+
+    Categories Toggle
+
+[33mcommit f5d957cabd412658307e8ea3f6081367f9a4b2a4[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 19:29:28 2025 +0900
+
+    hunting a missing dot
+
+[33mcommit b42560a3f9809605df02960992a4be70737bc173[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 19:11:53 2025 +0900
+
+    Adding debug log
+
+[33mcommit a906926a45d0e9cf335c0aabb31bbab212737cb5[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 18:29:35 2025 +0900
+
+    Troubleshooting Vercel/Mongo
+
+[33mcommit 9568578a2051bc58571316fb1bfea6b6e1a4c343[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 17:57:18 2025 +0900
+
+    moved old masterlist to backups folder for Vercel comp
+
+[33mcommit 8adb88a1eaaf77446deb6adc572d0e909d197ed6[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 17:17:32 2025 +0900
+
+    Vercel compatibility attempt 01
+
+[33mcommit b10251c10c8c1508f9ae100656571e5728c2d433[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 17:02:16 2025 +0900
+
+    Vercel comp and docs for bugs
+
+[33mcommit 88c746a28b92e4ea95591dff3591f3e47a8e09d6[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:58:42 2025 +0900
+
+    _id compatibility Vercel/Mongo
+
+[33mcommit 2010a93757ae41966a00f5344eada91bf4569bed[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:49:46 2025 +0900
+
+    removed skillsMasterList.js as fallback for vercel comp, committing to MongoDB
+
+[33mcommit 30c862a6c5b202749a9a0c40d9b864944a18f9da[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:41:39 2025 +0900
+
+    react-scripts@5. for vercel compatibility
+
+[33mcommit 72f72b8d6a4b2dee292dcfea914a5e049dc5dc8b[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:32:05 2025 +0900
+
+    engines node set to 18.x for vercel compatibility
+
+[33mcommit 7c92d4ac1da8b89553c17feba29206df6bafc362[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:24:37 2025 +0900
+
+    Vercel Node.js 16 compatibility
+
+[33mcommit 7b82a16d904cf9ec04fd50ede5e89de5c10f2a96[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:20:22 2025 +0900
+
+    Read Me Updates
+
+[33mcommit 3cea42f39c5d1587f434641c5838c10b74e4cacf[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 16:06:39 2025 +0900
+
+    adding nodes test
+
+[33mcommit f622cfe07781dec8016b8737d84e759baf658c2d[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Mon May 26 15:27:39 2025 +0900
+
+    Switched MasterList to MongoDB, added categories
+
+[33mcommit 3b3ee5ebe9967c09c5ae796ed1e7b04c696aea96[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Sun May 25 23:57:09 2025 +0900
+
+    Seeded masterlist to mongo
+
+[33mcommit 11307d91e2d8904649130d55a4ff89177cb31fba[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Sun May 25 23:20:42 2025 +0900
+
+    Ready for MongoVercel integration
+
+[33mcommit 2fd2123225682d4aa5be81aead5c4149223e870d[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Sat May 24 21:44:10 2025 +0900
+
+    added local storage
+
+[33mcommit 134411d82852624f1067fcb37f3ce1255eb74233[m
+Author: jelaludo <40551265+jelaludo@users.noreply.github.com>
+Date:   Sat May 24 21:21:15 2025 +0900
+
+    Initial commit after removing submodule
