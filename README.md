@@ -1,6 +1,40 @@
 # Getting Started with Create React App
 
-Tech Stack
+## ⚠️ IMPORTANT: Always Run Commands from the Correct Directory
+
+**CRITICAL:** All npm commands (including `npm start`) must be run from the `bjj-skill-matrix` folder, NOT the parent directory.
+
+```bash
+# ❌ WRONG - This will fail
+cd C:\Users\owner\Documents\02_CodingProjects\BJJSkill_MatrixMapping
+npm start
+
+# ✅ CORRECT - This will work
+cd C:\Users\owner\Documents\02_CodingProjects\BJJSkill_MatrixMapping\bjj-skill-matrix
+npm start
+```
+
+**Why?** The `package.json` file is located in the `bjj-skill-matrix` subfolder, not in the parent directory.
+
+### Quick Commands Reference
+```bash
+# Navigate to project directory
+cd C:\Users\owner\Documents\02_CodingProjects\BJJSkill_MatrixMapping\bjj-skill-matrix
+
+# Start development server
+npm start
+
+# Kill process on port 3000 (if needed)
+netstat -ano | findstr :3000
+taskkill /PID [PID_NUMBER] /F
+
+# Install dependencies
+npm install
+```
+
+---
+
+## Tech Stack
 Frontend: React (TypeScript)
 Backend/API: Vercel Serverless Functions (Node.js, CommonJS)
 Database: MongoDB Atlas (Cloud)

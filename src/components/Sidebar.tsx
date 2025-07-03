@@ -31,13 +31,48 @@ type SidebarProps = {
   setFilterBrightness: (v: number) => void;
   filterSize: number;
   setFilterSize: (v: number) => void;
-  labelSize: number;
-  setLabelSize: (v: number) => void;
+  labelMode: { type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string };
+  setLabelMode: (v: { type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string }) => void;
   selected: BJJConcept | null;
   setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
+  // Data source toggle props (development only)
+  isDevelopment?: boolean;
+  dataSource?: string;
+  setDataSource?: (v: string) => void;
+  localFiles?: { name: string; path: string; lastModified: Date }[];
+  selectedLocalFile?: string;
+  setSelectedLocalFile?: (v: string) => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, deleteConcept, categories, setCategories, addCategory, updateCategory, deleteCategory, createMode, setCreateMode, selectedCategories, setSelectedCategories, filterBrightness, setFilterBrightness, filterSize, setFilterSize, labelSize, setLabelSize, selected, setSelected }) => {
+const Sidebar: React.FC<SidebarProps> = ({ 
+  concepts, 
+  addConcept, 
+  updateConcept, 
+  deleteConcept, 
+  categories, 
+  setCategories, 
+  addCategory, 
+  updateCategory, 
+  deleteCategory, 
+  createMode, 
+  setCreateMode, 
+  selectedCategories, 
+  setSelectedCategories, 
+  filterBrightness, 
+  setFilterBrightness, 
+  filterSize, 
+  setFilterSize, 
+  labelMode, 
+  setLabelMode, 
+  selected, 
+  setSelected,
+  isDevelopment = false,
+  dataSource = 'mongodb',
+  setDataSource,
+  localFiles = [],
+  selectedLocalFile = '',
+  setSelectedLocalFile
+}) => {
   const [showExport, setShowExport] = useState(false);
   const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
   const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
@@ -65,12 +100,14 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
     // TODO: Add visual highlight or focus on the selected concept in the scatter plot
   };
 
-  // Add label size state
-  const labelSizeOptions = [
-    { label: 'OFF', value: 0 },
-    { label: 'Small', value: 12 },
-    { label: 'Medium', value: 16 },
-    { label: 'Large', value: 22 },
+  // Label mode options
+  const labelModeOptions = [
+    { type: 'off' as const, description: 'No labels' },
+    { type: 'hover' as const, description: 'Show on hover only' },
+    { type: 'selected' as const, description: 'Show selected item only' },
+    { type: 'smart' as const, description: 'Smart: hover + important items' },
+    { type: 'clustered' as const, description: 'Group nearby items' },
+    { type: 'all' as const, description: 'Show all labels' },
   ];
 
   // Download TypeScript handler (SkillsMasterList.ts format)
@@ -374,24 +411,132 @@ const Sidebar: React.FC<SidebarProps> = ({ concepts, addConcept, updateConcept, 
       </section>
       <section>
         <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Labels</h3>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <input
-            type="range"
-            min={0}
-            max={3}
-            step={1}
-            value={[0, 12, 16, 22].indexOf(labelSize)}
-            onChange={e => {
-              const idx = Number(e.target.value);
-              setLabelSize([0, 12, 16, 22][idx]);
-            }}
-            style={{ width: '100%' }}
-          />
-          <span style={{ minWidth: 60, fontSize: 13 }}>
-            {labelSize === 0 ? 'OFF' : labelSize === 12 ? 'Small' : labelSize === 16 ? 'Medium' : 'Large'}
-          </span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {labelModeOptions.map((option, index) => (
+            <button
+              key={option.type}
+              onClick={() => setLabelMode(option)}
+              style={{
+                background: labelMode.type === option.type ? '#4F8EF7' : 'transparent',
+                color: labelMode.type === option.type ? '#fff' : '#aaa',
+                border: '1px solid #4F8EF7',
+                padding: '8px 12px',
+                borderRadius: 4,
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.2s',
+                fontSize: 13,
+              }}
+            >
+              <div style={{ fontWeight: 'bold' }}>
+                {option.type.charAt(0).toUpperCase() + option.type.slice(1)}
+              </div>
+              <div style={{ fontSize: 11, opacity: 0.8 }}>
+                {option.description}
+              </div>
+            </button>
+          ))}
         </div>
       </section>
+      
+      {/* Data Source Toggle - Development Only */}
+      {isDevelopment && (
+        <section>
+          <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Data Source</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <button
+                onClick={() => setDataSource?.('mongodb')}
+                style={{
+                  background: dataSource && dataSource === 'mongodb' ? '#4F8EF7' : 'transparent',
+                  color: dataSource && dataSource === 'mongodb' ? '#fff' : '#aaa',
+                  border: '1px solid #4F8EF7',
+                  padding: '8px 12px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  flex: 1,
+                  fontSize: 13,
+                }}
+              >
+                MongoDB
+              </button>
+              <button
+                onClick={() => setDataSource?.('local')}
+                style={{
+                  background: dataSource && dataSource === 'local' ? '#4F8EF7' : 'transparent',
+                  color: dataSource && dataSource === 'local' ? '#fff' : '#aaa',
+                  border: '1px solid #4F8EF7',
+                  padding: '8px 12px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  flex: 1,
+                  fontSize: 13,
+                }}
+              >
+                Local Data
+              </button>
+            </div>
+            
+            {dataSource && dataSource === 'local' && (
+              <div style={{ marginTop: 8 }}>
+                <label style={{ display: 'block', marginBottom: 4, fontSize: 13, color: '#aaa' }}>
+                  Select Local File:
+                </label>
+                <select
+                  value={selectedLocalFile}
+                  onChange={(e) => setSelectedLocalFile?.(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: 6,
+                    borderRadius: 4,
+                    border: '1px solid #333',
+                    background: '#181818',
+                    color: '#fff',
+                    fontSize: 12,
+                    marginBottom: 6
+                  }}
+                >
+                  {localFiles.map(file => (
+                    <option key={file.name} value={file.name}>
+                      {file.name} ({new Date(file.lastModified).toLocaleDateString()})
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  placeholder="Or enter filename (e.g. SkillsMasterList07032025.js)"
+                  value={selectedLocalFile}
+                  onChange={e => setSelectedLocalFile?.(e.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter') setSelectedLocalFile?.(e.currentTarget.value);
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: 6,
+                    borderRadius: 4,
+                    border: '1px solid #333',
+                    background: '#181818',
+                    color: '#fff',
+                    fontSize: 12,
+                    marginBottom: 6
+                  }}
+                />
+                <div style={{ 
+                  marginTop: 4, 
+                  fontSize: 11, 
+                  color: '#666',
+                  padding: 4,
+                  background: '#1a1a1a',
+                  borderRadius: 4
+                }}>
+                  Current: {String(dataSource) === 'mongodb' ? 'MongoDB' : `Local: ${selectedLocalFile}`}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+      
       <section>
         <button
           onClick={() => setCreateMode(!createMode)}

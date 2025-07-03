@@ -23,6 +23,22 @@ type BJJConcept = {
   size: number;
 };
 
+// Label management types
+interface LabelItem {
+  d: BJJConcept;
+  x: number;
+  y: number;
+  fontSize: number;
+  priority: number;
+  width: number;
+  height: number;
+}
+
+interface LabelMode {
+  type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered';
+  description: string;
+}
+
 const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right', vertical?: 'top' | 'bottom', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, side, vertical, containerSize }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
@@ -168,7 +184,7 @@ interface ScatterPlotProps {
   setCreateMode: (v: boolean) => void;
   createAt: { x: number; y: number } | null;
   setCreateAt: (v: { x: number; y: number } | null) => void;
-  labelSize: number;
+  labelMode: LabelMode;
   selected: BJJConcept | null;
   setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
 }
@@ -184,7 +200,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   setCreateMode,
   createAt,
   setCreateAt,
-  labelSize,
+  labelMode,
   selected,
   setSelected,
 }) => {
@@ -194,6 +210,147 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   const [size, setSize] = useState({ width: 600, height: 600 });
   const [pingedNodeId, setPingedNodeId] = useState<string | null>(null);
   const [pingStep, setPingStep] = useState(0);
+  // Add state to control view/edit mode for the modal
+  const [editMode, setEditMode] = useState(false);
+  // For now, hardcode canEdit to true (replace with real permission logic later)
+  const canEdit = true;
+
+  // Label management functions
+  const calculateLabelDimensions = (text: string, fontSize: number): { width: number; height: number } => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return { width: 0, height: 0 };
+    
+    ctx.font = `bold ${fontSize}px Arial`;
+    const metrics = ctx.measureText(text);
+    return {
+      width: metrics.width + 8, // Add padding
+      height: fontSize + 4
+    };
+  };
+
+  const detectCollision = (label1: LabelItem, label2: LabelItem): boolean => {
+    return !(
+      label1.x + label1.width < label2.x ||
+      label1.x > label2.x + label2.width ||
+      label1.y + label1.height < label2.y ||
+      label1.y > label2.y + label2.height
+    );
+  };
+
+  const getLabelPriority = (concept: BJJConcept, hovered: string | null, selected: BJJConcept | null): number => {
+    if (hovered === concept.id) return 1000; // Highest priority
+    if (selected && selected.id === concept.id) return 900; // Second highest
+    return concept.brightness + concept.size; // Base priority on importance
+  };
+
+  const getLabelMode = (): LabelItem[] => {
+    const labelItems: LabelItem[] = [];
+    const width = size.width;
+    const height = size.height;
+
+    // Determine which concepts should have labels based on mode
+    let conceptsToLabel: BJJConcept[] = [];
+    
+    switch (labelMode.type) {
+      case 'off':
+        return [];
+      case 'hover':
+        if (hovered) {
+          const hoveredConcept = concepts.find(c => c.id === hovered);
+          if (hoveredConcept) conceptsToLabel = [hoveredConcept];
+        }
+        break;
+      case 'selected':
+        if (selected) conceptsToLabel = [selected];
+        break;
+      case 'smart':
+        // Show hovered, selected, and top 20% by priority
+        const priorities = concepts.map(c => getLabelPriority(c, hovered, selected)).sort((a, b) => b - a);
+        const priorityThreshold = priorities[Math.floor(priorities.length * 0.2)]; // Top 20%
+        conceptsToLabel = concepts.filter(c => 
+          hovered === c.id || 
+          (selected && selected.id === c.id) ||
+          getLabelPriority(c, hovered, selected) >= priorityThreshold
+        );
+        break;
+      case 'all':
+        conceptsToLabel = concepts;
+        break;
+      case 'clustered':
+        // Group nearby concepts and show representative labels
+        const clusters = clusterNearbyConcepts(concepts, 50); // 50px threshold
+        conceptsToLabel = clusters.map(cluster => cluster.representative);
+        break;
+    }
+
+    // Create label items with positioning
+    conceptsToLabel.forEach(concept => {
+      const x = margin + concept.axis_mental_physical * (width - 2 * margin);
+      const y = height - margin - concept.axis_self_opponent * (height - 2 * margin) - 20;
+      const fontSize = hovered === concept.id ? 16 : 12;
+      const priority = getLabelPriority(concept, hovered, selected);
+      const dimensions = calculateLabelDimensions(concept.concept, fontSize);
+      
+      labelItems.push({
+        d: concept,
+        x,
+        y,
+        fontSize,
+        priority,
+        width: dimensions.width,
+        height: dimensions.height
+      });
+    });
+
+    // Sort by priority (highest first)
+    labelItems.sort((a, b) => b.priority - a.priority);
+
+    // Apply collision detection
+    const visibleLabels: LabelItem[] = [];
+    labelItems.forEach(label => {
+      const hasCollision = visibleLabels.some(existing => detectCollision(label, existing));
+      if (!hasCollision) {
+        visibleLabels.push(label);
+      }
+    });
+
+    return visibleLabels;
+  };
+
+  const clusterNearbyConcepts = (concepts: BJJConcept[], threshold: number): Array<{ representative: BJJConcept; members: BJJConcept[] }> => {
+    const clusters: Array<{ representative: BJJConcept; members: BJJConcept[] }> = [];
+    const width = size.width;
+    const height = size.height;
+
+    concepts.forEach(concept => {
+      const x = margin + concept.axis_mental_physical * (width - 2 * margin);
+      const y = height - margin - concept.axis_self_opponent * (height - 2 * margin);
+      
+      let addedToCluster = false;
+      for (const cluster of clusters) {
+        const repX = margin + cluster.representative.axis_mental_physical * (width - 2 * margin);
+        const repY = height - margin - cluster.representative.axis_self_opponent * (height - 2 * margin);
+        
+        const distance = Math.sqrt((x - repX) ** 2 + (y - repY) ** 2);
+        if (distance < threshold) {
+          cluster.members.push(concept);
+          // Update representative to the most important concept in cluster
+          if (getLabelPriority(concept, hovered, selected) > getLabelPriority(cluster.representative, hovered, selected)) {
+            cluster.representative = concept;
+          }
+          addedToCluster = true;
+          break;
+        }
+      }
+      
+      if (!addedToCluster) {
+        clusters.push({ representative: concept, members: [concept] });
+      }
+    });
+
+    return clusters;
+  };
 
   // Responsive resize
   useEffect(() => {
@@ -278,6 +435,11 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       }, 180);
       return () => clearInterval(interval);
     }
+  }, [selected]);
+
+  // When a new concept is selected, reset to view mode
+  useEffect(() => {
+    setEditMode(false);
   }, [selected]);
 
   useEffect(() => {
@@ -375,34 +537,23 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .on('mouseout', () => setHovered(null))
       .on('click', (event, d) => setSelected(d));
 
-    // Label logic
-    // 1. If labelSize > 0, show all labels at labelSize, but hovered node at 16 (medium)
-    // 2. If labelSize === 0, only show hovered node at 16
-    let labelData: { d: BJJConcept; fontSize: number }[] = [];
-    if (labelSize > 0) {
-      labelData = concepts.map(d => ({
-        d,
-        fontSize: hovered === d.id ? 16 : labelSize,
-      }));
-    } else if (hovered) {
-      const d = concepts.find(c => c.id === hovered);
-      if (d) labelData = [{ d, fontSize: 16 }];
-    }
+    // Advanced label management
+    const labelItems = getLabelMode();
 
-    // Draw all labels (non-hovered first)
+    // Draw labels with collision detection
     svg.selectAll('text.concept-label')
-      .data(labelData, (item: any) => item.d.id)
+      .data(labelItems, (item: any) => item.d.id)
       .join('text')
       .attr('class', 'concept-label')
-      .attr('x', item => margin + item.d.axis_mental_physical * (width - 2 * margin))
-      .attr('y', item => height - margin - item.d.axis_self_opponent * (height - 2 * margin) - 20)
+      .attr('x', item => item.x)
+      .attr('y', item => item.y)
       .attr('text-anchor', 'middle')
       .attr('fill', '#fff')
       .attr('font-size', item => item.fontSize)
       .attr('font-weight', 'bold')
       .style('pointer-events', 'none')
       .text(item => item.d.concept);
-  }, [hovered, concepts, size, labelSize, pingedNodeId, pingStep]);
+  }, [hovered, concepts, size, labelMode, pingedNodeId, pingStep]);
 
   const handleSave = (updated: BJJConcept) => {
     // Remove _id from update object
@@ -443,16 +594,31 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
         style={{ background: '#181818', borderRadius: 12, width: '100%', height: '100%' }}
         onClick={handleSvgClick}
       />
-      <ConceptModal
-        concept={selected}
-        onClose={() => setSelected(null)}
-        onSave={handleSave}
-        onDelete={handleDelete}
-        categories={categories}
-        side={modalSide}
-        vertical={modalVertical}
-        containerSize={size}
-      />
+      {/* Show view modal if selected and not editing, else show edit modal */}
+      {selected && !editMode && (
+        <ConceptViewModal
+          concept={selected}
+          onClose={() => setSelected(null)}
+          onEdit={canEdit ? () => setEditMode(true) : undefined}
+          categories={categories}
+          canEdit={canEdit}
+          side={modalSide}
+          vertical={modalVertical}
+          containerSize={size}
+        />
+      )}
+      {selected && editMode && (
+        <ConceptModal
+          concept={selected}
+          onClose={() => { setEditMode(false); setSelected(null); }}
+          onSave={handleSave}
+          onDelete={handleDelete}
+          categories={categories}
+          side={modalSide}
+          vertical={modalVertical}
+          containerSize={size}
+        />
+      )}
       {createModal && (
         <ConceptModal
           concept={{
@@ -461,11 +627,11 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
             description: '',
             short_description: '',
             category: categories[0]?.name || '',
-            color: categories[0]?.color || '#4F8EF7',
+            color: categories[0]?.color || '#888',
             axis_self_opponent: createModal.y,
             axis_mental_physical: createModal.x,
-            brightness: 1,
-            size: 1,
+            brightness: 5,
+            size: 3,
           }}
           onClose={() => { setCreateModal(null); setCreateMode(false); }}
           onSave={handleCreateSave}
@@ -475,6 +641,72 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
           containerSize={size}
         />
       )}
+    </div>
+  );
+};
+
+// Minimal view-only modal for concepts
+interface ConceptViewModalProps {
+  concept: BJJConcept | null;
+  onClose: () => void;
+  onEdit?: () => void;
+  categories: { name: string; color: string; }[];
+  canEdit?: boolean;
+  side?: 'left' | 'right';
+  vertical?: 'top' | 'bottom';
+  containerSize?: { width: number; height: number };
+}
+
+const ConceptViewModal: React.FC<ConceptViewModalProps> = ({ concept, onClose, onEdit, categories, canEdit, side, vertical, containerSize }) => {
+  if (!concept) return null;
+  const category = categories.find(c => c.name === concept.category);
+  const horizontalOffset = containerSize ? Math.max(0.15 * containerSize.width, 180) : 300;
+  const verticalOffset = containerSize ? Math.max(0.15 * containerSize.height, 80) : 100;
+  return (
+    <div style={{
+      position: 'fixed',
+      left: side === 'left' ? 'auto' : horizontalOffset,
+      right: side === 'left' ? horizontalOffset : 'auto',
+      top: vertical === 'top' ? verticalOffset : 'auto',
+      bottom: vertical === 'top' ? 'auto' : verticalOffset,
+      background: '#222',
+      color: '#fff',
+      padding: 24,
+      borderRadius: 8,
+      zIndex: 1000,
+      minWidth: 350,
+      boxShadow: '0 4px 24px #0008',
+      maxWidth: containerSize ? Math.min(0.6 * containerSize.width, 500) : 500,
+      width: '100%',
+      maxHeight: containerSize ? 0.8 * containerSize.height : undefined,
+      overflowY: 'auto',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div>
+          <h2 style={{ margin: 0 }}>{concept.concept}</h2>
+          {category && (
+            <span style={{
+              background: category.color,
+              color: '#111',
+              borderRadius: 4,
+              padding: '2px 10px',
+              fontSize: 13,
+              marginLeft: 4
+            }}>{category.name}</span>
+          )}
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {canEdit && (
+            <button onClick={onEdit} style={{ background: 'none', border: 'none', color: '#4F8EF7', fontSize: 18, cursor: 'pointer', padding: 0 }} title="Edit">
+              ✏️
+            </button>
+          )}
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#fff', fontSize: 20, cursor: 'pointer', padding: 0 }} title="Close">×</button>
+        </div>
+      </div>
+      <div style={{ marginTop: 18, fontSize: 16, lineHeight: 1.5, whiteSpace: 'pre-line' }}>
+        {concept.description}
+      </div>
     </div>
   );
 };
