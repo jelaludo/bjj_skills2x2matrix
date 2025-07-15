@@ -31,7 +31,8 @@
     "seed:categories": "ts-node scripts/seedCategories.ts",
     "convert:local-to-mongo": "ts-node scripts/convertLocalToMongo.ts",
     "seed:from-local": "ts-node scripts/seedFromLocal.ts",
-    "seed:from-mongo-ready": "node scripts/seedFromMongoReady.js"
+    "seed:from-mongo-ready": "node scripts/seedFromMongoReady.js",
+    "update:production": "node scripts/updateProductionData.js"
   },
   "eslintConfig": {
     "extends": [

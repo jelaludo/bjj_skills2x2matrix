@@ -1,97 +1,76 @@
 const fs = require('fs');
 const path = require('path');
 
+// Function to find the latest master list file
+function findLatestMasterList() {
+  const dataDir = path.join(__dirname, '..', 'src', 'data');
+  const files = fs.readdirSync(dataDir);
+  
+  // Filter for master list files
+  const masterListFiles = files.filter(file => 
+    file.startsWith('BJJMasterList_') && file.endsWith('.ts')
+  );
+  
+  if (masterListFiles.length === 0) {
+    throw new Error('No master list files found in src/data/');
+  }
+  
+  // Sort by node count (extract number from filename)
+  masterListFiles.sort((a, b) => {
+    const aMatch = a.match(/(\d+)Nodes/);
+    const bMatch = b.match(/(\d+)Nodes/);
+    const aCount = aMatch ? parseInt(aMatch[1]) : 0;
+    const bCount = bMatch ? parseInt(bMatch[1]) : 0;
+    return bCount - aCount; // Descending order
+  });
+  
+  return masterListFiles[0].replace('.ts', ''); // Remove .ts extension
+}
+
+// Function to update productionData.ts
 function updateProductionData() {
-  const backupDir = path.join(__dirname, '../backups/BackupsSkillMasterLists');
-  const productionDataPath = path.join(__dirname, '../src/data/productionData.ts');
-  
-  console.log('🔄 Looking for latest master list file...');
-  
   try {
-    // Find all TypeScript master list files
-    const files = fs.readdirSync(backupDir)
-      .filter(file => file.startsWith('BJJMasterList_') && file.endsWith('.ts'))
-      .map(file => {
-        const stats = fs.statSync(path.join(backupDir, file));
-        const match = file.match(/BJJMasterList_(\d{8})_(\d+)Nodes\.ts/);
-        const date = match ? match[1] : '';
-        const nodeCount = match ? parseInt(match[2]) : 0;
-        
-        return {
-          name: file,
-          path: file,
-          lastModified: stats.mtime,
-          date: date,
-          nodeCount: nodeCount
-        };
-      })
-      .sort((a, b) => {
-        // Sort by date (descending), then by node count (descending)
-        if (a.date !== b.date) {
-          return b.date.localeCompare(a.date);
-        }
-        return b.nodeCount - a.nodeCount;
-      });
+    const latestFile = findLatestMasterList();
+    console.log(`Latest master list file: ${latestFile}`);
     
-    if (files.length === 0) {
-      throw new Error('No TypeScript master list files found');
+    const productionDataPath = path.join(__dirname, '..', 'src', 'data', 'productionData.ts');
+    
+    // Read current content
+    let content = fs.readFileSync(productionDataPath, 'utf8');
+    
+    // Update the import statement
+    const importRegex = /import\('\.\/[^']+'\)/;
+    const newImport = `import('./${latestFile}')`;
+    
+    if (importRegex.test(content)) {
+      content = content.replace(importRegex, newImport);
+    } else {
+      console.warn('Could not find import statement to update');
     }
     
-    const latestFile = files[0];
-    console.log(`📁 Latest file: ${latestFile.name} (${latestFile.nodeCount} nodes, ${latestFile.date})`);
+    // Update the comment
+    const commentRegex = /\/\/ Source file: [^\n]+/;
+    const newComment = `// Source file: ${latestFile}.ts`;
     
-    // Create the production data content
-    const productionDataContent = `// Production data file - imports the latest master list
-// This file should be updated when deploying new versions
-// Last updated: ${new Date().toISOString()}
-// Source file: ${latestFile.name}
-
-// Import the latest master list data
-export { categories, skillsMasterList } from '../../backups/BackupsSkillMasterLists/${latestFile.name.replace('.ts', '')};
-
-// Re-export the interface for type safety
-export interface BJJConcept {
-  id: string;
-  concept: string;
-  description: string;
-  short_description: string;
-  category: string;
-  color: string;
-  axis_self_opponent: number;
-  axis_mental_physical: number;
-  brightness: number;
-  size: number;
-}
-`;
+    if (commentRegex.test(content)) {
+      content = content.replace(commentRegex, newComment);
+    }
     
-    // Write the production data file
-    fs.writeFileSync(productionDataPath, productionDataContent);
+    // Write updated content
+    fs.writeFileSync(productionDataPath, content);
     
-    console.log('✅ Production data updated!');
-    console.log(`📁 File: ${path.basename(productionDataPath)}`);
-    console.log(`📊 Source: ${latestFile.name} (${latestFile.nodeCount} nodes)`);
-    console.log(`📅 Date: ${latestFile.date}`);
-    
-    return {
-      productionDataPath,
-      sourceFile: latestFile.name,
-      nodeCount: latestFile.nodeCount,
-      date: latestFile.date
-    };
+    console.log(`✅ Updated productionData.ts to use ${latestFile}`);
+    return latestFile;
     
   } catch (error) {
-    console.error('❌ Failed to update production data:', error.message);
+    console.error('Failed to update production data:', error);
     throw error;
   }
 }
 
-// Run the script
+// Run the update if this script is executed directly
 if (require.main === module) {
-  try {
-    updateProductionData();
-  } catch (error) {
-    process.exit(1);
-  }
+  updateProductionData();
 }
 
-module.exports = { updateProductionData }; 
+module.exports = { updateProductionData, findLatestMasterList }; 

@@ -54,8 +54,10 @@ function App() {
   });
   const [selected, setSelected] = useState<BJJConcept | null>(null);
   
+  const [isDevelopment] = useState(process.env.NODE_ENV === 'development');
+  
   // Data source management
-  const [dataSource, setDataSource] = useState<DataSource>('mongodb');
+  const [dataSource, setDataSource] = useState<DataSource>(isDevelopment ? 'mongodb' : 'production');
   const [masterLists, setMasterLists] = useState<Array<{
     name: string;
     path: string;
@@ -65,7 +67,6 @@ function App() {
     displayName: string;
   }>>([]);
   const [selectedMasterList, setSelectedMasterList] = useState<string>('');
-  const [isDevelopment] = useState(process.env.NODE_ENV === 'development');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
@@ -112,6 +113,8 @@ function App() {
       loadFromMongoDB();
     } else if (dataSource === 'local' && selectedMasterList) {
       loadFromMasterList(selectedMasterList);
+    } else if (dataSource === 'production') {
+      loadFromProduction();
     }
   }, [dataSource, selectedMasterList]);
 
@@ -206,6 +209,23 @@ function App() {
           setCategories([]);
         }
       }
+    }
+  };
+
+  const loadFromProduction = async () => {
+    try {
+      console.log('Loading production data...');
+      const productionData = await getProductionData();
+      setConcepts(productionData.skillsMasterList);
+      setCategories(productionData.categories);
+      setSnackbarMessage('✅ Loaded production data');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Failed to load production data:', error);
+      setSnackbarMessage('❌ Failed to load production data');
+      setSnackbarOpen(true);
+      setConcepts([]);
+      setCategories([]);
     }
   };
 

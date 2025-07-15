@@ -4,8 +4,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Switch,
-  FormControlLabel,
   Chip,
   Button,
   Alert,
@@ -77,8 +75,7 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
     return null;
   }
 
-  const handleDataSourceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newSource = event.target.checked ? 'local' : 'mongodb';
+  const handleDataSourceChange = (newSource: 'mongodb' | 'local' | 'production') => {
     setDataSource(newSource);
   };
 
@@ -174,36 +171,43 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
 
         <DialogContent sx={{ pt: 2 }}>
           <Alert severity="info" sx={{ mb: 2 }}>
-            Switch between local development and MongoDB production data sources.
+            Choose your data source for development and testing.
           </Alert>
 
-          {/* Data Source Toggle */}
-          <Box display="flex" alignItems="center" mb={3}>
-            <ComputerIcon sx={{ mr: 1, color: dataSource === 'local' ? 'primary.main' : 'grey.500' }} />
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={dataSource === 'local'}
-                  onChange={handleDataSourceChange}
-                  color="primary"
-                />
-              }
-              label={
-                <Box>
-                  <Typography variant="body1">
-                    {dataSource === 'local' ? 'Local Development' : 'MongoDB Production'}
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary">
-                    {dataSource === 'local' 
-                      ? 'Working with local TypeScript files' 
-                      : 'Connected to MongoDB database'
-                    }
-                  </Typography>
-                </Box>
-              }
+          {/* Data Source Selection */}
+          <Typography variant="subtitle2" gutterBottom>
+            Data Source:
+          </Typography>
+          
+          <Box display="flex" gap={1} flexWrap="wrap" mb={3}>
+            <Chip
+              label="MongoDB"
+              onClick={() => handleDataSourceChange('mongodb')}
+              color={dataSource === 'mongodb' ? 'primary' : 'default'}
+              variant={dataSource === 'mongodb' ? 'filled' : 'outlined'}
+              icon={<StorageIcon />}
             />
-            <StorageIcon sx={{ ml: 1, color: dataSource === 'mongodb' ? 'primary.main' : 'grey.500' }} />
+            <Chip
+              label="Local Files"
+              onClick={() => handleDataSourceChange('local')}
+              color={dataSource === 'local' ? 'primary' : 'default'}
+              variant={dataSource === 'local' ? 'filled' : 'outlined'}
+              icon={<ComputerIcon />}
+            />
+            <Chip
+              label="Production Data"
+              onClick={() => handleDataSourceChange('production')}
+              color={dataSource === 'production' ? 'primary' : 'default'}
+              variant={dataSource === 'production' ? 'filled' : 'outlined'}
+              icon={<CloudUploadIcon />}
+            />
           </Box>
+
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
+            {dataSource === 'mongodb' && 'Connected to MongoDB database'}
+            {dataSource === 'local' && 'Working with local TypeScript files'}
+            {dataSource === 'production' && 'Using bundled production data'}
+          </Typography>
 
                         {dataSource === 'local' && (
                 <>
