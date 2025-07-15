@@ -9,6 +9,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme/theme';
 import Snackbar from '@mui/material/Snackbar';
+// Production data fallback
+import { getProductionData } from './data/productionData';
 
 type BJJConcept = {
   _id?: string;
@@ -24,7 +26,7 @@ type BJJConcept = {
   size: number;
 };
 
-type DataSource = 'mongodb' | 'local';
+type DataSource = 'mongodb' | 'local' | 'production';
 
 interface LocalFileInfo {
   name: string;
@@ -191,6 +193,19 @@ function App() {
       setCategories(catData);
     } catch (error) {
       console.error('Failed to load from MongoDB:', error);
+      // Fallback to production data in production builds
+      if (!isDevelopment) {
+        console.log('Loading production data fallback...');
+        try {
+          const productionData = await getProductionData();
+          setConcepts(productionData.skillsMasterList);
+          setCategories(productionData.categories);
+        } catch (fallbackError) {
+          console.error('Failed to load production data fallback:', fallbackError);
+          setConcepts([]);
+          setCategories([]);
+        }
+      }
     }
   };
 
@@ -488,10 +503,12 @@ module.exports = {
       
       // Also save a copy to src/data/ for production use
       try {
+        // Remove _id fields from concepts for production TS file
+        const cleanConcepts = data.skillsMasterList.map(({ _id, ...concept }: any) => concept);
+        
         const tsContent = `export const categories = ${JSON.stringify(data.categories, null, 2)};
 
 export interface BJJConcept {
-  _id?: string;
   id: string;
   concept: string;
   description: string;
@@ -504,7 +521,7 @@ export interface BJJConcept {
   size: number;
 }
 
-export const skillsMasterList: BJJConcept[] = ${JSON.stringify(data.skillsMasterList, null, 2)};
+export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, null, 2)};
 `;
 
         // Save to src/data/ directory

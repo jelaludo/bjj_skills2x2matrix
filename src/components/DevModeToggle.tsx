@@ -27,8 +27,8 @@ import {
 
 interface DevModeToggleProps {
   isDevelopment: boolean;
-  dataSource: 'mongodb' | 'local';
-  setDataSource: (source: 'mongodb' | 'local') => void;
+  dataSource: 'mongodb' | 'local' | 'production';
+  setDataSource: (source: 'mongodb' | 'local' | 'production') => void;
   masterLists: Array<{ 
     name: string; 
     path: string; 

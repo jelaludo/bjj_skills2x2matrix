@@ -1899,6 +1899,18 @@
       "axis_mental_physical": 0.76,
       "brightness": 1,
       "size": 1
+    },
+    {
+      "id": "BJJ-115",
+      "concept": "142",
+      "description": "",
+      "short_description": "",
+      "category": "Internal",
+      "color": "#4F8EF7",
+      "axis_self_opponent": 0.58,
+      "axis_mental_physical": 0.76,
+      "brightness": 1,
+      "size": 1
     }
   ]
 }

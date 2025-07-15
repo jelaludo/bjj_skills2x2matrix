@@ -89,7 +89,6 @@ export const categories = [
 ];
 
 export interface BJJConcept {
-  _id?: string;
   id: string;
   concept: string;
   description: string;
@@ -1899,6 +1898,30 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#4F8EF7",
     "axis_self_opponent": 0.61,
     "axis_mental_physical": 0.78,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-114",
+    "concept": "",
+    "description": "",
+    "short_description": "",
+    "category": "Grappling Primitives",
+    "color": "#848a94",
+    "axis_self_opponent": 0.56,
+    "axis_mental_physical": 0.76,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-115",
+    "concept": "142",
+    "description": "",
+    "short_description": "",
+    "category": "Internal",
+    "color": "#4F8EF7",
+    "axis_self_opponent": 0.58,
+    "axis_mental_physical": 0.76,
     "brightness": 1,
     "size": 1
   }
