@@ -53,8 +53,8 @@ type SidebarProps = {
   setFilterBrightness: (v: number) => void;
   filterSize: number;
   setFilterSize: (v: number) => void;
-  labelMode: { type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string };
-  setLabelMode: (v: { type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string }) => void;
+  labelMode: { type: 'hover' | 'all'; description: string };
+  setLabelMode: (v: { type: 'hover' | 'all'; description: string }) => void;
   selected: BJJConcept | null;
   setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
 
@@ -124,11 +124,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   // Label mode options
   const labelModeOptions = [
-    { type: 'off' as const, description: 'No labels' },
     { type: 'hover' as const, description: 'Show on hover only' },
-    { type: 'selected' as const, description: 'Show selected item only' },
-    { type: 'smart' as const, description: 'Smart: hover + important items' },
-    { type: 'clustered' as const, description: 'Group nearby items' },
     { type: 'all' as const, description: 'Show all labels' },
   ];
 
@@ -524,17 +520,6 @@ const Sidebar: React.FC<SidebarProps> = ({
             </button>
           ))}
         </div>
-      </section>
-      
-
-      
-      <section>
-        <button
-          onClick={() => setCreateMode(!createMode)}
-          style={{ width: '100%', background: createMode ? '#4FF7A2' : '#4F8EF7', color: createMode ? '#222' : '#fff', border: 'none', borderRadius: 4, padding: '10px 0', fontWeight: 600, cursor: 'pointer', marginBottom: 8 }}
-        >
-          {createMode ? 'Click on Matrix to Place Node' : 'Create Node'}
-        </button>
       </section>
 
     </div>

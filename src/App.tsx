@@ -49,9 +49,9 @@ function App() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filterBrightness, setFilterBrightness] = useState(0);
   const [filterSize, setFilterSize] = useState(0);
-  const [labelMode, setLabelMode] = useState<{ type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string }>({ 
-    type: 'smart', 
-    description: 'Smart: hover + important items' 
+  const [labelMode, setLabelMode] = useState<{ type: 'hover' | 'all'; description: string }>({ 
+    type: 'hover', 
+    description: 'Show on hover only' 
   });
   const [selected, setSelected] = useState<BJJConcept | null>(null);
   
