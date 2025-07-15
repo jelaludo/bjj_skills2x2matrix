@@ -58,8 +58,8 @@ function generateJsonContent(categories, skillsMasterList) {
 
 // Main function
 function exportBothFormats() {
-  const sourceFile = path.join(__dirname, '../public/data/local/SkillsMasterListSourceOfTruth07032025.ts');
-  const outputDir = path.join(__dirname, '../public/data/local');
+      const sourceFile = path.join(__dirname, '../backups/BackupsSkillMasterLists/SkillsMasterListSourceOfTruth07032025.ts');
+    const outputDir = path.join(__dirname, '../backups/BackupsSkillMasterLists');
   
   console.log('🔄 Reading source file...');
   console.log(`📁 Source: ${sourceFile}`);

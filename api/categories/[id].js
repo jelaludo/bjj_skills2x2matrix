@@ -8,12 +8,18 @@ module.exports = async function handler(req, res) {
   const { id } = req.query;
 
   if (req.method === 'PUT') {
-    const { name, color } = req.body;
+    const { name, color, xAxis, yAxis } = req.body;
     if (!name || !color) {
       res.status(400).json({ error: 'Name and color are required.' });
       return;
     }
-    await collection.updateOne({ _id: new ObjectId(id) }, { $set: { name, color } });
+    const updateData = { 
+      name, 
+      color,
+      xAxis: xAxis || { left: 'Mental', right: 'Physical' },
+      yAxis: yAxis || { bottom: 'Self', top: 'Opponent' }
+    };
+    await collection.updateOne({ _id: new ObjectId(id) }, { $set: updateData });
     res.status(200).json({ message: 'Category updated.' });
   } else if (req.method === 'DELETE') {
     await collection.deleteOne({ _id: new ObjectId(id) });

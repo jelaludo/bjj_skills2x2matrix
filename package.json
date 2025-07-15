@@ -12,7 +12,9 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
+    "cors": "^2.8.5",
     "d3": "^7.9.0",
+    "express": "^5.1.0",
     "mongodb": "^6.16.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -26,7 +28,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "seed:concepts": "ts-node scripts/seedConcepts.ts",
-    "seed:categories": "ts-node scripts/seedCategories.ts"
+    "seed:categories": "ts-node scripts/seedCategories.ts",
+    "convert:local-to-mongo": "ts-node scripts/convertLocalToMongo.ts",
+    "seed:from-local": "ts-node scripts/seedFromLocal.ts",
+    "seed:from-mongo-ready": "node scripts/seedFromMongoReady.js"
   },
   "eslintConfig": {
     "extends": [

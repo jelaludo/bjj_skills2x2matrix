@@ -18,10 +18,32 @@ type SidebarProps = {
   addConcept: (concept: Omit<BJJConcept, 'id'>) => Promise<void>;
   updateConcept: (id: string, updates: Partial<BJJConcept>) => Promise<void>;
   deleteConcept: (id: string) => Promise<void>;
-  categories: { name: string; color: string; _id?: string }[];
-  setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; _id?: string }[]>>;
-  addCategory: (cat: { name: string; color: string }) => Promise<void>;
-  updateCategory: (id: string, updates: { name: string; color: string }) => Promise<void>;
+  categories: { 
+    name: string; 
+    color: string; 
+    _id?: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[];
+  setCategories: React.Dispatch<React.SetStateAction<{ 
+    name: string; 
+    color: string; 
+    _id?: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[]>>;
+  addCategory: (cat: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }) => Promise<void>;
+  updateCategory: (id: string, updates: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }) => Promise<void>;
   deleteCategory: (id: string) => Promise<void>;
   createMode: boolean;
   setCreateMode: (v: boolean) => void;
@@ -35,13 +57,7 @@ type SidebarProps = {
   setLabelMode: (v: { type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered'; description: string }) => void;
   selected: BJJConcept | null;
   setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
-  // Data source toggle props (development only)
-  isDevelopment?: boolean;
-  dataSource?: string;
-  setDataSource?: (v: string) => void;
-  localFiles?: { name: string; path: string; lastModified: Date }[];
-  selectedLocalFile?: string;
-  setSelectedLocalFile?: (v: string) => void;
+
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ 
@@ -66,17 +82,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   setLabelMode, 
   selected, 
   setSelected,
-  isDevelopment = false,
-  dataSource = 'mongodb',
-  setDataSource,
-  localFiles = [],
-  selectedLocalFile = '',
-  setSelectedLocalFile
+
 }) => {
-  const [showExport, setShowExport] = useState(false);
-  const [downloadName, setDownloadName] = useState('SkillsMasterList.ts');
-  const [uploadPreview, setUploadPreview] = useState<BJJConcept[] | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // Debug logging for categories
+  React.useEffect(() => {
+    console.log('Sidebar - Categories updated:', categories.length, categories);
+  }, [categories]);
+
+  // Debug logging for component re-renders
+  React.useEffect(() => {
+    console.log('Sidebar - Component re-rendered with categories:', categories.length);
+  });
+
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [newCategory, setNewCategory] = useState('');
   const [searchText, setSearchText] = useState('');
@@ -84,6 +102,10 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [editCategoryId, setEditCategoryId] = useState<string | null>(null);
   const [editCategoryName, setEditCategoryName] = useState('');
   const [editCategoryColor, setEditCategoryColor] = useState('#888888');
+  const [editCategoryXAxisLeft, setEditCategoryXAxisLeft] = useState('Mental');
+  const [editCategoryXAxisRight, setEditCategoryXAxisRight] = useState('Physical');
+  const [editCategoryYAxisBottom, setEditCategoryYAxisBottom] = useState('Self');
+  const [editCategoryYAxisTop, setEditCategoryYAxisTop] = useState('Opponent');
 
   // Filter concepts based on search text
   const searchResults = searchText.trim() ? concepts.filter(concept => 
@@ -110,85 +132,65 @@ const Sidebar: React.FC<SidebarProps> = ({
     { type: 'all' as const, description: 'Show all labels' },
   ];
 
-  // Download handler: Export both .ts and .json
-  const handleDownload = () => {
-    // --- TypeScript file ---
-    const tsString = `\nexport const categories = ${JSON.stringify(categories, null, 2)};\n\nexport interface BJJConcept {\n  id: string;\n  concept: string;\n  description: string;\n  short_description: string;\n  category: string;\n  color: string;\n  axis_self_opponent: number;\n  axis_mental_physical: number;\n  brightness: number;\n  size: number;\n}\n\nexport const skillsMasterList: BJJConcept[] = ${JSON.stringify(concepts, null, 2)};\n`.trim();
-    const tsBlob = new Blob([tsString], { type: 'text/typescript' });
-    const tsUrl = URL.createObjectURL(tsBlob);
-    const tsName = (downloadName.endsWith('.ts') ? downloadName : downloadName.replace(/\.[^.]+$/, '') + '.ts') || 'SkillsMasterList.ts';
-    const aTs = document.createElement('a');
-    aTs.href = tsUrl;
-    aTs.download = tsName;
-    aTs.click();
-    URL.revokeObjectURL(tsUrl);
 
-    // --- JSON file ---
-    const jsonObj = { categories, skillsMasterList: concepts };
-    const jsonBlob = new Blob([JSON.stringify(jsonObj, null, 2)], { type: 'application/json' });
-    const jsonUrl = URL.createObjectURL(jsonBlob);
-    const jsonName = tsName.replace(/\.ts$/, '.json');
-    const aJson = document.createElement('a');
-    aJson.href = jsonUrl;
-    aJson.download = jsonName;
-    aJson.click();
-    URL.revokeObjectURL(jsonUrl);
-  };
-
-  // Upload JSON handler (expect categories and sampleConcepts)
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUploadError(null);
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async (event) => {
-      try {
-        const json = JSON.parse(event.target?.result as string);
-        if (Array.isArray(json.sampleConcepts) && Array.isArray(json.categories)) {
-          setCategories(json.categories);
-          for (const concept of json.sampleConcepts) {
-            await addConcept(concept);
-          }
-        } else if (Array.isArray(json) && json.every(obj => obj.id && obj.concept)) {
-          for (const concept of json) {
-            await addConcept(concept);
-          }
-        } else {
-          setUploadError('Invalid JSON format: must be an object with categories and sampleConcepts, or an array of concepts.');
-        }
-      } catch (err) {
-        setUploadError('Failed to parse JSON.');
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleApplyUpload = () => {
-    // Removed setUploadPreview(null) as it is no longer needed
-  };
 
   // Category management handlers
   const handleAddCategory = async () => {
     const cat = newCategory.trim();
+    console.log('Sidebar - handleAddCategory called with:', cat);
     if (cat && !categories.some(c => c.name === cat)) {
-      await addCategory({ name: cat, color: '#888888' });
+      console.log('Sidebar - Adding new category:', cat);
+      await addCategory({ 
+        name: cat, 
+        color: '#888888',
+        xAxis: { left: 'Mental', right: 'Physical' },
+        yAxis: { bottom: 'Self', top: 'Opponent' }
+      });
       setNewCategory('');
+      console.log('Sidebar - Category added successfully');
+    } else {
+      console.log('Sidebar - Category already exists or empty:', cat);
     }
   };
   const handleRemoveCategory = async (catId: string) => {
     await deleteCategory(catId);
   };
-  const handleEditCategory = (cat: { _id?: string; name: string; color: string }) => {
+  const handleEditCategory = (cat: { 
+    _id?: string; 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }) => {
     setEditCategoryId(cat._id || '');
     setEditCategoryName(cat.name);
     setEditCategoryColor(cat.color);
+    setEditCategoryXAxisLeft(cat.xAxis?.left || 'Mental');
+    setEditCategoryXAxisRight(cat.xAxis?.right || 'Physical');
+    setEditCategoryYAxisBottom(cat.yAxis?.bottom || 'Self');
+    setEditCategoryYAxisTop(cat.yAxis?.top || 'Opponent');
   };
   const handleUpdateCategory = async () => {
     if (editCategoryId) {
-      await updateCategory(editCategoryId, { name: editCategoryName, color: editCategoryColor });
+      await updateCategory(editCategoryId, { 
+        name: editCategoryName, 
+        color: editCategoryColor,
+        xAxis: { 
+          left: editCategoryXAxisLeft, 
+          right: editCategoryXAxisRight 
+        },
+        yAxis: { 
+          bottom: editCategoryYAxisBottom, 
+          top: editCategoryYAxisTop 
+        }
+      });
       setEditCategoryId(null);
       setEditCategoryName('');
       setEditCategoryColor('#888888');
+      setEditCategoryXAxisLeft('Mental');
+      setEditCategoryXAxisRight('Physical');
+      setEditCategoryYAxisBottom('Self');
+      setEditCategoryYAxisTop('Opponent');
     }
   };
 
@@ -220,29 +222,54 @@ const Sidebar: React.FC<SidebarProps> = ({
               cursor: 'pointer',
               textAlign: 'left',
               transition: 'all 0.2s',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
-            All
+            <span>All</span>
+            <span style={{ 
+              fontSize: '10px', 
+              opacity: 0.7, 
+              fontWeight: 'normal',
+              marginLeft: '8px'
+            }}>
+              {concepts.length}
+            </span>
           </button>
-          {categories.map(cat => (
-            <button
-              key={cat._id || cat.name}
-              onClick={() => handleCategoryToggle(cat.name)}
-              style={{
-                background: selectedCategories.includes(cat.name) ? cat.color : 'transparent',
-                color: selectedCategories.includes(cat.name) ? '#fff' : '#aaa',
-                border: `1px solid ${cat.color}`,
-                padding: '8px 12px',
-                borderRadius: 4,
-                cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.2s',
-                marginBottom: 4,
-              }}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {categories.map(cat => {
+            const nodeCount = concepts.filter(concept => concept.category === cat.name).length;
+            return (
+              <button
+                key={cat._id || cat.name}
+                onClick={() => handleCategoryToggle(cat.name)}
+                style={{
+                  background: selectedCategories.includes(cat.name) ? cat.color : 'transparent',
+                  color: selectedCategories.includes(cat.name) ? '#fff' : '#aaa',
+                  border: `1px solid ${cat.color}`,
+                  padding: '8px 12px',
+                  borderRadius: 4,
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s',
+                  marginBottom: 4,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>{cat.name}</span>
+                <span style={{ 
+                  fontSize: '10px', 
+                  opacity: 0.7, 
+                  fontWeight: 'normal',
+                  marginLeft: '8px'
+                }}>
+                  {nodeCount}
+                </span>
+              </button>
+            );
+          })}
         </div>
         {/* Category Management Modal */}
         {showCategoryModal && (
@@ -299,22 +326,69 @@ const Sidebar: React.FC<SidebarProps> = ({
                 <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Add</button>
               </div>
               {editCategoryId && (
-                <div style={{ marginTop: 8, background: '#333', padding: 8, borderRadius: 4 }}>
-                  <input
-                    type="text"
-                    value={editCategoryName}
-                    onChange={e => setEditCategoryName(e.target.value)}
-                    placeholder="Category name"
-                    style={{ marginRight: 4, padding: 6, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff' }}
-                  />
-                  <input
-                    type="color"
-                    value={editCategoryColor}
-                    onChange={e => setEditCategoryColor(e.target.value)}
-                    style={{ marginRight: 4 }}
-                  />
-                  <button onClick={handleUpdateCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', marginRight: 4 }}>Save</button>
-                  <button onClick={() => setEditCategoryId(null)} style={{ background: '#888', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Cancel</button>
+                <div style={{ marginTop: 8, background: '#333', padding: 12, borderRadius: 4 }}>
+                  <div style={{ marginBottom: 8 }}>
+                    <input
+                      type="text"
+                      value={editCategoryName}
+                      onChange={e => setEditCategoryName(e.target.value)}
+                      placeholder="Category name"
+                      style={{ width: '100%', marginBottom: 4, padding: 6, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff' }}
+                    />
+                    <input
+                      type="color"
+                      value={editCategoryColor}
+                      onChange={e => setEditCategoryColor(e.target.value)}
+                      style={{ marginRight: 8 }}
+                    />
+                  </div>
+                  
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>X-Axis Labels:</div>
+                    <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                      <input
+                        type="text"
+                        value={editCategoryXAxisLeft}
+                        onChange={e => setEditCategoryXAxisLeft(e.target.value)}
+                        placeholder="Left label"
+                        style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                      />
+                      <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>←→</span>
+                      <input
+                        type="text"
+                        value={editCategoryXAxisRight}
+                        onChange={e => setEditCategoryXAxisRight(e.target.value)}
+                        placeholder="Right label"
+                        style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div style={{ marginBottom: 8 }}>
+                    <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>Y-Axis Labels:</div>
+                    <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                      <input
+                        type="text"
+                        value={editCategoryYAxisBottom}
+                        onChange={e => setEditCategoryYAxisBottom(e.target.value)}
+                        placeholder="Bottom label"
+                        style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                      />
+                      <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>↑↓</span>
+                      <input
+                        type="text"
+                        value={editCategoryYAxisTop}
+                        onChange={e => setEditCategoryYAxisTop(e.target.value)}
+                        placeholder="Top label"
+                        style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button onClick={handleUpdateCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', flex: 1 }}>Save</button>
+                    <button onClick={() => setEditCategoryId(null)} style={{ background: '#888', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer', flex: 1 }}>Cancel</button>
+                  </div>
                 </div>
               )}
             </div>
@@ -452,114 +526,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </section>
       
-      {/* Data Source Toggle - Development Only */}
-      {isDevelopment && (
-        <section>
-          <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Data Source</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <button
-                onClick={() => setDataSource?.('mongodb')}
-                style={{
-                  background: dataSource && dataSource === 'mongodb' ? '#4F8EF7' : 'transparent',
-                  color: dataSource && dataSource === 'mongodb' ? '#fff' : '#aaa',
-                  border: '1px solid #4F8EF7',
-                  padding: '8px 12px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  flex: 1,
-                  fontSize: 13,
-                }}
-              >
-                MongoDB
-              </button>
-              <button
-                onClick={() => setDataSource?.('local')}
-                style={{
-                  background: dataSource && dataSource === 'local' ? '#4F8EF7' : 'transparent',
-                  color: dataSource && dataSource === 'local' ? '#fff' : '#aaa',
-                  border: '1px solid #4F8EF7',
-                  padding: '8px 12px',
-                  borderRadius: 4,
-                  cursor: 'pointer',
-                  flex: 1,
-                  fontSize: 13,
-                }}
-              >
-                Local Data
-              </button>
-            </div>
-            
-            {dataSource && dataSource === 'local' && (
-              <div style={{ marginTop: 8 }}>
-                <label style={{ display: 'block', marginBottom: 4, fontSize: 13, color: '#aaa' }}>
-                  Select Local File:
-                </label>
-                <select
-                  value={selectedLocalFile}
-                  onChange={(e) => setSelectedLocalFile?.(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: 6,
-                    borderRadius: 4,
-                    border: '1px solid #333',
-                    background: '#181818',
-                    color: '#fff',
-                    fontSize: 12,
-                    marginBottom: 6
-                  }}
-                >
-                  {localFiles.map(file => (
-                    <option key={file.name} value={file.name}>
-                      {file.name} ({new Date(file.lastModified).toLocaleDateString()})
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  placeholder="Or enter filename (e.g. SkillsMasterList07032025.js)"
-                  value={selectedLocalFile}
-                  onChange={e => setSelectedLocalFile?.(e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') setSelectedLocalFile?.(e.currentTarget.value);
-                  }}
-                  style={{
-                    width: '100%',
-                    padding: 6,
-                    borderRadius: 4,
-                    border: '1px solid #333',
-                    background: '#181818',
-                    color: '#fff',
-                    fontSize: 12,
-                    marginBottom: 6
-                  }}
-                />
-                <div style={{ 
-                  fontSize: 11, 
-                  color: '#888',
-                  marginBottom: 6,
-                  padding: 4,
-                  background: '#1a1a1a',
-                  borderRadius: 4,
-                  border: '1px solid #333'
-                }}>
-                  💡 <strong>Note:</strong> Enter only the filename (e.g., "SkillsMasterList.json"), not the full path. The app automatically looks in public\data\local.
-                </div>
-                <div style={{ 
-                  marginTop: 4, 
-                  fontSize: 11, 
-                  color: '#666',
-                  padding: 4,
-                  background: '#1a1a1a',
-                  borderRadius: 4
-                }}>
-                  Current: {String(dataSource) === 'mongodb' ? 'MongoDB' : `Local: ${selectedLocalFile}`}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-      )}
+
       
       <section>
         <button
@@ -569,50 +536,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           {createMode ? 'Click on Matrix to Place Node' : 'Create Node'}
         </button>
       </section>
-      <section>
-        <h3 style={{ fontSize: 16, marginBottom: 8, color: '#aaa' }}>Export or Import Data</h3>
-        <div style={{ background: '#232323', padding: 12, borderRadius: 8, marginTop: 8, marginBottom: 16, maxWidth: 1000, minWidth: 0, overflow: 'visible', boxSizing: 'border-box' }}>
-          <button
-            onClick={() => setShowExport(v => !v)}
-            style={{ width: '100%', background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '10px 0', fontWeight: 600, cursor: 'pointer', marginBottom: 12, fontSize: 15, display: 'block' }}
-          >
-            Export Data (.ts & .json)
-          </button>
-          {showExport && (
-            <div>
-              <div style={{ marginBottom: 10, fontSize: 13, color: '#aaa', lineHeight: 1.5 }}>
-                <strong>Click "Export Data" to generate both:</strong><br />
-                <ul style={{ margin: '8px 0 8px 18px', padding: 0, color: '#aaa', fontSize: 13 }}>
-                  <li>A TypeScript file (<code>.ts</code>) for production/MongoDB use</li>
-                  <li>A JSON file (<code>.json</code>) for local development</li>
-                </ul>
-                Files will be saved to your browser's downloads folder.<br />
-                <br />
-                To update your master data, overwrite the <code>.ts</code> file in <code>bjj-skill-matrix/src/data/</code>.<br />
-                To use local data, select the <code>.json</code> file in the Local Data section.<br />
-                <br />
-                <strong>Import:</strong> You can also upload a JSON file below to preview and apply it.
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
-                <input
-                  type="text"
-                  value={downloadName}
-                  onChange={e => setDownloadName(e.target.value)}
-                  style={{ width: 180, minWidth: 120, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
-                  placeholder="Filename (e.g. SkillsMasterList.ts)"
-                />
-                <button onClick={handleDownload} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 14px', cursor: 'pointer', fontWeight: 600, fontSize: 13, minWidth: 120 }}>
-                  Export Data
-                </button>
-              </div>
-              <div style={{ marginBottom: 10 }}>
-                <input type="file" accept="application/json" onChange={handleUpload} style={{ color: '#fff' }} />
-              </div>
-              {uploadError && <div style={{ color: 'red', marginBottom: 8 }}>{uploadError}</div>}
-            </div>
-          )}
-        </div>
-      </section>
+
     </div>
   );
 };

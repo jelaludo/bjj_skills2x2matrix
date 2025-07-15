@@ -145,3 +145,25 @@ General Best Practices
 Always use vercel dev for local development to mirror production.
 Keep backup files (with _id) outside of src to avoid TypeScript build errors.
 Regularly export and commit backups for versioning if needed.
+
+
+#7/15/2025
+Step 1: Start Development
+npm start
+
+Step 2: Switch to Local Mode
+Look for the "Development Mode" section in the sidebar
+Toggle to "Local Development"
+Select your local file (e.g., SkillsMasterListSourceOfTruth07032025.ts)
+
+Step 3: Make Changes
+Add new concepts by clicking on the matrix
+Edit existing concepts
+Add new categories
+All changes save to your local file automatically
+
+Step 4: Convert & Deploy
+Click "Convert to MongoDB" → Downloads MongoDB-ready file
+Click "Seed MongoDB" → Updates your production database
+git add . && git commit -m "Updated master list"
+Deploy your app

@@ -42,9 +42,7 @@ export const categories = [
   {
     "_id": "683334f56fd5182fa18c7834",
     "name": "Memes",
-    "color": "#8A2BE2",
-    "xAxis": { "left": "Self-Deprecating", "right": "Bragging" },
-    "yAxis": { "bottom": "Insightful", "top": "Buffoonery" }
+    "color": "#8A2BE2"
   },
   {
     "_id": "68341021fb11be6de639917b",

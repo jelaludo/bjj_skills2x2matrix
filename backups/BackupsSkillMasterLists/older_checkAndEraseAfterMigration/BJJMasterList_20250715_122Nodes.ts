@@ -1,25 +1,5 @@
 export const categories = [
   {
-    "_id": "683334f56fd5182fa18c7833",
-    "name": "Training",
-    "color": "#00CED1"
-  },
-  {
-    "_id": "683334f56fd5182fa18c7835",
-    "name": "32 Principles",
-    "color": "#FFD700"
-  },
-  {
-    "_id": "683334f56fd5182fa18c782f",
-    "name": "Mental",
-    "color": "#4FF74F"
-  },
-  {
-    "_id": "683334f56fd5182fa18c7831",
-    "name": "Strategy",
-    "color": "#FF8C00"
-  },
-  {
     "_id": "683334f56fd5182fa18c782d",
     "name": "Technique",
     "color": "#4F8EF7"
@@ -30,9 +10,19 @@ export const categories = [
     "color": "#F74F4F"
   },
   {
+    "_id": "683334f56fd5182fa18c782f",
+    "name": "Mental",
+    "color": "#4FF74F"
+  },
+  {
     "_id": "683334f56fd5182fa18c7830",
     "name": "21 Immutable Principles (Paulo)",
     "color": "#FFD700"
+  },
+  {
+    "_id": "683334f56fd5182fa18c7831",
+    "name": "Strategy",
+    "color": "#FF8C00"
   },
   {
     "_id": "683334f56fd5182fa18c7832",
@@ -40,16 +30,50 @@ export const categories = [
     "color": "#8A2BE2"
   },
   {
+    "_id": "683334f56fd5182fa18c7833",
+    "name": "Training",
+    "color": "#00CED1"
+  },
+  {
     "_id": "683334f56fd5182fa18c7834",
     "name": "Memes",
-    "color": "#8A2BE2",
-    "xAxis": { "left": "Self-Deprecating", "right": "Bragging" },
-    "yAxis": { "bottom": "Insightful", "top": "Buffoonery" }
+    "color": "#8A2BE2"
+  },
+  {
+    "_id": "683334f56fd5182fa18c7835",
+    "name": "32 Principles",
+    "color": "#FFD700"
   },
   {
     "_id": "68341021fb11be6de639917b",
     "name": "BJJ Definitions",
     "color": "#888888"
+  },
+  {
+    "name": "Coaching",
+    "color": "#6b6d70",
+    "xAxis": {
+      "left": "Mental",
+      "right": "Physical"
+    },
+    "yAxis": {
+      "bottom": "Self",
+      "top": "Opponent"
+    },
+    "_id": "local-1752563198899"
+  },
+  {
+    "name": "White Belt Tips",
+    "color": "#edeff2",
+    "xAxis": {
+      "left": "Mental",
+      "right": "Physical"
+    },
+    "yAxis": {
+      "bottom": "Self",
+      "top": "Opponent"
+    },
+    "_id": "local-1752563284607"
   }
 ];
 
@@ -81,6 +105,19 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 3
   },
   {
+    "_id": "683409a61fa612ab8b07d095",
+    "id": "BJJ-002",
+    "concept": "Collapse Frames",
+    "description": "Frames are typically strong in one direction yet can be collapsed in another.",
+    "short_description": "",
+    "category": "Biomechanics",
+    "color": "#F74F4F",
+    "axis_self_opponent": 0.2,
+    "axis_mental_physical": 0.2,
+    "brightness": 1,
+    "size": 1
+  },
+  {
     "_id": "683409a61fa612ab8b07d096",
     "id": "BJJ-003",
     "concept": "Grip Fighting",
@@ -92,6 +129,19 @@ export const skillsMasterList: BJJConcept[] = [
     "axis_mental_physical": 0.3,
     "brightness": 2,
     "size": 3
+  },
+  {
+    "_id": "683409a61fa612ab8b07d097",
+    "id": "BJJ-004",
+    "concept": "Anticipation",
+    "description": "Anticipation is the first line of defense.  Don't be surprised by a guard pull or a jumping armbar. You should know what threats are possible from any given positions.",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.9,
+    "axis_mental_physical": 0.1,
+    "brightness": 1,
+    "size": 1
   },
   {
     "_id": "683409a61fa612ab8b07d098",
@@ -133,6 +183,19 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
+    "_id": "683409a61fa612ab8b07d09b",
+    "id": "BJJ-008",
+    "concept": "Persistence (4/7)",
+    "description": "#1/21 of of the \"7 P's\" in Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.89,
+    "axis_mental_physical": 0.65,
+    "brightness": 1,
+    "size": 1
+  },
+  {
     "_id": "683409a61fa612ab8b07d09c",
     "id": "BJJ-009",
     "concept": "Patience (5/7)",
@@ -142,71 +205,6 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#FFD700",
     "axis_self_opponent": 0.87,
     "axis_mental_physical": 0.66,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0ab",
-    "id": "BJJ-024",
-    "concept": "#16/21 Fine Line",
-    "description": "Switch modes, get a head start on the next move.  There's a fine line between something you can still use and something that will soon become detrimental.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.88,
-    "axis_mental_physical": 0.44,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0ad",
-    "id": "BJJ-026",
-    "concept": "#18/21 Real Estate",
-    "description": "\"location, location, location\".  Make them pay dearly for access to the good locations.  Elbows to knees, elbow to pelvis. head control.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.29,
-    "axis_mental_physical": 0.5,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0af",
-    "id": "BJJ-028",
-    "concept": "#20/21 Limb vs Limb",
-    "description": "2-on-1, 3-on-1, be uneven in your favor. Overwhelm.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.31,
-    "axis_mental_physical": 0.37,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0b0",
-    "id": "BJJ-029",
-    "concept": "#21/21 Base",
-    "description": "\"Wind, wood, fire, mountain\".  Lose the fear of being swept.  You are a cat and someone is trying to push you into water.  Always have a body part ready to establish base.",
-    "short_description": "",
-    "category": "Technique",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.18,
-    "axis_mental_physical": 0.9,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0b6",
-    "id": "BJJ-035",
-    "concept": "Overload their system",
-    "description": "Threats and distractions everywhere.",
-    "short_description": "",
-    "category": "Mental",
-    "color": "#4FF74F",
-    "axis_self_opponent": 0.8,
-    "axis_mental_physical": 0.07,
     "brightness": 1,
     "size": 1
   },
@@ -224,6 +222,32 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
+    "_id": "683409a61fa612ab8b07d09e",
+    "id": "BJJ-011",
+    "concept": "Chess Analogy",
+    "description": "#2/21 by Paulo Guillobel.\n\nThe Chess Analogy is certainly not *Uniquely* appropriate to grappling.  Football, soccer, or any sports involving positioning and decisions will have some chess analogies.   Pieces have values, controlling the center is advantageous, be 3 moves ahead, etc.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.73,
+    "axis_mental_physical": 0.44,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d09f",
+    "id": "BJJ-012",
+    "concept": "#4/21 Zen",
+    "description": "#4/21 Chill. In training and in the midst of competition.  Clear mind. From Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.96,
+    "axis_mental_physical": 0.84,
+    "brightness": 1,
+    "size": 1
+  },
+  {
     "_id": "683409a61fa612ab8b07d0a0",
     "id": "BJJ-013",
     "concept": "#5/21 Flow like water",
@@ -237,6 +261,19 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
+    "_id": "683409a61fa612ab8b07d0a1",
+    "id": "BJJ-014",
+    "concept": "#6/21 Braveheart",
+    "description": "Dive in, get rid of your fear of losing, especially during training.  #6/21 in Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.78,
+    "axis_mental_physical": 0.67,
+    "brightness": 1,
+    "size": 1
+  },
+  {
     "_id": "683409a61fa612ab8b07d0a2",
     "id": "BJJ-015",
     "concept": "#7/21 Improve Position",
@@ -246,6 +283,71 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#FFD700",
     "axis_self_opponent": 0.4,
     "axis_mental_physical": 0.76,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0a3",
+    "id": "BJJ-016",
+    "concept": "#8/21 Biggest Leak First",
+    "description": "Address your biggest problem first. Typically what is giving your opponent the most leverage right now? adress that.  In practice, what's your biggest weakness? identify and address.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.82,
+    "axis_mental_physical": 0.52,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0a4",
+    "id": "BJJ-017",
+    "concept": "#9/21 Overreaching",
+    "description": "Avoid overreaching (grab too far, maintain a grip that is compromised, try to finish a submission that is now too low percentage, etc.)",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.46,
+    "axis_mental_physical": 0.52,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0a5",
+    "id": "BJJ-018",
+    "concept": "#10/21 Fortress",
+    "description": "Think of your body in layers of defense.  Wrestlers talk about \"climbing the ladder\".  This is similar, rebuild your defenses; feet, knees, hands, elbow.  If compromised, rebuild the fortress.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.55,
+    "axis_mental_physical": 0.52,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0a6",
+    "id": "BJJ-019",
+    "concept": "#11/21 Action & Reaction",
+    "description": "Create action to bait reaction, watch the opponent's head velocity and add to it.  Bait & Trap.  Beware of counter-productivity.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.46,
+    "axis_mental_physical": 0.11,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0a7",
+    "id": "BJJ-020",
+    "concept": "#12/21 Anatomy",
+    "description": "Extra pressure from toes, feet always busy, where to grab.  General awareness of the human anatomy to better use it.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.45,
+    "axis_mental_physical": 0.39,
     "brightness": 1,
     "size": 1
   },
@@ -276,6 +378,97 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
+    "_id": "683409a61fa612ab8b07d0aa",
+    "id": "BJJ-023",
+    "concept": "#15/21 Big Rock",
+    "description": "Don't embrace the big rock (hugging someone on top of you), push it sideways, make your way under, etc.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.35,
+    "axis_mental_physical": 0.24,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0ab",
+    "id": "BJJ-024",
+    "concept": "#16/21 Fine Line",
+    "description": "Switch modes, get a head start on the next move.  There's a fine line between something you can still use and something that will soon become detrimental.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.88,
+    "axis_mental_physical": 0.44,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0ac",
+    "id": "BJJ-025",
+    "concept": "#17/21 Energy Management",
+    "description": "Your gas tank is not infinite.  Maybe enough energy for a few bursts.  Don't redline all the time.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.5,
+    "axis_mental_physical": 0.93,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0ad",
+    "id": "BJJ-026",
+    "concept": "#18/21 Real Estate",
+    "description": "\"location, location, location\".  Make them pay dearly for access to the good locations.  Elbows to knees, elbow to pelvis. head control.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.29,
+    "axis_mental_physical": 0.5,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0ae",
+    "id": "BJJ-027",
+    "concept": "#19/21 Max Pressure",
+    "description": "Pick a side, pick a spot, hand/feet to add/redirect force.  Firm not stiff. Don't leak pressure where it does not affect them.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.43,
+    "axis_mental_physical": 0.9,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0af",
+    "id": "BJJ-028",
+    "concept": "#20/21 Limb vs Limb",
+    "description": "2-on-1, 3-on-1, be uneven in your favor. Overwhelm.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.31,
+    "axis_mental_physical": 0.37,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0b0",
+    "id": "BJJ-029",
+    "concept": "#21/21 Base",
+    "description": "\"Wind, wood, fire, mountain\".  Lose the fear of being swept.  You are a cat and someone is trying to push you into water.  Always have a body part ready to establish base.",
+    "short_description": "",
+    "category": "21 Immutable Principles (Paulo)",
+    "color": "#FFD700",
+    "axis_self_opponent": 0.18,
+    "axis_mental_physical": 0.9,
+    "brightness": 1,
+    "size": 1
+  },
+  {
     "_id": "683409a61fa612ab8b07d0b1",
     "id": "BJJ-030",
     "concept": "6DoF",
@@ -298,6 +491,58 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#4FF74F",
     "axis_self_opponent": 0.96,
     "axis_mental_physical": 0.1,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0b3",
+    "id": "BJJ-032",
+    "concept": "Empathy",
+    "description": "What's their way out? what do they want? How bad are they feeling the pressure.  Have empathy so you can deny them what they crave most.",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.96,
+    "axis_mental_physical": 0.34,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0b4",
+    "id": "BJJ-033",
+    "concept": "Real-Time Learning",
+    "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.86,
+    "axis_mental_physical": 0.32,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0b5",
+    "id": "BJJ-034",
+    "concept": "Funnel",
+    "description": "Make them play your game on your terms, avoid playing theirs.",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.84,
+    "axis_mental_physical": 0.21,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "683409a61fa612ab8b07d0b6",
+    "id": "BJJ-035",
+    "concept": "Overload their system",
+    "description": "Threats and distractions everywhere.",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.8,
+    "axis_mental_physical": 0.07,
     "brightness": 1,
     "size": 1
   },
@@ -341,93 +586,15 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
-    "_id": "683409a61fa612ab8b07d0bc",
-    "id": "BJJ-041",
-    "concept": "Deterrence",
-    "description": "one-bitten twice shy, make them know that some spots are dangerous for them.  Alternative route to bait & trap.",
+    "_id": "683409a61fa612ab8b07d0ba",
+    "id": "BJJ-039",
+    "concept": "Flow-Pressure-Finish",
+    "description": "3-step system by Xande Ribeiro",
     "short_description": "",
-    "category": "Technique",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.79,
-    "axis_mental_physical": 0.33,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d097",
-    "id": "BJJ-004",
-    "concept": "Anticipation",
-    "description": "Anticipation is the first line of defense.  Don't be surprised by a guard pull or a jumping armbar. You should know what threats are possible from any given positions.",
-    "short_description": "",
-    "category": "Mental",
-    "color": "#4FF74F",
-    "axis_self_opponent": 0.9,
-    "axis_mental_physical": 0.1,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d09e",
-    "id": "BJJ-011",
-    "concept": "Chess Analogy",
-    "description": "#2/21 by Paulo Guillobel.\n\nThe Chess Analogy is certainly not *Uniquely* appropriate to grappling.  Football, soccer, or any sports involving positioning and decisions will have some chess analogies.   Pieces have values, controlling the center is advantageous, be 3 moves ahead, etc.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.73,
-    "axis_mental_physical": 0.44,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a5",
-    "id": "BJJ-018",
-    "concept": "#10/21 Fortress",
-    "description": "Think of your body in layers of defense.  Wrestlers talk about \"climbing the ladder\".  This is similar, rebuild your defenses; feet, knees, hands, elbow.  If compromised, rebuild the fortress.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.55,
-    "axis_mental_physical": 0.52,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a7",
-    "id": "BJJ-020",
-    "concept": "#12/21 Anatomy",
-    "description": "Extra pressure from toes, feet always busy, where to grab.  General awareness of the human anatomy to better use it.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.45,
-    "axis_mental_physical": 0.39,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0aa",
-    "id": "BJJ-023",
-    "concept": "#15/21 Big Rock",
-    "description": "Don't embrace the big rock (hugging someone on top of you), push it sideways, make your way under, etc.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.35,
-    "axis_mental_physical": 0.24,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0b5",
-    "id": "BJJ-034",
-    "concept": "Funnel",
-    "description": "Make them play your game on your terms, avoid playing theirs.",
-    "short_description": "",
-    "category": "Mental",
-    "color": "#4FF74F",
-    "axis_self_opponent": 0.84,
-    "axis_mental_physical": 0.21,
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.42,
+    "axis_mental_physical": 0.5,
     "brightness": 1,
     "size": 1
   },
@@ -445,158 +612,15 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
-    "_id": "683409a61fa612ab8b07d095",
-    "id": "BJJ-002",
-    "concept": "Collapse Frames",
-    "description": "Frames are typically strong in one direction yet can be collapsed in another.",
-    "short_description": "",
-    "category": "Biomechanics",
-    "color": "#F74F4F",
-    "axis_self_opponent": 0.2,
-    "axis_mental_physical": 0.2,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d09b",
-    "id": "BJJ-008",
-    "concept": "Persistence (4/7)",
-    "description": "#1/21 of of the \"7 P's\" in Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.89,
-    "axis_mental_physical": 0.65,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d09f",
-    "id": "BJJ-012",
-    "concept": "#4/21 Zen",
-    "description": "#4/21 Chill. In training and in the midst of competition.  Clear mind. From Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.96,
-    "axis_mental_physical": 0.84,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a1",
-    "id": "BJJ-014",
-    "concept": "#6/21 Braveheart",
-    "description": "Dive in, get rid of your fear of losing, especially during training.  #6/21 in Paulo Guillobel's 21 immutable principles of Jiu Jitsu.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.78,
-    "axis_mental_physical": 0.67,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a3",
-    "id": "BJJ-016",
-    "concept": "#8/21 Biggest Leak First",
-    "description": "Address your biggest problem first. Typically what is giving your opponent the most leverage right now? adress that.  In practice, what's your biggest weakness? identify and address.",
+    "_id": "683409a61fa612ab8b07d0bc",
+    "id": "BJJ-041",
+    "concept": "Deterrence",
+    "description": "one-bitten twice shy, make them know that some spots are dangerous for them.  Alternative route to bait & trap.",
     "short_description": "",
     "category": "Technique",
     "color": "#4F8EF7",
-    "axis_self_opponent": 0.82,
-    "axis_mental_physical": 0.52,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a4",
-    "id": "BJJ-017",
-    "concept": "#9/21 Overreaching",
-    "description": "Avoid overreaching (grab too far, maintain a grip that is compromised, try to finish a submission that is now too low percentage, etc.)",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.46,
-    "axis_mental_physical": 0.52,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0a6",
-    "id": "BJJ-019",
-    "concept": "#11/21 Action & Reaction",
-    "description": "Create action to bait reaction, watch the opponent's head velocity and add to it.  Bait & Trap.  Beware of counter-productivity.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.46,
-    "axis_mental_physical": 0.11,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0ac",
-    "id": "BJJ-025",
-    "concept": "#17/21 Energy Management",
-    "description": "Your gas tank is not infinite.  Maybe enough energy for a few bursts.  Don't redline all the time.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.5,
-    "axis_mental_physical": 0.93,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0ae",
-    "id": "BJJ-027",
-    "concept": "#19/21 Max Pressure",
-    "description": "Pick a side, pick a spot, hand/feet to add/redirect force.  Firm not stiff. Don't leak pressure where it does not affect them.",
-    "short_description": "",
-    "category": "21 Immutable Principles (Paulo)",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.43,
-    "axis_mental_physical": 0.9,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0b3",
-    "id": "BJJ-032",
-    "concept": "Empathy",
-    "description": "What's their way out? what do they want? How bad are they feeling the pressure.  Have empathy so you can deny them what they crave most.",
-    "short_description": "",
-    "category": "Mental",
-    "color": "#4FF74F",
-    "axis_self_opponent": 0.96,
-    "axis_mental_physical": 0.34,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0b4",
-    "id": "BJJ-033",
-    "concept": "Real-Time Learning",
-    "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.",
-    "short_description": "",
-    "category": "Mental",
-    "color": "#4FF74F",
-    "axis_self_opponent": 0.86,
-    "axis_mental_physical": 0.32,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "_id": "683409a61fa612ab8b07d0ba",
-    "id": "BJJ-039",
-    "concept": "Flow-Pressure-Finish",
-    "description": "3-step system by Xande Ribeiro",
-    "short_description": "",
-    "category": "Strategy",
-    "color": "#FF8C00",
-    "axis_self_opponent": 0.42,
-    "axis_mental_physical": 0.5,
+    "axis_self_opponent": 0.79,
+    "axis_mental_physical": 0.33,
     "brightness": 1,
     "size": 1
   },
@@ -1429,6 +1453,224 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#F74F4F",
     "axis_self_opponent": 0.13,
     "axis_mental_physical": 0.5,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "686884bed8b48cef9392f814",
+    "id": "BJJ-087",
+    "concept": "Guard Allure",
+    "description": "“Do not be seduced by the allure of the guard”\n Chris Haueter\n\nit's so easy to get comfortable in guard that you forgot how important it is to stay on top.",
+    "short_description": "",
+    "category": "Training",
+    "color": "#00CED1",
+    "axis_self_opponent": 0.61,
+    "axis_mental_physical": 0.19,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "6868868fe870e9bc4d41a009",
+    "id": "BJJ-042",
+    "concept": "Last Battle",
+    "description": "Do no fight the last battle.   Realize when the game has changed, when the battleground has shifted.   Accept that your defenses have failed and switch to damage mitigation and recovery.\n\nsimilar to Keenan's \"Win small battles then don't realize are happening\" (about passing over the knee in worm guard)",
+    "short_description": "",
+    "category": "Mental",
+    "color": "#4FF74F",
+    "axis_self_opponent": 0.33,
+    "axis_mental_physical": 0.33,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "686887afe870e9bc4d41a00a",
+    "id": "BJJ-043",
+    "concept": "Technical Focus",
+    "description": "Favor technical proficiency over winning **in training.  In competition it's arguably ok to cut corners and let your inner grit take over (to some extent, not worth it to rip tendons and risk lifelong injury over a medal).  But in training it's pointless to seek victory, you should seek precise control and technique mastery.",
+    "short_description": "",
+    "category": "Training",
+    "color": "#00CED1",
+    "axis_self_opponent": 0.76,
+    "axis_mental_physical": 0.69,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "68688843e870e9bc4d41a00b",
+    "id": "BJJ-088",
+    "concept": "Sponge",
+    "description": "Soak up all the information.  Take notes.  Switch your brain on, make connections yourself between the disparate lessons and nuggets of wisdom.  Take ownership of your training.  especially in the early years of training, you should accumulate hundreds of ideas and concepts and techniques, then as \"your belt darkens\" you start to sieve through and keep what works best for you, refine.\nYou can't refine something you don't have.",
+    "short_description": "",
+    "category": "Training",
+    "color": "#00CED1",
+    "axis_self_opponent": 0.8,
+    "axis_mental_physical": 0.77,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "68688a02ccb81b624b7b54a9",
+    "id": "BJJ-007",
+    "concept": "Murder Yoga",
+    "description": "see. Involutary Yoga, with a more r/iambadass vibe.",
+    "short_description": "",
+    "category": "BJJ Definitions",
+    "color": "#888888",
+    "axis_self_opponent": 0.92,
+    "axis_mental_physical": 0.86,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "68688a3bccb81b624b7b54aa",
+    "id": "BJJ-008",
+    "concept": "Legal Strangulation",
+    "description": "Where the dojo becomes a place where consenting adults can legally strangle each other for their personal fullfilment.",
+    "short_description": "",
+    "category": "BJJ Definitions",
+    "color": "#888888",
+    "axis_self_opponent": 0.72,
+    "axis_mental_physical": 0.65,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "68688b27ccb81b624b7b54ab",
+    "id": "BJJ-052",
+    "concept": "so strong!",
+    "description": "e.g. \"your technique sucks and your just power through everything bro\"",
+    "short_description": "",
+    "category": "Memes",
+    "color": "#8A2BE2",
+    "axis_self_opponent": 0.35,
+    "axis_mental_physical": 0.3,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "686893781cd126f39adc727f",
+    "id": "BJJ-084",
+    "concept": "Same Direction",
+    "description": "Give them more of what they want, so that it's too much for them to handle.  If they want to push you right, go right and then some.  If they don't like that and resist, go left and then some.  ",
+    "short_description": "",
+    "category": "Tactic",
+    "color": "#8A2BE2",
+    "axis_self_opponent": 0.42,
+    "axis_mental_physical": 0.39,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "686db9c9d8e7924d443ea318",
+    "id": "BJJ-076",
+    "concept": "Head Level",
+    "description": "Wrestling : Match head level.\nThey level change, you level change.\n\nWell, well, well, if they're trained like that, you've got a way to force a reaction.  go up on purpose,bait the double leg and grab a kimura or highground, etc.",
+    "short_description": "",
+    "category": "Technique",
+    "color": "#4F8EF7",
+    "axis_self_opponent": 0.4,
+    "axis_mental_physical": 0.18,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "686dba26d8e7924d443ea319",
+    "id": "BJJ-077",
+    "concept": "Head Inside",
+    "description": "inside position with your forehead pushing on their neck is disruptive.",
+    "short_description": "",
+    "category": "Technique",
+    "color": "#4F8EF7",
+    "axis_self_opponent": 0.38,
+    "axis_mental_physical": 0.23,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "_id": "686dba66d8e7924d443ea31a",
+    "id": "BJJ-078",
+    "concept": "Looking down",
+    "description": "don't.  where the gaze goes, the head follows.  where the head goes, the body follows.",
+    "short_description": "",
+    "category": "Technique",
+    "color": "#4F8EF7",
+    "axis_self_opponent": 0.37,
+    "axis_mental_physical": 0.65,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "6874c847201031b9d9a99603",
+    "id": "BJJ-089",
+    "concept": "Negate Grips",
+    "description": "Sometimes a grip needs to be broken, often you can simply render it useless.\n\ne.g., they grab you sleeve, but you use that hand to grab their knee or their belt, suddenly they don't quite have the control they expected anymore.\n\nturning their grips into wristlocks opportunities is another option.",
+    "short_description": "",
+    "category": "Tactic",
+    "color": "#8A2BE2",
+    "axis_self_opponent": 0.03,
+    "axis_mental_physical": 0.02,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "6875a4235e0e1ee4adb476e0",
+    "id": "BJJ-089",
+    "concept": "Explore > Exploit",
+    "description": "Prioritize growth over dominance in a particular training session.\n\nDrop the A-Game to work on new aspects.  Garry Tonon says that he gets tapped all the time in training, because he's working on new stuff.\n\nThere's an optimization algorithm called the multi-armed bandit, if you set it to 80-20, 80% of the time you'll go for the highest payoff strategy (so far!), and 20% of the time you'll explore a new strategy, hopefully discovering an even higher payoff once in a while.\n\nIn training BJJ, you can set that to 50-50 or even 20-80.  Experiment.\n\nLet go of the A-Game\nLet go of the Must-Dominate ego.\n\nRely on your A-Game only when it matters.\n\nsee \"Catch & Release\" too.",
+    "short_description": "",
+    "category": "Training",
+    "color": "#00CED1",
+    "axis_self_opponent": 0.59,
+    "axis_mental_physical": 0.98,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "_id": "6875a4e85e0e1ee4adb476e1",
+    "id": "BJJ-090",
+    "concept": "Catch & Release",
+    "description": "When there's an obvious experience discrepancy, you get close to lock-in a submission (the “catch”) to the point where you know you could have gotten it (don't lie to yourself either), then let go without finishing (the “release”).\n\n- You to practice control and precision\n\n- They learn and keep rolling without constant resets\n\n- A more flow-based, educational sparring experience\n\nIt’s a sign of control, trust, and teaching mindset, not a missed opportunity to assert dominance on a noob.",
+    "short_description": "",
+    "category": "Training",
+    "color": "#00CED1",
+    "axis_self_opponent": 0.97,
+    "axis_mental_physical": 0.05,
+    "brightness": 5,
+    "size": 3
+  },
+  {
+    "id": "BJJ-091",
+    "concept": "Primitives Test",
+    "description": "",
+    "short_description": "",
+    "category": "Technique",
+    "color": "#8f9299",
+    "axis_self_opponent": 0.01,
+    "axis_mental_physical": 0.5,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-092",
+    "concept": "test Running a Dojo",
+    "description": "",
+    "short_description": "",
+    "category": "Coaching",
+    "color": "#6b6d70",
+    "axis_self_opponent": 0.71,
+    "axis_mental_physical": 0.73,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-093",
+    "concept": "Coaching Test 2",
+    "description": "",
+    "short_description": "",
+    "category": "Coaching",
+    "color": "#6b6d70",
+    "axis_self_opponent": 0.69,
+    "axis_mental_physical": 0.73,
     "brightness": 1,
     "size": 1
   }

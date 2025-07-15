@@ -11,13 +11,19 @@ module.exports = async function handler(req, res) {
       console.log('Found categories:', categories);
       res.status(200).json(categories);
     } else if (req.method === 'POST') {
-      const { name, color } = req.body;
+      const { name, color, xAxis, yAxis } = req.body;
       if (!name || !color) {
         res.status(400).json({ error: 'Name and color are required.' });
         return;
       }
-      const result = await collection.insertOne({ name, color });
-      res.status(201).json(result.ops ? result.ops[0] : { name, color, _id: result.insertedId });
+      const categoryData = { 
+        name, 
+        color,
+        xAxis: xAxis || { left: 'Mental', right: 'Physical' },
+        yAxis: yAxis || { bottom: 'Self', top: 'Opponent' }
+      };
+      const result = await collection.insertOne(categoryData);
+      res.status(201).json(result.ops ? result.ops[0] : { ...categoryData, _id: result.insertedId });
     } else {
       res.setHeader('Allow', ['GET', 'POST']);
       res.status(405).end(`Method ${req.method} Not Allowed`);

@@ -4,8 +4,8 @@ const path = require('path');
 console.log('Starting conversion test...');
 
 // Test the conversion logic directly
-const inputPath = path.join(__dirname, 'public/data/local/SkillsMasterListv5.ts');
-const outputPath = path.join(__dirname, 'public/data/local/test_output.json');
+const inputPath = path.join(__dirname, 'backups/BackupsSkillMasterLists/SkillsMasterListv5.ts');
+const outputPath = path.join(__dirname, 'backups/BackupsSkillMasterLists/test_output.json');
 
 console.log('Reading file:', inputPath);
 console.log('File exists:', fs.existsSync(inputPath));

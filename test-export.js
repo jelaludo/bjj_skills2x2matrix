@@ -83,8 +83,8 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(testConcepts, nul
   };
 
   // Write both files
-  const tsPath = path.join(__dirname, 'public/data/local/test_export.ts');
-  const jsonPath = path.join(__dirname, 'public/data/local/test_export.json');
+      const tsPath = path.join(__dirname, 'backups/BackupsSkillMasterLists/test_export.ts');
+    const jsonPath = path.join(__dirname, 'backups/BackupsSkillMasterLists/test_export.json');
   
   fs.writeFileSync(tsPath, tsString);
   fs.writeFileSync(jsonPath, JSON.stringify(jsonContent, null, 2));

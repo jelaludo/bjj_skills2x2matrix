@@ -1,14 +1,15 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
+import AddIcon from '@mui/icons-material/Add';
 import HelpIcon from '@mui/icons-material/Help';
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
+  onCreateNode?: () => void;
 }
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle }, ref) => {
+const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle, onCreateNode }, ref) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -53,7 +54,8 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuTogg
           <Button 
             variant="outlined" 
             size="small"
-            startIcon={<DarkModeIcon />}
+            startIcon={<AddIcon />}
+            onClick={onCreateNode}
             sx={{ 
               color: 'text.primary',
               borderColor: 'divider',
@@ -62,7 +64,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuTogg
               }
             }}
           >
-            Theme
+            Create Node
           </Button>
           <Button 
             variant="outlined" 

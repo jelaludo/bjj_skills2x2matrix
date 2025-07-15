@@ -6,7 +6,20 @@ interface ModalProps {
   onClose: () => void;
   onSave: (updated: BJJConcept) => void;
   onDelete?: (id: string) => void;
-  categories: { name: string; color: string; }[];
+  categories: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[];
+  isCreateMode?: boolean;
+  selectedCategories?: string[];
+  addCategory?: (cat: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }) => Promise<void>;
 }
 
 type BJJConcept = {
@@ -39,16 +52,22 @@ interface LabelMode {
   description: string;
 }
 
-const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', vertical?: 'top' | 'bottom' | 'center', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, side, vertical, containerSize }) => {
+const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', vertical?: 'top' | 'bottom' | 'center', containerSize?: { width: number; height: number } }> = ({ concept, onClose, onSave, onDelete, categories, isCreateMode = false, selectedCategories = [], addCategory, side, vertical, containerSize }) => {
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
   const [categoryMode, setCategoryMode] = useState<'select' | 'custom'>('select');
 
   React.useEffect(() => {
+    console.log('ConceptModal - Modal opened with concept:', concept);
     setEdit(concept);
     setCategoryMode('select');
     setCustomCategory('');
   }, [concept]);
+
+  // Debug logging for edit state changes
+  React.useEffect(() => {
+    console.log('ConceptModal - Edit state changed:', edit);
+  }, [edit]);
 
   // Calculate dynamic offset
   const horizontalOffset = containerSize ? Math.max(0.15 * containerSize.width, 180) : 300;
@@ -84,17 +103,35 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
       maxHeight: containerSize ? 0.8 * containerSize.height : undefined,
       overflowY: 'auto',
     }}>
-      <h2>Edit Concept</h2>
-      <form onSubmit={e => { e.preventDefault(); if (edit) onSave(edit); }}>
+      <h2>{isCreateMode ? 'Create New Concept' : 'Edit Concept'}</h2>
+      <form onSubmit={e => { 
+        e.preventDefault(); 
+        console.log('ConceptModal - Form submitted, edit state:', edit);
+        if (edit) {
+          console.log('ConceptModal - Calling onSave with:', edit);
+          onSave(edit);
+        } else {
+          console.log('ConceptModal - No edit state to save');
+        }
+      }}>
         <div style={{ marginBottom: 12 }}>
-          <label style={{ display: 'block', marginBottom: 4 }}>ID (read-only):</label>
-          <input value={edit.id} readOnly style={{ width: '100%', background: '#333', color: '#aaa', border: 'none', padding: 6, marginBottom: 8 }} />
+          {!isCreateMode && (
+            <>
+              <label style={{ display: 'block', marginBottom: 4 }}>ID (read-only):</label>
+              <input value={edit.id} readOnly style={{ width: '100%', background: '#333', color: '#aaa', border: 'none', padding: 6, marginBottom: 8 }} />
+            </>
+          )}
 
           <label style={{ display: 'block', marginBottom: 4 }}>Name:</label>
           <input value={edit.concept} onChange={e => setEdit({ ...edit, concept: e.target.value })} style={{ width: '100%', padding: 6, marginBottom: 8 }} />
 
           <label style={{ display: 'block', marginBottom: 4 }}>Description:</label>
-          <textarea value={edit.description} onChange={e => setEdit({ ...edit, description: e.target.value })} style={{ width: '100%', padding: 6, marginBottom: 8 }} />
+          <textarea 
+            value={edit.description} 
+            onChange={e => setEdit({ ...edit, description: e.target.value })} 
+            style={{ width: '100%', padding: 6, marginBottom: 8, minHeight: isCreateMode ? '120px' : '80px' }} 
+            placeholder={isCreateMode ? "Enter detailed description of the concept..." : ""}
+          />
 
           <label style={{ display: 'block', marginBottom: 4 }}>Short Description:</label>
           <input value={edit.short_description} onChange={e => setEdit({ ...edit, short_description: e.target.value })} style={{ width: '100%', padding: 6, marginBottom: 8 }} />
@@ -105,9 +142,15 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
               <select
                 value={categories.find(c => c.name === edit.category)?.name || 'Other'}
                 onChange={e => {
+                  console.log('ConceptModal - Category selection changed to:', e.target.value);
                   const selectedCategory = categories.find(c => c.name === e.target.value);
                   if (selectedCategory) {
+                    console.log('ConceptModal - Found selected category:', selectedCategory);
                     setEdit({ ...edit, category: selectedCategory.name, color: selectedCategory.color });
+                    console.log('ConceptModal - Updated edit state with new category:', selectedCategory.name);
+                  } else if (e.target.value === 'create-new') {
+                    setCategoryMode('custom');
+                    setCustomCategory('');
                   } else {
                     setCategoryMode('custom');
                     setCustomCategory('');
@@ -118,6 +161,7 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
                 {categories.map(cat => (
                   <option key={cat.name} value={cat.name}>{cat.name}</option>
                 ))}
+                <option value="create-new">➕ Create New Category...</option>
                 <option value="Other">Other...</option>
               </select>
             </>
@@ -126,14 +170,39 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
               <input
                 value={customCategory}
                 onChange={e => setCustomCategory(e.target.value)}
-                placeholder="Enter custom category"
+                placeholder="Enter new category name"
                 style={{ width: '100%', padding: 6, marginBottom: 8 }}
               />
-              <button type="button" style={{ marginBottom: 8, marginRight: 8 }} onClick={() => {
-                setEdit({ ...edit, category: customCategory });
-                setCategoryMode('select');
-              }}>Set</button>
-              <button type="button" style={{ marginBottom: 8 }} onClick={() => setCategoryMode('select')}>Cancel</button>
+              <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                <input
+                  type="color"
+                  value={edit.color}
+                  onChange={e => setEdit({ ...edit, color: e.target.value })}
+                  style={{ width: 40, height: 32, border: 'none', borderRadius: 4 }}
+                  title="Category color"
+                />
+                <button type="button" onClick={async () => {
+                  if (customCategory.trim()) {
+                    console.log('ConceptModal - Creating category:', customCategory.trim());
+                    // Add the new category to the global state
+                    if (addCategory) {
+                      await addCategory({
+                        name: customCategory.trim(),
+                        color: edit.color,
+                        xAxis: { left: 'Mental', right: 'Physical' },
+                        yAxis: { bottom: 'Self', top: 'Opponent' }
+                      });
+                      console.log('ConceptModal - Category created successfully');
+                    } else {
+                      console.error('ConceptModal - addCategory function not available');
+                    }
+                    // Update the current concept to use the new category
+                    setEdit({ ...edit, category: customCategory.trim() });
+                    setCategoryMode('select');
+                  }
+                }}>Create Category</button>
+                <button type="button" onClick={() => setCategoryMode('select')}>Cancel</button>
+              </div>
             </>
           )}
 
@@ -173,7 +242,13 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
             </button>
           )}
           <button type="button" onClick={onClose} style={{ background: '#444', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 18px', cursor: 'pointer' }}>Cancel</button>
-          <button type="submit" style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 18px', cursor: 'pointer' }}>Save</button>
+          <button 
+            type="submit" 
+            onClick={() => console.log('ConceptModal - Save button clicked')}
+            style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 18px', cursor: 'pointer' }}
+          >
+            Save
+          </button>
         </div>
       </form>
     </div>
@@ -187,8 +262,24 @@ interface ScatterPlotProps {
   addConcept: (concept: Omit<BJJConcept, 'id'>) => Promise<void>;
   updateConcept: (id: string, updates: Partial<BJJConcept>) => Promise<void>;
   deleteConcept: (id: string) => Promise<void>;
-  categories: { name: string; color: string; }[];
-  setCategories: React.Dispatch<React.SetStateAction<{ name: string; color: string; }[]>>;
+  categories: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[];
+  setCategories: React.Dispatch<React.SetStateAction<{ 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[]>>;
+  addCategory: (cat: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }) => Promise<void>;
   createMode: boolean;
   setCreateMode: (v: boolean) => void;
   createAt: { x: number; y: number } | null;
@@ -196,6 +287,7 @@ interface ScatterPlotProps {
   labelMode: LabelMode;
   selected: BJJConcept | null;
   setSelected: React.Dispatch<React.SetStateAction<BJJConcept | null>>;
+  selectedCategories: string[];
 }
 
 export const ScatterPlot: React.FC<ScatterPlotProps> = ({
@@ -205,6 +297,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   deleteConcept,
   categories,
   setCategories,
+  addCategory,
   createMode,
   setCreateMode,
   createAt,
@@ -212,6 +305,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   labelMode,
   selected,
   setSelected,
+  selectedCategories,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -223,6 +317,16 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   const [editMode, setEditMode] = useState(false);
   // For now, hardcode canEdit to true (replace with real permission logic later)
   const canEdit = true;
+
+  // Debug logging for edit mode changes
+  React.useEffect(() => {
+    console.log('ScatterPlot - editMode changed to:', editMode);
+  }, [editMode]);
+
+  // Debug logging for selected concept changes
+  React.useEffect(() => {
+    console.log('ScatterPlot - selected concept changed:', selected);
+  }, [selected]);
 
   // Label management functions
   const calculateLabelDimensions = (text: string, fontSize: number): { width: number; height: number } => {
@@ -487,6 +591,29 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('stroke', '#444')
       .attr('stroke-dasharray', '6,4');
 
+    // Get axis labels from the most common category in the filtered concepts, or use defaults
+    const categoryCounts = concepts.reduce((acc, concept) => {
+      acc[concept.category] = (acc[concept.category] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    // If only one category is present, use its axis labels directly
+    const uniqueCategories = Object.keys(categoryCounts);
+    let selectedCategory;
+    
+    if (uniqueCategories.length === 1) {
+      // Only one category is selected/filtered, use its axis labels
+      selectedCategory = categories.find(cat => cat.name === uniqueCategories[0]);
+    } else {
+      // Multiple categories, find the most common one
+      const mostCommonCategory = uniqueCategories.reduce((a, b) => 
+        categoryCounts[a] > categoryCounts[b] ? a : b, '');
+      selectedCategory = categories.find(cat => cat.name === mostCommonCategory);
+    }
+    
+    const xAxisLabels = selectedCategory?.xAxis || { left: 'Mental', right: 'Physical' };
+    const yAxisLabels = selectedCategory?.yAxis || { bottom: 'Self', top: 'Opponent' };
+
     // Axis labels
     svg.append('text')
       .attr('x', width / 2)
@@ -495,7 +622,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('fill', '#aaa')
       .attr('font-size', 20)
       .attr('font-weight', 'bold')
-      .text('Mental');
+      .text(xAxisLabels.left);
     svg.append('text')
       .attr('x', width / 2)
       .attr('y', height - margin + 35)
@@ -503,7 +630,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('fill', '#aaa')
       .attr('font-size', 20)
       .attr('font-weight', 'bold')
-      .text('Physical');
+      .text(xAxisLabels.right);
     svg.append('text')
       .attr('x', margin - 20)
       .attr('y', height / 2)
@@ -512,7 +639,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('font-size', 20)
       .attr('font-weight', 'bold')
       .attr('transform', `rotate(-90,${margin - 20},${height / 2})`)
-      .text('Opponent');
+      .text(yAxisLabels.top);
     svg.append('text')
       .attr('x', width - margin + 30)
       .attr('y', height / 2)
@@ -521,7 +648,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
       .attr('font-size', 20)
       .attr('font-weight', 'bold')
       .attr('transform', `rotate(-90,${width - margin + 30},${height / 2})`)
-      .text('Self');
+      .text(yAxisLabels.bottom);
 
     // Nodes
     svg.selectAll('circle')
@@ -566,13 +693,13 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   }, [hovered, concepts, size, labelMode, pingedNodeId, pingStep]);
 
   const handleSave = (updated: BJJConcept) => {
+    console.log('ScatterPlot - handleSave called with:', updated);
     // Remove _id from update object
     const { _id, ...updates } = updated;
-    if (_id) {
-      updateConcept(_id, updates);
-    } else {
-      updateConcept(updated.id, updates);
-    }
+    console.log('ScatterPlot - Updates to apply:', updates);
+    // Always use the id field for updates, regardless of _id presence
+    console.log('ScatterPlot - Updating by id:', updated.id);
+    updateConcept(updated.id, updates);
     setSelected(null);
   };
 
@@ -639,6 +766,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
           onSave={handleSave}
           onDelete={handleDelete}
           categories={categories}
+          addCategory={addCategory}
           side={modalSide}
           vertical={modalVertical}
           containerSize={size}
@@ -651,16 +779,19 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
             concept: '',
             description: '',
             short_description: '',
-            category: categories[0]?.name || '',
-            color: categories[0]?.color || '#888',
+            category: selectedCategories.length > 0 ? selectedCategories[0] : categories[0]?.name || '',
+            color: selectedCategories.length > 0 ? categories.find(c => c.name === selectedCategories[0])?.color || '#888' : categories[0]?.color || '#888',
             axis_self_opponent: createModal.y,
             axis_mental_physical: createModal.x,
-            brightness: 5,
-            size: 3,
+            brightness: 1,
+            size: 1,
           }}
           onClose={() => { setCreateModal(null); setCreateMode(false); }}
           onSave={handleCreateSave}
           categories={categories}
+          addCategory={addCategory}
+          isCreateMode={true}
+          selectedCategories={selectedCategories}
           side={createModalSide}
           vertical={createModalVertical}
           containerSize={size}
@@ -675,7 +806,12 @@ interface ConceptViewModalProps {
   concept: BJJConcept | null;
   onClose: () => void;
   onEdit?: () => void;
-  categories: { name: string; color: string; }[];
+  categories: { 
+    name: string; 
+    color: string;
+    xAxis?: { left: string; right: string };
+    yAxis?: { bottom: string; top: string };
+  }[];
   canEdit?: boolean;
   side?: 'left' | 'right' | 'center';
   vertical?: 'top' | 'bottom' | 'center';
@@ -719,7 +855,19 @@ const ConceptViewModal: React.FC<ConceptViewModalProps> = ({ concept, onClose, o
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
           {canEdit && (
-            <button onClick={onEdit} style={{ background: 'none', border: 'none', color: '#888', fontSize: 14, cursor: 'pointer', padding: 0 }} title="Edit">
+            <button 
+              onClick={() => {
+                console.log('ConceptViewModal - Edit button clicked');
+                if (onEdit) {
+                  console.log('ConceptViewModal - Calling onEdit function');
+                  onEdit();
+                } else {
+                  console.log('ConceptViewModal - onEdit function not available');
+                }
+              }} 
+              style={{ background: 'none', border: 'none', color: '#888', fontSize: 14, cursor: 'pointer', padding: 0 }} 
+              title="Edit"
+            >
               ✏️
             </button>
           )}
