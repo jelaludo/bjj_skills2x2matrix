@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
 import { DevModeToggle } from './components/DevModeToggle';
 import { HelpDialog } from './components/HelpDialog';
+import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme/theme';
@@ -50,8 +51,8 @@ function App() {
   const [filterBrightness, setFilterBrightness] = useState(0);
   const [filterSize, setFilterSize] = useState(0);
   const [labelMode, setLabelMode] = useState<{ type: 'hover' | 'all'; description: string }>({ 
-    type: 'hover', 
-    description: 'Show on hover only' 
+    type: 'all', 
+    description: 'Show all labels' 
   });
   const [selected, setSelected] = useState<BJJConcept | null>(null);
   
@@ -907,6 +908,9 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
         open={helpDialogOpen} 
         onClose={() => setHelpDialogOpen(false)} 
       />
+      
+      {/* Vercel Analytics */}
+      <Analytics />
     </ThemeProvider>
   );
 }
