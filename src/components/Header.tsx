@@ -7,9 +7,10 @@ import HelpIcon from '@mui/icons-material/Help';
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
   onCreateNode?: () => void;
+  onHelpClick?: () => void;
 }
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle, onCreateNode }, ref) => {
+const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle, onCreateNode, onHelpClick }, ref) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -70,6 +71,7 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuTogg
             variant="outlined" 
             size="small"
             startIcon={<HelpIcon />}
+            onClick={onHelpClick}
             sx={{ 
               color: 'text.primary',
               borderColor: 'divider',

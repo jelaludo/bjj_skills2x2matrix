@@ -5,50 +5,67 @@ const { execSync } = require('child_process');
 function generateVersionInfo() {
   try {
     // Get git information
-    const commitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+    const gitHash = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
     const commitMessage = execSync('git log -1 --pretty=format:"%s"', { encoding: 'utf8' }).trim();
-    const commitDate = execSync('git log -1 --pretty=format:"%cd" --date=short', { encoding: 'utf8' }).trim();
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
+    const branch = execSync('git branch --show-current', { encoding: 'utf8' }).trim();
     
+    // Get package.json version
+    const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
+    const version = packageJson.version;
+    
+    // Get build date
+    const buildDate = new Date().toISOString().split('T')[0];
+    const buildTime = new Date().toLocaleTimeString('en-US', { 
+      hour12: false, 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+    
+    // Create version info object
     const versionInfo = {
-      commitHash,
+      version,
+      gitHash,
       commitMessage,
-      commitDate,
       branch,
-      buildTime: new Date().toISOString(),
-      version: process.env.npm_package_version || '1.0.0'
+      buildDate,
+      buildTime,
+      fullBuildInfo: `${buildDate} ${buildTime}`
     };
     
-    // Create the version info file
-    const outputPath = path.join(__dirname, '../src/versionInfo.json');
+    // Write to JSON file
+    const outputPath = path.join(__dirname, '..', 'src', 'versionInfo.json');
     fs.writeFileSync(outputPath, JSON.stringify(versionInfo, null, 2));
     
     console.log('✅ Version info generated:');
-    console.log(`  Commit: ${commitHash}`);
-    console.log(`  Message: ${commitMessage}`);
-    console.log(`  Date: ${commitDate}`);
-    console.log(`  Branch: ${branch}`);
-    console.log(`  File: ${outputPath}`);
+    console.log(`   Version: ${version}`);
+    console.log(`   Git: ${gitHash} | "${commitMessage}"`);
+    console.log(`   Branch: ${branch}`);
+    console.log(`   Build: ${buildDate} ${buildTime}`);
+    
+    return versionInfo;
     
   } catch (error) {
     console.error('❌ Failed to generate version info:', error.message);
     
-    // Create a fallback version info
+    // Fallback version info
     const fallbackInfo = {
-      commitHash: 'unknown',
-      commitMessage: 'Version info unavailable',
-      commitDate: new Date().toISOString().split('T')[0],
+      version: '0.1.0',
+      gitHash: 'unknown',
+      commitMessage: 'unknown',
       branch: 'unknown',
-      buildTime: new Date().toISOString(),
-      version: process.env.npm_package_version || '1.0.0'
+      buildDate: new Date().toISOString().split('T')[0],
+      buildTime: new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+      fullBuildInfo: new Date().toISOString().split('T')[0] + ' ' + new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' })
     };
     
-    const outputPath = path.join(__dirname, '../src/versionInfo.json');
+    const outputPath = path.join(__dirname, '..', 'src', 'versionInfo.json');
     fs.writeFileSync(outputPath, JSON.stringify(fallbackInfo, null, 2));
-    console.log('📝 Created fallback version info');
+    
+    return fallbackInfo;
   }
 }
 
+// Run if called directly
 if (require.main === module) {
   generateVersionInfo();
 }

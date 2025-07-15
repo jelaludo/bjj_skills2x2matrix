@@ -1,11 +1,12 @@
-declare module '*/versionInfo.json' {
+declare module "*/versionInfo.json" {
   const value: {
-    commitHash: string;
-    commitMessage: string;
-    commitDate: string;
-    branch: string;
-    buildTime: string;
     version: string;
+    gitHash: string;
+    commitMessage: string;
+    branch: string;
+    buildDate: string;
+    buildTime: string;
+    fullBuildInfo: string;
   };
   export default value;
 } 

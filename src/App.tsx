@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
 import { DevModeToggle } from './components/DevModeToggle';
+import { HelpDialog } from './components/HelpDialog';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme/theme';
@@ -69,6 +70,7 @@ function App() {
   const [selectedMasterList, setSelectedMasterList] = useState<string>('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [helpDialogOpen, setHelpDialogOpen] = useState(false);
 
   // Load data source preference from localStorage
   useEffect(() => {
@@ -832,7 +834,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <MainLayout
-        header={<Header onCreateNode={handleCreateNode} />}
+        header={<Header onCreateNode={handleCreateNode} onHelpClick={() => setHelpDialogOpen(true)} />}
         sidebar={
           <Sidebar
             key={`sidebar-${categories.length}`}
@@ -898,6 +900,12 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
         onClose={() => setSnackbarOpen(false)}
         message={snackbarMessage}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
+      
+      {/* Help Dialog */}
+      <HelpDialog 
+        open={helpDialogOpen} 
+        onClose={() => setHelpDialogOpen(false)} 
       />
     </ThemeProvider>
   );
