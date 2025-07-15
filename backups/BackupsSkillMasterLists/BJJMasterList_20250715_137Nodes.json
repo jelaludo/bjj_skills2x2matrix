@@ -1829,14 +1829,38 @@
       "size": 1
     },
     {
-      "id": "BJJ-108",
-      "concept": "cursing cursor 3",
+      "id": "BJJ-109",
+      "concept": "test server 1",
+      "description": "",
+      "short_description": "",
+      "category": "Internal",
+      "color": "#4F8EF7",
+      "axis_self_opponent": 0.61,
+      "axis_mental_physical": 0.75,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-110",
+      "concept": "test2",
       "description": "",
       "short_description": "",
       "category": "Internal",
       "color": "#4F8EF7",
       "axis_self_opponent": 0.57,
-      "axis_mental_physical": 0.75,
+      "axis_mental_physical": 0.74,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-111",
+      "concept": "test3",
+      "description": "",
+      "short_description": "",
+      "category": "Internal",
+      "color": "#4F8EF7",
+      "axis_self_opponent": 0.58,
+      "axis_mental_physical": 0.79,
       "brightness": 1,
       "size": 1
     }

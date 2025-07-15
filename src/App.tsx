@@ -485,7 +485,59 @@ module.exports = {
       }
 
       const result = await backupResponse.json();
-      setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes)`);
+      
+      // Also save a copy to src/data/ for production use
+      try {
+        const tsContent = `export const categories = ${JSON.stringify(data.categories, null, 2)};
+
+export interface BJJConcept {
+  _id?: string;
+  id: string;
+  concept: string;
+  description: string;
+  short_description: string;
+  category: string;
+  color: string;
+  axis_self_opponent: number;
+  axis_mental_physical: number;
+  brightness: number;
+  size: number;
+}
+
+export const skillsMasterList: BJJConcept[] = ${JSON.stringify(data.skillsMasterList, null, 2)};
+`;
+
+        // Save to src/data/ directory
+        console.log('🔍 Attempting to save to src/data/ with fileName:', result.files.ts);
+        console.log('🔍 Content length:', tsContent.length);
+        
+        const saveToSrcDataResponse = await fetch('http://localhost:3001/api/save-to-src-data', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: result.files.ts,
+            content: tsContent
+          })
+        });
+
+        console.log('🔍 save-to-src-data response status:', saveToSrcDataResponse.status);
+        
+        if (saveToSrcDataResponse.ok) {
+          const responseData = await saveToSrcDataResponse.json();
+          console.log('🔍 save-to-src-data success:', responseData);
+          setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Also saved to src/data/ for production`);
+        } else {
+          const errorData = await saveToSrcDataResponse.text();
+          console.error('🔍 save-to-src-data error:', errorData);
+          setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
+        }
+      } catch (error) {
+        console.error('❌ Failed to save to src/data/:', error);
+        console.error('❌ Error details:', error instanceof Error ? error.message : 'Unknown error');
+        console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+        setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
+      }
+      
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Failed to create backup:', error);

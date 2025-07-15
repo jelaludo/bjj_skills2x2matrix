@@ -8,7 +8,8 @@ const app = express();
 const PORT = 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static files from the public folder
 app.use('/data', express.static(path.join(__dirname, 'public/data')));
@@ -367,6 +368,56 @@ app.post('/api/save-mongo-ready', (req, res) => {
     console.error('Failed to save MongoDB-ready files:', error);
     res.status(500).json({ 
       error: 'Failed to save MongoDB-ready files', 
+      details: error.message 
+    });
+  }
+});
+
+// API endpoint to save files to src/data/ for production
+app.post('/api/save-to-src-data', (req, res) => {
+  console.log('🔍 save-to-src-data endpoint called');
+  console.log('🔍 Request body:', { fileName: req.body.fileName, contentLength: req.body.content?.length });
+  console.log('🔍 __dirname:', __dirname);
+  console.log('🔍 process.cwd():', process.cwd());
+  
+  try {
+    const { fileName, content } = req.body;
+    
+    if (!fileName || !content) {
+      console.log('❌ Missing fileName or content');
+      return res.status(400).json({ error: 'FileName and content are required' });
+    }
+    
+    // Create src/data directory if it doesn't exist
+    const srcDataDir = path.resolve(__dirname, 'src', 'data');
+    console.log('🔍 Resolved src/data directory:', srcDataDir);
+    
+    if (!fs.existsSync(srcDataDir)) {
+      console.log('🔍 Creating src/data directory...');
+      fs.mkdirSync(srcDataDir, { recursive: true });
+    }
+    
+    // Save the file to src/data/
+    const filePath = path.join(srcDataDir, fileName);
+    console.log('🔍 Saving file to:', filePath);
+    
+    fs.writeFileSync(filePath, content);
+    
+    console.log(`✅ File saved to src/data/: ${fileName}`);
+    
+    res.json({
+      success: true,
+      message: 'File saved to src/data/ successfully',
+      fileName,
+      path: srcDataDir
+    });
+    
+  } catch (error) {
+    console.error('❌ Failed to save file to src/data/:', error);
+    console.error('❌ Error details:', error.message);
+    console.error('❌ Error stack:', error.stack);
+    res.status(500).json({ 
+      error: 'Failed to save file to src/data/', 
       details: error.message 
     });
   }
