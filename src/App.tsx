@@ -577,7 +577,25 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
         if (saveToSrcDataResponse.ok) {
           const responseData = await saveToSrcDataResponse.json();
           console.log('🔍 save-to-src-data success:', responseData);
-          setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Also saved to src/data/ for production`);
+          
+          // Update production data to use the latest backup
+          try {
+            const updateProductionResponse = await fetch('http://localhost:3001/api/update-production-data', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            
+            if (updateProductionResponse.ok) {
+              const updateResult = await updateProductionResponse.json();
+              setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Production data updated to use latest backup`);
+            } else {
+              console.warn('Could not update production data automatically');
+              setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
+            }
+          } catch (updateError) {
+            console.warn('Failed to update production data:', updateError);
+            setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
+          }
         } else {
           const errorData = await saveToSrcDataResponse.text();
           console.error('🔍 save-to-src-data error:', errorData);

@@ -1,70 +1,94 @@
 const fs = require('fs');
 const path = require('path');
 
+// Function to extract node count from filename
+function extractNodeCount(filename) {
+  const match = filename.match(/(\d+)Nodes\.ts$/);
+  return match ? parseInt(match[1], 10) : 0;
+}
+
 // Function to find the latest master list file
 function findLatestMasterList() {
-  const dataDir = path.join(__dirname, '..', 'src', 'data');
+  const dataDir = path.join(__dirname, '../src/data');
   const files = fs.readdirSync(dataDir);
   
   // Filter for master list files
   const masterListFiles = files.filter(file => 
-    file.startsWith('BJJMasterList_') && file.endsWith('.ts')
+    file.startsWith('BJJMasterList_') && file.endsWith('.ts') && file !== 'productionData.ts'
   );
   
   if (masterListFiles.length === 0) {
-    throw new Error('No master list files found in src/data/');
+    throw new Error('No master list files found');
   }
   
-  // Sort by node count (extract number from filename)
-  masterListFiles.sort((a, b) => {
-    const aMatch = a.match(/(\d+)Nodes/);
-    const bMatch = b.match(/(\d+)Nodes/);
-    const aCount = aMatch ? parseInt(aMatch[1]) : 0;
-    const bCount = bMatch ? parseInt(bMatch[1]) : 0;
-    return bCount - aCount; // Descending order
+  // Sort by node count (descending) and then by date (descending)
+  const sortedFiles = masterListFiles.sort((a, b) => {
+    const aNodes = extractNodeCount(a);
+    const bNodes = extractNodeCount(b);
+    
+    if (aNodes !== bNodes) {
+      return bNodes - aNodes; // Higher node count first
+    }
+    
+    // If same node count, sort by date (newer first)
+    return b.localeCompare(a);
   });
   
-  return masterListFiles[0].replace('.ts', ''); // Remove .ts extension
+  return sortedFiles[0];
 }
 
 // Function to update productionData.ts
 function updateProductionData() {
   try {
+    console.log('🔄 Updating production data...');
+    
     const latestFile = findLatestMasterList();
-    console.log(`Latest master list file: ${latestFile}`);
+    const nodeCount = extractNodeCount(latestFile);
     
-    const productionDataPath = path.join(__dirname, '..', 'src', 'data', 'productionData.ts');
+    console.log(`📊 Found latest master list: ${latestFile} (${nodeCount} nodes)`);
     
-    // Read current content
+    // Read the current productionData.ts
+    const productionDataPath = path.join(__dirname, '../src/data/productionData.ts');
     let content = fs.readFileSync(productionDataPath, 'utf8');
     
-    // Update the import statement
-    const importRegex = /import\('\.\/[^']+'\)/;
-    const newImport = `import('./${latestFile}')`;
+    // Update the file list to put the latest file first
+    const masterListFiles = [
+      `'./${latestFile.replace('.ts', '')}'`,  // Latest file first
+      "'./BJJMasterList_20250716_136Nodes'",
+      "'./BJJMasterList_20250716_135Nodes'",
+      "'./BJJMasterList_20250715_142Nodes'",
+      "'./BJJMasterList_20250715_141Nodes'",
+      "'./BJJMasterList_20250715_134Nodes'",
+      "'./BJJMasterList_20250715_133Nodes'"
+    ];
     
-    if (importRegex.test(content)) {
-      content = content.replace(importRegex, newImport);
-    } else {
-      console.warn('Could not find import statement to update');
-    }
+    // Remove duplicates and create the new array
+    const uniqueFiles = [...new Set(masterListFiles)];
+    const fileArrayString = `[\n      ${uniqueFiles.join(',\n      ')}\n    ]`;
     
-    // Update the comment
-    const commentRegex = /\/\/ Source file: [^\n]+/;
-    const newComment = `// Source file: ${latestFile}.ts`;
+    // Replace the masterListFiles array in the content
+    const updatedContent = content.replace(
+      /const masterListFiles = \[[\s\S]*?\];/,
+      `const masterListFiles = ${fileArrayString};`
+    );
     
-    if (commentRegex.test(content)) {
-      content = content.replace(commentRegex, newComment);
-    }
+    // Update the last updated comment
+    const today = new Date().toISOString().split('T')[0].replace(/-/g, '-');
+    const finalContent = updatedContent.replace(
+      /\/\/ Last updated: \d{4}-\d{2}-\d{2}/,
+      `// Last updated: ${today}`
+    );
     
-    // Write updated content
-    fs.writeFileSync(productionDataPath, content);
+    // Write the updated content back
+    fs.writeFileSync(productionDataPath, finalContent, 'utf8');
     
-    console.log(`✅ Updated productionData.ts to use ${latestFile}`);
-    return latestFile;
+    console.log(`✅ Production data updated to use: ${latestFile}`);
+    console.log(`📅 Last updated: ${today}`);
+    console.log(`🔢 Node count: ${nodeCount}`);
     
   } catch (error) {
-    console.error('Failed to update production data:', error);
-    throw error;
+    console.error('❌ Failed to update production data:', error.message);
+    process.exit(1);
   }
 }
 
