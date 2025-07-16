@@ -538,10 +538,11 @@ module.exports = {
       
       // Also save a copy to src/data/ for production use
       try {
-        // Remove _id fields from concepts for production TS file
+        // Remove _id fields from both concepts and categories for production TS file
         const cleanConcepts = data.skillsMasterList.map(({ _id, ...concept }: any) => concept);
+        const cleanCategories = data.categories.map(({ _id, ...category }: any) => category);
         
-        const tsContent = `export const categories = ${JSON.stringify(data.categories, null, 2)};
+        const tsContent = `export const categories = ${JSON.stringify(cleanCategories, null, 2)};
 
 export interface BJJConcept {
   id: string;
