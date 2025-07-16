@@ -1,54 +1,43 @@
-// Production data file - dynamically imports the latest master list for production
+// Production data file - imports the latest master list for production
 // This file is used by the production build (GitHub >> Vercel + MongoDB)
 // Last updated: 2025-07-16
 
-// Dynamic import of the latest master list
-// This automatically finds the file with the highest node count
-const importLatestMasterList = async () => {
+// Direct import of the latest master list
+import { categories, skillsMasterList } from './BJJMasterList_20250716_144Nodes';
+
+// Export the data directly
+export const getProductionData = async () => {
   try {
-    // Try to import the latest known files in order of recency
-    // The system will automatically use the first available file
-    const masterListFiles = [
-      './BJJMasterList_20250716_144Nodes',
-      './BJJMasterList_20250716_136Nodes',
-      './BJJMasterList_20250716_135Nodes',
-      './BJJMasterList_20250715_142Nodes',
-      './BJJMasterList_20250715_141Nodes',
-      './BJJMasterList_20250715_134Nodes',
-      './BJJMasterList_20250715_133Nodes'
-    ];
+    console.log('✅ Loading production data from BJJMasterList_20250716_144Nodes');
+    console.log('📊 Categories count:', categories?.length || 0);
+    console.log('📊 Concepts count:', skillsMasterList?.length || 0);
     
-    for (const file of masterListFiles) {
-      try {
-        const data = await import(file);
-        console.log(`✅ Successfully loaded production data from: ${file}`);
-        return {
-          categories: data.categories,
-          skillsMasterList: data.skillsMasterList
-        };
-      } catch (error) {
-        console.log(`⚠️  File not available: ${file}`);
-        continue;
-      }
+    if (!categories || !skillsMasterList) {
+      throw new Error('Categories or skillsMasterList is undefined');
     }
     
-    // If all files fail, return empty data
-    console.error('❌ All master list files failed to load');
+    if (categories.length === 0) {
+      throw new Error('Categories array is empty');
+    }
+    
+    if (skillsMasterList.length === 0) {
+      throw new Error('SkillsMasterList array is empty');
+    }
+    
+    console.log('✅ Production data loaded successfully');
     return {
-      categories: [],
-      skillsMasterList: []
+      categories,
+      skillsMasterList
     };
   } catch (error) {
-    console.error('❌ Failed to import latest master list:', error);
+    console.error('❌ Failed to load production data:', error);
+    console.error('❌ Error details:', error instanceof Error ? error.message : 'Unknown error');
     return {
       categories: [],
       skillsMasterList: []
     };
   }
 };
-
-// Export the dynamic import function
-export const getProductionData = importLatestMasterList;
 
 // For backward compatibility, also export the interface
 export interface BJJConcept {
