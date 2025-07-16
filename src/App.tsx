@@ -484,8 +484,8 @@ module.exports = {
 
   // Create backup of current master list
   const createBackup = async () => {
-    if (dataSource !== 'local' || !selectedMasterList) {
-      setSnackbarMessage('Please switch to local mode and select a file first');
+    if (dataSource === 'mongodb') {
+      setSnackbarMessage('Please switch to local files or production data mode first');
       setSnackbarOpen(true);
       return;
     }
@@ -494,17 +494,29 @@ module.exports = {
       setSnackbarMessage('Creating backup...');
       setSnackbarOpen(true);
 
-      // Load the complete data from the current master list file
-      const response = await fetch(`http://localhost:3001/backups/BackupsSkillMasterLists/${selectedMasterList}`);
-      
-      if (!response.ok) {
-        throw new Error(`Failed to load master list: ${response.statusText}`);
+      let data: any;
+
+      if (dataSource === 'production') {
+        // Use current production data in memory
+        data = {
+          categories: categories,
+          skillsMasterList: concepts
+        };
+      } else if (dataSource === 'local' && selectedMasterList) {
+        // Load the complete data from the current master list file
+        const response = await fetch(`http://localhost:3001/backups/BackupsSkillMasterLists/${selectedMasterList}`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to load master list: ${response.statusText}`);
+        }
+        
+        data = await response.json();
+      } else {
+        throw new Error('No data available for backup');
       }
       
-      const data = await response.json();
-      
       if (!data.skillsMasterList || !data.categories) {
-        throw new Error('Invalid master list file structure');
+        throw new Error('Invalid data structure');
       }
 
       // Call the backup API with the complete data

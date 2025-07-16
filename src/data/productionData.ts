@@ -6,10 +6,10 @@
 // This automatically finds the file with the highest node count
 const importLatestMasterList = async () => {
   try {
-    // For now, import the latest known file (141 nodes)
+    // For now, import the latest known file (135 nodes from 2025-07-16)
     // In a more sophisticated setup, this could scan the directory
     // and find the file with the highest node count automatically
-    const latestData = await import('./BJJMasterList_20250715_141Nodes');
+    const latestData = await import('./BJJMasterList_20250716_135Nodes');
     return {
       categories: latestData.categories,
       skillsMasterList: latestData.skillsMasterList
@@ -19,10 +19,10 @@ const importLatestMasterList = async () => {
     
     // Try fallback to any available master list files
     const fallbackFiles = [
+      './BJJMasterList_20250716_135Nodes',
       './BJJMasterList_20250715_141Nodes',
       './BJJMasterList_20250715_134Nodes',
-      './BJJMasterList_20250715_133Nodes',
-      './BJJMasterList_20250715_130Nodes'
+      './BJJMasterList_20250715_133Nodes'
     ];
     
     for (const file of fallbackFiles) {

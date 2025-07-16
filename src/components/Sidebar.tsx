@@ -97,6 +97,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [newCategory, setNewCategory] = useState('');
+  const [newCategoryColor, setNewCategoryColor] = useState('#888888');
+  const [newCategoryXAxisLeft, setNewCategoryXAxisLeft] = useState('Mental');
+  const [newCategoryXAxisRight, setNewCategoryXAxisRight] = useState('Physical');
+  const [newCategoryYAxisBottom, setNewCategoryYAxisBottom] = useState('Self');
+  const [newCategoryYAxisTop, setNewCategoryYAxisTop] = useState('Opponent');
   const [searchText, setSearchText] = useState('');
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [editCategoryId, setEditCategoryId] = useState<string | null>(null);
@@ -138,11 +143,23 @@ const Sidebar: React.FC<SidebarProps> = ({
       console.log('Sidebar - Adding new category:', cat);
       await addCategory({ 
         name: cat, 
-        color: '#888888',
-        xAxis: { left: 'Mental', right: 'Physical' },
-        yAxis: { bottom: 'Self', top: 'Opponent' }
+        color: newCategoryColor,
+        xAxis: { 
+          left: newCategoryXAxisLeft.trim() || 'Mental', 
+          right: newCategoryXAxisRight.trim() || 'Physical' 
+        },
+        yAxis: { 
+          bottom: newCategoryYAxisBottom.trim() || 'Self', 
+          top: newCategoryYAxisTop.trim() || 'Opponent' 
+        }
       });
+      // Reset form
       setNewCategory('');
+      setNewCategoryColor('#888888');
+      setNewCategoryXAxisLeft('Mental');
+      setNewCategoryXAxisRight('Physical');
+      setNewCategoryYAxisBottom('Self');
+      setNewCategoryYAxisTop('Opponent');
       console.log('Sidebar - Category added successfully');
     } else {
       console.log('Sidebar - Category already exists or empty:', cat);
@@ -311,15 +328,84 @@ const Sidebar: React.FC<SidebarProps> = ({
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
-                <input
-                  type="text"
-                  value={newCategory}
-                  onChange={e => setNewCategory(e.target.value)}
-                  placeholder="Add category"
-                  style={{ flex: 1, padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
-                />
-                <button onClick={handleAddCategory} style={{ background: '#4F8EF7', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}>Add</button>
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ marginBottom: 8 }}>
+                  <input
+                    type="text"
+                    value={newCategory}
+                    onChange={e => setNewCategory(e.target.value)}
+                    placeholder="Category name"
+                    style={{ width: '100%', padding: 6, borderRadius: 4, border: '1px solid #333', background: '#181818', color: '#fff' }}
+                  />
+                </div>
+                
+                <div style={{ marginBottom: 8 }}>
+                  <input
+                    type="color"
+                    value={newCategoryColor}
+                    onChange={e => setNewCategoryColor(e.target.value)}
+                    style={{ marginRight: 8 }}
+                    title="Category color"
+                  />
+                  <span style={{ color: '#aaa', fontSize: 12 }}>Category color</span>
+                </div>
+                
+                <div style={{ marginBottom: 8 }}>
+                  <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>X-Axis Labels:</div>
+                  <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                    <input
+                      type="text"
+                      value={newCategoryXAxisLeft}
+                      onChange={e => setNewCategoryXAxisLeft(e.target.value)}
+                      placeholder="Left label"
+                      style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                    />
+                    <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>←→</span>
+                    <input
+                      type="text"
+                      value={newCategoryXAxisRight}
+                      onChange={e => setNewCategoryXAxisRight(e.target.value)}
+                      placeholder="Right label"
+                      style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                    />
+                  </div>
+                </div>
+                
+                <div style={{ marginBottom: 8 }}>
+                  <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>Y-Axis Labels:</div>
+                  <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                    <input
+                      type="text"
+                      value={newCategoryYAxisBottom}
+                      onChange={e => setNewCategoryYAxisBottom(e.target.value)}
+                      placeholder="Bottom label"
+                      style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                    />
+                    <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>↑↓</span>
+                    <input
+                      type="text"
+                      value={newCategoryYAxisTop}
+                      onChange={e => setNewCategoryYAxisTop(e.target.value)}
+                      placeholder="Top label"
+                      style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                    />
+                  </div>
+                </div>
+                
+                <button 
+                  onClick={handleAddCategory} 
+                  style={{ 
+                    background: '#4F8EF7', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: 4, 
+                    padding: '8px 16px', 
+                    cursor: 'pointer',
+                    width: '100%'
+                  }}
+                >
+                  Add Category
+                </button>
               </div>
               {editCategoryId && (
                 <div style={{ marginTop: 8, background: '#333', padding: 12, borderRadius: 4 }}>

@@ -154,6 +154,32 @@ export const categories = [
       "top": "Self-aggrandizing"
     },
     "_id": "local-1752567752667"
+  },
+  {
+    "name": "Competition",
+    "color": "#9e1010",
+    "xAxis": {
+      "left": "Mental",
+      "right": "Physical"
+    },
+    "yAxis": {
+      "bottom": "Self",
+      "top": "Opponent"
+    },
+    "_id": "local-1752634838945"
+  },
+  {
+    "name": "Player Types",
+    "color": "#1b4b01",
+    "xAxis": {
+      "left": "Unskilled",
+      "right": "Skilled"
+    },
+    "yAxis": {
+      "bottom": "Aggro",
+      "top": "Chill"
+    },
+    "_id": "local-1752635201422"
   }
 ];
 
@@ -228,18 +254,6 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#8A2BE2",
     "axis_self_opponent": 0.83,
     "axis_mental_physical": 0.68,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "id": "BJJ-006",
-    "concept": "Fluid Momentum",
-    "description": "Another 3 steps model, from Karel Pravec.  Fluid Momentum, leading to positions, then submissions.  Similar to Flow-Pressure-Finish.\nDefinitely a very valid way to explain how it's supposed to unfold at high levels.  Also Karel loves to train in water, fluid.\n",
-    "short_description": "",
-    "category": "Memes",
-    "color": "#8A2BE2",
-    "axis_self_opponent": 0.89,
-    "axis_mental_physical": 0.59,
     "brightness": 1,
     "size": 1
   },
@@ -784,18 +798,6 @@ export const skillsMasterList: BJJConcept[] = [
     "size": 1
   },
   {
-    "id": "BJJ-006",
-    "concept": "Fluid Momentum",
-    "description": "Another 3 steps model, from Karel Pravec.  Fluid Momentum, leading to positions, then submissions.  Similar to Flow-Pressure-Finish.\nDefinitely a very valid way to explain how it's supposed to unfold at high levels.  Also Karel loves to train in water, fluid.\n",
-    "short_description": "",
-    "category": "Memes",
-    "color": "#8A2BE2",
-    "axis_self_opponent": 0.89,
-    "axis_mental_physical": 0.59,
-    "brightness": 1,
-    "size": 1
-  },
-  {
     "id": "BJJ-042",
     "concept": "Last Battle",
     "description": "Do no fight the last battle.   Realize when the game has changed, when the battleground has shifted.   Accept that your defenses have failed and switch to damage mitigation and recovery.\n\nsimilar to Keenan's \"Win small battles then don't realize are happening\" (about passing over the knee in worm guard)",
@@ -888,30 +890,6 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#FFD700",
     "axis_self_opponent": 0.46,
     "axis_mental_physical": 0.53,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "id": "BJJ-051",
-    "concept": "Test Tien",
-    "description": "How hentai are you?  I suppose this was added by Tien...",
-    "short_description": "",
-    "category": "Memes",
-    "color": "#8A2BE2",
-    "axis_self_opponent": 0.7,
-    "axis_mental_physical": 0.82,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "id": "BJJ-051",
-    "concept": "10/32 Frames",
-    "description": "Well-aligned bone structure to create barriers.  As opposed to relying too much on muscles.  Frames should feel almost effortless once comfortably established.  Yet you constantly have to adjust the angles so they don't get collapsed.  The goal is not to have an impenetrable shield, it's simply to create space for long enough for you to move out of a bad situation or create a counter attack.",
-    "short_description": "",
-    "category": "32 Principles",
-    "color": "#FFD700",
-    "axis_self_opponent": 0.24,
-    "axis_mental_physical": 0.69,
     "brightness": 1,
     "size": 1
   },
@@ -1781,85 +1759,133 @@ export const skillsMasterList: BJJConcept[] = [
   },
   {
     "id": "BJJ-107",
-    "concept": "Cursing Cursor 2",
-    "description": "",
+    "concept": "4-Steps-System",
+    "description": "1. takedown (takes away explosive kinetic energy)\n2. pass the dangerous legs\n3. hierarchy of pins (rated on their ability to harm an opponent on the ground with strikes)\n4. submission\n\n\"beautiful, elegant, and deadly effective\"\n                            - John Danaher\n\nwhere do leg locks fit?",
     "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.57,
-    "axis_mental_physical": 0.7,
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.89,
+    "axis_mental_physical": 0.83,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-108",
+    "concept": "Fluid Momentum",
+    "description": "\"Fluid Momentum, leading to positions, then submissions\"\nAnother model, 3 steps.  Similar to Flow-Pressure-Finish.\nDefinitely a very valid way to explain how it's supposed to unfold at high levels.  Also Karel loves to train in water, fluid ^^\n",
+    "short_description": "",
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.81,
+    "axis_mental_physical": 0.68,
     "brightness": 1,
     "size": 1
   },
   {
     "id": "BJJ-109",
-    "concept": "test server 1",
-    "description": "",
+    "concept": "Flow-Pressure-Finish",
+    "description": "Antother Triadic Model, Flow–Pressure–Finish model is with the Ribeiro Ryuuha.\n\n\nFlow:\nMovement without resistance; maintaining balance and adapting to the opponent.  Emphasis on staying mobile and relaxed, especially early in exchanges. Supple.\n\nPressure:\nOnce the opportunity arises, apply pressure to control and fatigue the opponent.  This includes top pressure, positional dominance, and even psychological pressure.\n\nFinish:\nAfter pressure breaks down resistance, go for the submission cleanly and decisively.  Ideally the submission is not forced but the result of the first two phases being executed correctly.\n\n\nMeasured, technical, and composed. Rather than forcing submissions, they emphasize structure, timing, and progressive dominance. You \"flow\" to find openings, apply \"pressure\" to trap your opponent, then \"finish\" once resistance is nullified and they have no more options.\n",
     "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.61,
-    "axis_mental_physical": 0.75,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "id": "BJJ-110",
-    "concept": "test2",
-    "description": "",
-    "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.57,
-    "axis_mental_physical": 0.74,
-    "brightness": 1,
-    "size": 1
-  },
-  {
-    "id": "BJJ-111",
-    "concept": "test3",
-    "description": "",
-    "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.58,
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.81,
     "axis_mental_physical": 0.79,
     "brightness": 1,
     "size": 1
   },
   {
-    "id": "BJJ-112",
-    "concept": "test 45",
-    "description": "",
+    "id": "BJJ-110",
+    "concept": "Kuzushi-Tsukuri-Kake",
+    "description": "We hear a lot of people talk about Kuzushi (often mispronunced Kazushi like Sakuraba's firt name, lol)\n\nNot enough focus is on the either side of the equation according to Kano, i.e. Kuzushi disrupts the other, Tsukuri is about building yourself.\n\nThat is fucking deep.\nI'm obsesses with this idea.\n\nto be even more precise and a total nerd about this, Kano Jigoro wrote that Tsukuri (building) is made of two parts:\n(Kuzushi) disrupting the opponent + Jibun wo Tsukuru (building yourself) = Tsukuri (Set-Up)\n\nonce the set-up is accomplished, you are in strong position to generate force, they are compromised, then a technique can be executed (kake).\n\nsource: Kodokan judo website, 30 years in Japan.\n\n\n---https://www.kuzushi.xyz/2019/10/31/kuzushi-tsukuri-kake-the-doctrine-and-purpose-of-judo/\n\nThe doctrine and purpose of Judo.\n\n崩し Kuzushi comes from the verb 崩す (Kuzusu) meaning…many things : destroy, tear down, pull apart, sit at ease, lose one’s balance, write in cursive style, break a big bill in small bills, get sick.\n\n作る Tsukuru can mean : Make, build, produce, establish, set-up, found, form, write, compose, etc.\n\n掛ける Kakeru also has multipel uses, most relevant ones here would be : start (an engine), turn (a switch on), put ( a burden) on someone, catch (a fish in a net, a bear in a trap)\n\n「崩し」imbalance (the opponent) | Break | Disrupt\n\n「作り」set-up (your own body) | Set | Prepare\n\n「掛け」perform (the technique) | Do | Execute\n\n技の原理\n\n「身体と精神を最も有効に働かせる」、これが柔道の根本原理で、この原理を技の上に生かしたのが「作り」と「掛け」の理論となります。\n\n「作り」は、相手の体を不安定にする「くずし」と、自分の体が技を施すのに最も良い位置と姿勢をとる「自分を作る」ことから成り立っています。 「掛け」は、この作られた一瞬に最後の決め手を施すことをいいます。\n\nこの「作り」と「掛け」は、柔道の根本原理に従った技術原理ということができます。\n\n互いに、精力善用・自他共栄の根本原理に即した作りと掛けを競い合う間に、自然とこの根本原理を理解し、体得して、社会百般の実生活に生かそうとしています。\n\n「技から道に入る」わけです。\n\nThe principle of Waza\n\n(www.kuzushi.xyz translation)\n\nThe “optimal use of body and mind” is a foundational principle of Judo, which comes to life through the theories of Tsukuri (set-up) and Kake (performing the technique).\n\nTsukuri is made of both breaking the balance of the other (Kuzushi) and setting up one’s own body with the best position and posture (Jibun wo  tsukuru – Building oneself).\n\nKake (perform) is what we call the culmination of that one instant which we set-up.   \n\nWe can call Tsukuri and Kake the technical principles that follow the basic principles of Judo.\n\nBreak (the other), Set (oneself), Catch (in our trap)\n\nBreak (the other), Set (oneself), do (the technique)\n\nBreak (the other), Set (oneself), execute\n\nTherefore I propose these mnemonics :\nbreak – set – catch\n\n[break~set] – do\n\n[set~break] – execute\n\n(the order of the first two is interchangeable)\n\nThere are three ways, traditionally, of making kuzushi happen:\n\ndirect action (e.g. pulling or pushing while entering for a throw);\n\ninducing opponent’s action (e.g. a feint or combination attack);\n\ndirect action by opponent (e.g. a counter throw).\n\nBy Jelaludo\n\n\n",
     "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.6,
-    "axis_mental_physical": 0.77,
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.96,
+    "axis_mental_physical": 0.68,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-111",
+    "concept": "Positional Dominance",
+    "description": "\"Position before submission\"\n\nA generic model of what to prioritize.  Limited but still useful.\n\nCaveats; high-level competitions have plenty of examples of explosive submissions coming out of nowhere fast.",
+    "short_description": "",
+    "category": "Strategy",
+    "color": "#FF8C00",
+    "axis_self_opponent": 0.72,
+    "axis_mental_physical": 0.6,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-112",
+    "concept": "Micro-Adjustments",
+    "description": "a white belt on reddit talked about winning a round by doing \"micro-adjustments\", and it was seen as cringe and boasting and vague.    Yet doing micro-adjustments is entirely legit, small rotation of the shoulder girdle, slight weight shift, forearm angle change as they try to collapse your frames, \"micro adjustments2 *are everywhere.  It just felt funny to the m̶i̶n̶d̶h̶i̶v̶e̶c community because it came from mere white belt.  Boastful? sure, but cut him some slack ^^",
+    "short_description": "",
+    "category": "Memes",
+    "color": "#8A2BE2",
+    "axis_self_opponent": 0.3,
+    "axis_mental_physical": 0.2,
     "brightness": 1,
     "size": 1
   },
   {
     "id": "BJJ-113",
-    "concept": "test140",
-    "description": "",
+    "concept": "Two Inches",
+    "description": "\"A black belt only covers two inches of your ass. You have to cover the rest.\"  Royce Gracie",
     "short_description": "",
-    "category": "Internal",
-    "color": "#4F8EF7",
-    "axis_self_opponent": 0.61,
-    "axis_mental_physical": 0.78,
+    "category": "Black Belt Wisdom",
+    "color": "#FF6B35",
+    "axis_self_opponent": 0.77,
+    "axis_mental_physical": 0.65,
     "brightness": 1,
     "size": 1
   },
   {
     "id": "BJJ-114",
-    "concept": "",
-    "description": "",
+    "concept": "You will be hunted",
+    "description": "Coloured Belt younger folks will hunt your like you were a video game achievement: \"Tapped my first black belt!\".  And it is ok.\n\n\"A purple belt is a mini-black\", parts of their game might be sharper than yours.",
     "short_description": "",
-    "category": "Grappling Primitives",
-    "color": "#848a94",
-    "axis_self_opponent": 0.56,
-    "axis_mental_physical": 0.76,
+    "category": "Black Belt Wisdom",
+    "color": "#FF6B35",
+    "axis_self_opponent": 0.61,
+    "axis_mental_physical": 0.55,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-115",
+    "concept": "Uncomfortable Deference",
+    "description": "In some places you get uncomfortable deference for being a black belt, lining up in a special spot, people asking you for authorization to get on the mats.  Every gym is a bit different.  Don't let it get to your head.",
+    "short_description": "",
+    "category": "Black Belt Wisdom",
+    "color": "#FF6B35",
+    "axis_self_opponent": 0.59,
+    "axis_mental_physical": 0.26,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-116",
+    "concept": "Keep Learning.",
+    "description": "Advice for each belt : \nWhite : Relax\nBlue : Relax\nPurple : Relax\nBrown : Relax\nBlack : Keep Learning\n-- Jocko?\n\nnot a bad model ^^\nkeep learning, it never stops!",
+    "short_description": "",
+    "category": "Black Belt Wisdom",
+    "color": "#FF6B35",
+    "axis_self_opponent": 0.67,
+    "axis_mental_physical": 0.75,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-117",
+    "concept": "Noob Spaz",
+    "description": "Uncontrolled danger, the worst kind.\n\nExplodes, flails, muscles through everything, refuses to tap... *sigh*",
+    "short_description": "",
+    "category": "Black Belt Wisdom",
+    "color": "#c3e70d",
+    "axis_self_opponent": 0.11,
+    "axis_mental_physical": 0.14,
     "brightness": 1,
     "size": 1
   }

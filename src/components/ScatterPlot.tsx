@@ -48,7 +48,7 @@ interface LabelItem {
 }
 
 interface LabelMode {
-  type: 'off' | 'hover' | 'selected' | 'smart' | 'all' | 'clustered';
+  type: 'hover' | 'all';
   description: string;
 }
 
@@ -56,12 +56,20 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
   const [edit, setEdit] = useState<BJJConcept | null>(concept);
   const [customCategory, setCustomCategory] = useState('');
   const [categoryMode, setCategoryMode] = useState<'select' | 'custom'>('select');
+  const [customCategoryXAxisLeft, setCustomCategoryXAxisLeft] = useState('Mental');
+  const [customCategoryXAxisRight, setCustomCategoryXAxisRight] = useState('Physical');
+  const [customCategoryYAxisBottom, setCustomCategoryYAxisBottom] = useState('Self');
+  const [customCategoryYAxisTop, setCustomCategoryYAxisTop] = useState('Opponent');
 
   React.useEffect(() => {
     console.log('ConceptModal - Modal opened with concept:', concept);
     setEdit(concept);
     setCategoryMode('select');
     setCustomCategory('');
+    setCustomCategoryXAxisLeft('Mental');
+    setCustomCategoryXAxisRight('Physical');
+    setCustomCategoryYAxisBottom('Self');
+    setCustomCategoryYAxisTop('Opponent');
   }, [concept]);
 
   // Debug logging for edit state changes
@@ -167,20 +175,69 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
             </>
           ) : (
             <>
-              <input
-                value={customCategory}
-                onChange={e => setCustomCategory(e.target.value)}
-                placeholder="Enter new category name"
-                style={{ width: '100%', padding: 6, marginBottom: 8 }}
-              />
-              <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              <div style={{ marginBottom: 8 }}>
+                <input
+                  value={customCategory}
+                  onChange={e => setCustomCategory(e.target.value)}
+                  placeholder="Category name"
+                  style={{ width: '100%', padding: 6, marginBottom: 8 }}
+                />
+              </div>
+              
+              <div style={{ marginBottom: 8 }}>
                 <input
                   type="color"
                   value={edit.color}
                   onChange={e => setEdit({ ...edit, color: e.target.value })}
-                  style={{ width: 40, height: 32, border: 'none', borderRadius: 4 }}
+                  style={{ width: 40, height: 32, border: 'none', borderRadius: 4, marginRight: 8 }}
                   title="Category color"
                 />
+                <span style={{ color: '#aaa', fontSize: 12 }}>Category color</span>
+              </div>
+              
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>X-Axis Labels:</div>
+                <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                  <input
+                    type="text"
+                    value={customCategoryXAxisLeft}
+                    onChange={e => setCustomCategoryXAxisLeft(e.target.value)}
+                    placeholder="Left label"
+                    style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                  />
+                  <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>←→</span>
+                  <input
+                    type="text"
+                    value={customCategoryXAxisRight}
+                    onChange={e => setCustomCategoryXAxisRight(e.target.value)}
+                    placeholder="Right label"
+                    style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                  />
+                </div>
+              </div>
+              
+              <div style={{ marginBottom: 8 }}>
+                <div style={{ fontSize: 12, color: '#aaa', marginBottom: 4 }}>Y-Axis Labels:</div>
+                <div style={{ display: 'flex', gap: 4, marginBottom: 4 }}>
+                  <input
+                    type="text"
+                    value={customCategoryYAxisBottom}
+                    onChange={e => setCustomCategoryYAxisBottom(e.target.value)}
+                    placeholder="Bottom label"
+                    style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                  />
+                  <span style={{ color: '#666', fontSize: 12, alignSelf: 'center' }}>↑↓</span>
+                  <input
+                    type="text"
+                    value={customCategoryYAxisTop}
+                    onChange={e => setCustomCategoryYAxisTop(e.target.value)}
+                    placeholder="Top label"
+                    style={{ flex: 1, padding: 4, borderRadius: 4, border: '1px solid #444', background: '#222', color: '#fff', fontSize: 12 }}
+                  />
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
                 <button type="button" onClick={async () => {
                   if (customCategory.trim()) {
                     console.log('ConceptModal - Creating category:', customCategory.trim());
@@ -189,8 +246,14 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
                       await addCategory({
                         name: customCategory.trim(),
                         color: edit.color,
-                        xAxis: { left: 'Mental', right: 'Physical' },
-                        yAxis: { bottom: 'Self', top: 'Opponent' }
+                        xAxis: { 
+                          left: customCategoryXAxisLeft.trim() || 'Mental', 
+                          right: customCategoryXAxisRight.trim() || 'Physical' 
+                        },
+                        yAxis: { 
+                          bottom: customCategoryYAxisBottom.trim() || 'Self', 
+                          top: customCategoryYAxisTop.trim() || 'Opponent' 
+                        }
                       });
                       console.log('ConceptModal - Category created successfully');
                     } else {
@@ -199,6 +262,11 @@ const ConceptModal: React.FC<ModalProps & { side?: 'left' | 'right' | 'center', 
                     // Update the current concept to use the new category
                     setEdit({ ...edit, category: customCategory.trim() });
                     setCategoryMode('select');
+                    // Reset axis label state
+                    setCustomCategoryXAxisLeft('Mental');
+                    setCustomCategoryXAxisRight('Physical');
+                    setCustomCategoryYAxisBottom('Self');
+                    setCustomCategoryYAxisTop('Opponent');
                   }
                 }}>Create Category</button>
                 <button type="button" onClick={() => setCategoryMode('select')}>Cancel</button>
@@ -366,34 +434,14 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
     let conceptsToLabel: BJJConcept[] = [];
     
     switch (labelMode.type) {
-      case 'off':
-        return [];
       case 'hover':
         if (hovered) {
           const hoveredConcept = concepts.find(c => c.id === hovered);
           if (hoveredConcept) conceptsToLabel = [hoveredConcept];
         }
         break;
-      case 'selected':
-        if (selected) conceptsToLabel = [selected];
-        break;
-      case 'smart':
-        // Show hovered, selected, and top 20% by priority
-        const priorities = concepts.map(c => getLabelPriority(c, hovered, selected)).sort((a, b) => b - a);
-        const priorityThreshold = priorities[Math.floor(priorities.length * 0.2)]; // Top 20%
-        conceptsToLabel = concepts.filter(c => 
-          hovered === c.id || 
-          (selected && selected.id === c.id) ||
-          getLabelPriority(c, hovered, selected) >= priorityThreshold
-        );
-        break;
       case 'all':
         conceptsToLabel = concepts;
-        break;
-      case 'clustered':
-        // Group nearby concepts and show representative labels
-        const clusters = clusterNearbyConcepts(concepts, 50); // 50px threshold
-        conceptsToLabel = clusters.map(cluster => cluster.representative);
         break;
     }
 

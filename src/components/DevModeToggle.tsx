@@ -209,150 +209,158 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
             {dataSource === 'production' && 'Using bundled production data'}
           </Typography>
 
-                        {dataSource === 'local' && (
+                        {(dataSource === 'local' || dataSource === 'production') && (
                 <>
-                  <Divider sx={{ my: 2 }} />
-                  
-                  <Typography variant="subtitle2" gutterBottom>
-                    Master List Selection: (Debug: {masterLists.length} files found)
-                  </Typography>
-                  
-                  {masterLists.length === 0 ? (
-                    <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        No master list files found. Loading... (Check console for debug info)
+                  {dataSource === 'local' && (
+                    <>
+                      <Divider sx={{ my: 2 }} />
+                      
+                      <Typography variant="subtitle2" gutterBottom>
+                        Master List Selection: (Debug: {masterLists.length} files found)
                       </Typography>
-                      <Button 
-                        size="small" 
-                        variant="outlined" 
-                        onClick={() => window.location.reload()}
-                      >
-                        Refresh Page
-                      </Button>
-                    </Box>
-                  ) : (
-                    <Box display="flex" gap={1} flexWrap="wrap" mb={2}>
-                      {masterLists.map((file) => (
-                        <Chip
-                          key={file.name}
-                          label={file.displayName}
-                          onClick={() => setSelectedMasterList(file.name)}
-                          color={selectedMasterList === file.name ? 'primary' : 'default'}
-                          variant={selectedMasterList === file.name ? 'filled' : 'outlined'}
-                          size="small"
-                        />
-                      ))}
+                      
+                      {masterLists.length === 0 ? (
+                        <Box sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                            No master list files found. Loading... (Check console for debug info)
+                          </Typography>
+                          <Button 
+                            size="small" 
+                            variant="outlined" 
+                            onClick={() => window.location.reload()}
+                          >
+                            Refresh Page
+                          </Button>
+                        </Box>
+                      ) : (
+                        <Box display="flex" gap={1} flexWrap="wrap" mb={2}>
+                          {masterLists.map((file) => (
+                            <Chip
+                              key={file.name}
+                              label={file.displayName}
+                              onClick={() => setSelectedMasterList(file.name)}
+                              color={selectedMasterList === file.name ? 'primary' : 'default'}
+                              variant={selectedMasterList === file.name ? 'filled' : 'outlined'}
+                              size="small"
+                            />
+                          ))}
+                        </Box>
+                      )}
+
+                  {selectedFile && (
+                    <Box mb={2}>
+                      <Typography variant="caption" color="text.secondary">
+                        Last modified: {new Date(selectedFile.lastModified).toLocaleString()}
+                      </Typography>
                     </Box>
                   )}
+                    </>
+                  )}
 
-              {selectedFile && (
-                <Box mb={2}>
-                  <Typography variant="caption" color="text.secondary">
-                    Last modified: {new Date(selectedFile.lastModified).toLocaleString()}
+                  <Divider sx={{ my: 2 }} />
+
+                  {/* Backup Management */}
+                  <Typography variant="subtitle2" gutterBottom>
+                    Backup Management:
                   </Typography>
-                </Box>
-              )}
+                  
+                  <Box display="flex" flexDirection="column" gap={2}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      startIcon={<BackupIcon />}
+                      onClick={() => {
+                        onCreateBackup?.();
+                        handleClose();
+                      }}
+                      title={dataSource === 'production' ? "Create a backup of the current production data" : "Create a backup of the current master list"}
+                    >
+                      Create Backup
+                    </Button>
 
-              <Divider sx={{ my: 2 }} />
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      startIcon={<CloudUploadIcon />}
+                      onClick={() => setShowBackups(!showBackups)}
+                      title="View available backups"
+                    >
+                      {showBackups ? 'Hide Backups' : 'View Backups'} ({backups.length})
+                    </Button>
 
-              {/* Backup Management */}
-              <Typography variant="subtitle2" gutterBottom>
-                Backup Management:
-              </Typography>
-              
-              <Box display="flex" flexDirection="column" gap={2}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<BackupIcon />}
-                  onClick={() => {
-                    onCreateBackup?.();
-                    handleClose();
-                  }}
-                  title="Create a backup of the current master list"
-                >
-                  Create Backup
-                </Button>
+                    {showBackups && backups.length > 0 && (
+                      <Box sx={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #444', borderRadius: 1, p: 1 }}>
+                        {backups.map((backup) => (
+                          <Box key={backup.name} sx={{ mb: 1, p: 1, border: '1px solid #333', borderRadius: 1 }}>
+                            <Typography variant="caption" display="block" color="text.secondary">
+                              {backup.metadata ? `${backup.metadata.date} ${backup.metadata.time} (${backup.metadata.nodeCount} nodes)` : backup.name}
+                            </Typography>
+                            <Typography variant="body2" sx={{ mb: 1 }}>
+                              {backup.name}
+                            </Typography>
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              onClick={() => {
+                                onRestoreFromBackup?.(backup.name);
+                                handleClose();
+                              }}
+                              title="Restore from this backup"
+                            >
+                              Restore
+                            </Button>
+                          </Box>
+                        ))}
+                      </Box>
+                    )}
 
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<CloudUploadIcon />}
-                  onClick={() => setShowBackups(!showBackups)}
-                  title="View available backups"
-                >
-                  {showBackups ? 'Hide Backups' : 'View Backups'} ({backups.length})
-                </Button>
+                    {showBackups && backups.length === 0 && (
+                      <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
+                        No backups found
+                      </Typography>
+                    )}
+                  </Box>
 
-                {showBackups && backups.length > 0 && (
-                  <Box sx={{ maxHeight: 200, overflowY: 'auto', border: '1px solid #444', borderRadius: 1, p: 1 }}>
-                    {backups.map((backup) => (
-                      <Box key={backup.name} sx={{ mb: 1, p: 1, border: '1px solid #333', borderRadius: 1 }}>
-                        <Typography variant="caption" display="block" color="text.secondary">
-                          {backup.metadata ? `${backup.metadata.date} ${backup.metadata.time} (${backup.metadata.nodeCount} nodes)` : backup.name}
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 1 }}>
-                          {backup.name}
-                        </Typography>
+                  {dataSource === 'local' && (
+                    <>
+                      <Divider sx={{ my: 2 }} />
+
+                      {/* Data Conversion */}
+                      <Typography variant="subtitle2" gutterBottom>
+                        Data Conversion:
+                      </Typography>
+                      
+                      <Box display="flex" flexDirection="column" gap={2}>
                         <Button
-                          size="small"
                           variant="outlined"
+                          fullWidth
+                          startIcon={<CloudUploadIcon />}
                           onClick={() => {
-                            onRestoreFromBackup?.(backup.name);
+                            onConvertToMongo?.();
                             handleClose();
                           }}
-                          title="Restore from this backup"
+                          title="Convert current local data to MongoDB format"
                         >
-                          Restore
+                          Convert to MongoDB
+                        </Button>
+                        
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<StorageIcon />}
+                          onClick={() => {
+                            onSeedFromLocal?.();
+                            handleClose();
+                          }}
+                          title="Seed MongoDB with current local data"
+                        >
+                          Seed MongoDB
                         </Button>
                       </Box>
-                    ))}
-                  </Box>
-                )}
-
-                {showBackups && backups.length === 0 && (
-                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', py: 2 }}>
-                    No backups found
-                  </Typography>
-                )}
-              </Box>
-
-              <Divider sx={{ my: 2 }} />
-
-              {/* Data Conversion */}
-              <Typography variant="subtitle2" gutterBottom>
-                Data Conversion:
-              </Typography>
-              
-              <Box display="flex" flexDirection="column" gap={2}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<CloudUploadIcon />}
-                  onClick={() => {
-                    onConvertToMongo?.();
-                    handleClose();
-                  }}
-                  title="Convert current local data to MongoDB format"
-                >
-                  Convert to MongoDB
-                </Button>
-                
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<StorageIcon />}
-                  onClick={() => {
-                    onSeedFromLocal?.();
-                    handleClose();
-                  }}
-                  title="Seed MongoDB with current local data"
-                >
-                  Seed MongoDB
-                </Button>
-              </Box>
-            </>
-          )}
+                    </>
+                  )}
+                </>
+              )}
 
           {dataSource === 'mongodb' && (
             <>
