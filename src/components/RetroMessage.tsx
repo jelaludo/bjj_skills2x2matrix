@@ -30,14 +30,14 @@ const RetroMessage: React.FC = () => {
   ];
 
   const messages_ja = [
-    "すべてのモデルは誤り、ただし役立つものもある",
+    "すべてのモデルは間違ってるけど、役に立つものもある",
     "練習を続けよう",
     "あきらめるな",
-    "意識的な練習を",
+    "意識して練習を",
     "脳を起動せよ",
-    "考えて、練習して、繰り返せ",
-    "理論だけじゃ勝てない",
-    "読むより転がれ",
+    "考えて、練習して、繰り返す",
+    "理論だけじゃ無理",
+    "読んだり、ビデオを見たりするより、練習しよう",
     "完璧より毎日",
     "スクリーン時間よりマット時間",
     "とにかく道場へ",
@@ -45,7 +45,7 @@ const RetroMessage: React.FC = () => {
     "呼吸して、感じて、調整する", 
     "神経回路を鍛えよう",
     "脳に寝技の型を刻め",
-    "プルーフ・オブ・ワーク( 作業証明)はマットの上に", 
+    "プルーフ・オブ・ワーク( 作業証明)はマットの上にも",
     "練習仲間を大切に" 
   ];
 
@@ -175,13 +175,13 @@ const RetroMessage: React.FC = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 font-mono z-50">
+    <div className="fixed inset-0 font-mono z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}>
       <div 
         className="absolute bg-black border border-white rounded p-4 md:p-6 max-w-xs md:max-w-lg mx-2"
         style={{
           fontFamily: 'Courier New, monospace',
           textShadow: '0 0 2px rgba(255, 255, 255, 0.5)',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundColor: 'rgba(0, 0, 0, 0.80)',
           position: 'fixed',
           top: matrixPosition.top + (matrixPosition.height / 2),
           left: matrixPosition.left + (matrixPosition.width / 2),
@@ -197,22 +197,30 @@ const RetroMessage: React.FC = () => {
             <span className="text-white ml-2 text-xs md:text-sm">./motivational_message</span>
           </div>
           <div style={{ minHeight: '1.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span className="text-blue-400" style={{ wordBreak: 'break-word' }}>{text}</span>
+            <span style={{ color: 'green', wordBreak: 'break-word' }}>{text}</span>
             {isTyping && !textJa && (
               <span 
-                className="inline-block w-1 md:w-2 h-4 md:h-6 bg-blue-400 ml-1"
                 style={{
+                  display: 'inline-block',
+                  width: '4px',
+                  height: '16px',
+                  backgroundColor: 'green',
+                  marginLeft: '4px',
                   animation: 'blink 1s infinite'
                 }}
               ></span>
             )}
           </div>
           <div style={{ minHeight: '1.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-            <span className="text-green-400" style={{ wordBreak: 'break-word' }}>{textJa}</span>
+            <span style={{ color: 'green', wordBreak: 'break-word' }}>{textJa}</span>
             {isTyping && textJa && (
               <span 
-                className="inline-block w-1 md:w-2 h-4 md:h-6 bg-green-400 ml-1"
                 style={{
+                  display: 'inline-block',
+                  width: '4px',
+                  height: '16px',
+                  backgroundColor: 'green',
+                  marginLeft: '4px',
                   animation: 'blink 1s infinite'
                 }}
               ></span>
