@@ -194,19 +194,6 @@
         "top": "Free"
       },
       "_id": "local-1752742949370"
-    },
-    {
-      "name": "Noteworthy Grapplers",
-      "color": "#ff00d4",
-      "xAxis": {
-        "left": "Old School",
-        "right": "Modern"
-      },
-      "yAxis": {
-        "bottom": "No Gi",
-        "top": "Gi"
-      },
-      "_id": "local-1752744648882"
     }
   ],
   "skillsMasterList": [
@@ -1935,90 +1922,6 @@
       "color": "#9e1010",
       "axis_self_opponent": 0.79,
       "axis_mental_physical": 0.71,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-121",
-      "concept": "Private Lessons w/Champions",
-      "description": "$200 to $500+/h\n\nGreat if you can afford it.  Some Champions make for fantastic coaches (they adapt their teachings to you) others not so much (they'll just teach their same go-to to everyone).",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.77,
-      "axis_mental_physical": 0.99,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-122",
-      "concept": "@craighutchisonjj",
-      "description": "Great IG follow.  Concise and valuable tips.",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.04,
-      "axis_mental_physical": 0.06,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-123",
-      "concept": "BJJ Fanatics",
-      "description": "  Danaher                     (hours) \n1. System : Back Attack\t\t8 \n2. System : Leglock\t\t10\n3. System : Kimura\t\t10\n4. System : Front Headlock\t10\n5. System : Triangle\t\t10\n6. System : Armbar\t\t11.5\n\nHours upon hours of instructionals.\n\nthe \"correct\" way to consumer such long instructionals is to watch until you get some insight, or something specific to work you >> go physically do it.\n\nonce you've reasonably figured out this new piece, keep watching.\n\nnow, you could say that the 11.5 hours of Armbar instructions by Danaher could be distilled into 2, possibly.   it remains that there are hundreds of hours worth of material to be seen on BJJ Fanatics.\n\n\n",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.99,
-      "axis_mental_physical": 0.71,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-124",
-      "concept": "BeltChecker.com",
-      "description": "a cool community, an open-source alternative to the IBJJF.  Register, join the discussions, find new people to visit when traveling worldwide.  Linked with the Globetrotters.\nbjjglobetrotters.com",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.38,
-      "axis_mental_physical": 0.21,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-125",
-      "concept": "bjjglobetrotters.com",
-      "description": "www.bjjglobetrotters.com/bjjcamps\n\ndays or weeklongs camps in beautiful venues.\nHundreds to thousands of $\n\nlooks like so much fun.  One day I shall make the time.",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.99,
-      "axis_mental_physical": 0.87,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-126",
-      "concept": "YT @BJJGlobetrotters",
-      "description": "a great YouTube Channel with dozens of videos from @BJJGBlobetrotters camps, typically 40m  (20m to 1h+) \n\nsome gems in there.",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.99,
-      "axis_mental_physical": 0.11,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-127",
-      "concept": "r/bjj",
-      "description": "a bjj community... 866k members (Summer 2025)\nsome great discussions, some silly memes.",
-      "short_description": "",
-      "category": "Resources",
-      "color": "#4f7e16",
-      "axis_self_opponent": 0.24,
-      "axis_mental_physical": 0.03,
       "brightness": 1,
       "size": 1
     }

@@ -207,6 +207,19 @@
         "top": "Gi"
       },
       "_id": "local-1752744648882"
+    },
+    {
+      "name": "Anatomy Awareness",
+      "color": "#848a94",
+      "xAxis": {
+        "left": "External",
+        "right": "Internal"
+      },
+      "yAxis": {
+        "bottom": "Muscles",
+        "top": "Bones"
+      },
+      "_id": "local-1752904997059"
     }
   ],
   "skillsMasterList": [
@@ -585,10 +598,10 @@
     {
       "id": "BJJ-033",
       "concept": "Real-Time Learning",
-      "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.",
+      "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.  OODA Loop Adjacent.  (Observe-Orient-Decide-Act)",
       "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
+      "category": "Tactics",
+      "color": "#8A2BE2",
       "axis_self_opponent": 0.86,
       "axis_mental_physical": 0.32,
       "brightness": 1,
@@ -2019,6 +2032,54 @@
       "color": "#4f7e16",
       "axis_self_opponent": 0.24,
       "axis_mental_physical": 0.03,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-128",
+      "concept": "Passing Definition",
+      "description": "Occupying the space between the knee and the armpit.  Regardless of the dozens of passes, they all accomplish some version of doing this; you started with their legs or hands as obstacles between you and the space between their knees/hip and armpit.\n\nIf you've passed the knee but they're still framing with their hands, you haven't really passed.\n\nIf you do some fancy reverse de la worm grip and you've reached the stage where you got above their knee, you've lowkey already passed, essentially. (\"Omae no Gaado ha mou shinderu\")",
+      "short_description": "",
+      "category": "Grappling Primitives",
+      "color": "#848a94",
+      "axis_self_opponent": 0.35,
+      "axis_mental_physical": 0.5,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-129",
+      "concept": "Suffocating Comfort",
+      "description": "You're chilling, they're dying.\n\nThe idea is to maintain a relaxed, energy-efficient position while forcing our opponent into a state of escalating discomfort and desperation. Rather than chasing submissions or transitions aggressively, the focus is on creating a biomechanical and psychological trap: the opponent feels pressure mounting, breathing restricted, and escape options dwindling.   All while the controlling grappler expends minimal effort. \n\nThis can occur from dominant pins, Dagestani Cuffs, tight bodylocks, spine-twists; any slow-cooking positional advantage. The essence of Suffocating Comfort is that asymmetry where one person suffers and scrambles, while the other remains calm, heavy, and opportunistic, waiting for fatigue or panic to create the opening.\n\n\nDead Weight.\n\"Make sure they're always uncomfortable\"\nPain maximization.\nRelaxed torture; your leisure is their torment.",
+      "short_description": "",
+      "category": "Strategy",
+      "color": "#FF8C00",
+      "axis_self_opponent": 0.23,
+      "axis_mental_physical": 0.19,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-130",
+      "concept": "Young Competition Beast",
+      "description": "Something to prove.  Great and always ready to show it off, accumulating trophies, be it literal cheap ones from the IBJJF, or figurative ones like tapping the slightly out-of-shape hobbyist browns and blacks.",
+      "short_description": "",
+      "category": "Player Types",
+      "color": "#1b4b01",
+      "axis_self_opponent": 0.9,
+      "axis_mental_physical": 0.16,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-131",
+      "concept": "Dominant Champion",
+      "description": "So good they don't really need to be aggro.  Gordon Ryan's competition style stands out in this way.",
+      "short_description": "",
+      "category": "Player Types",
+      "color": "#1b4b01",
+      "axis_self_opponent": 0.99,
+      "axis_mental_physical": 0.96,
       "brightness": 1,
       "size": 1
     }

@@ -786,7 +786,7 @@ export const ScatterPlot: React.FC<ScatterPlotProps> = ({
   }
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div ref={containerRef} className="scatter-plot-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
       <svg
         ref={svgRef}
         width={size.width}

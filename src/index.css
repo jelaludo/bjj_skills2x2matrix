@@ -28,3 +28,22 @@ html, body {
   height: 100%;
   width: 100%;
 }
+
+/* Custom transition durations for RetroMessage */
+.transition-opacity {
+  transition-property: opacity;
+}
+
+.duration-2000 {
+  transition-duration: 2000ms;
+}
+
+/* Custom blink animation for terminal cursor */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}

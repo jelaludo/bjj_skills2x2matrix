@@ -1,5 +1,24 @@
 # Getting Started with Create React App
 
+## 🚨 CRITICAL: File Segregation System
+
+**NEVER mix _id fields between local and production files. This is a fundamental system rule.**
+
+### File Types:
+- **Local Files (JSON)**: `backups/BackupsSkillMasterLists/*.json` - WITH `_id` fields
+- **Production Files (TS)**: `src/data/*.ts` - WITHOUT `_id` fields
+
+### Backup System:
+When creating a backup, the system automatically creates TWO files:
+- JSON file (with `_id`) for local development
+- TS file (no `_id`) for production builds
+
+**The file segregation is intentional and necessary. Don't try to "fix" this by making files consistent.**
+
+📖 **See `FILE_SEGREGATION_SYSTEM.md` for complete documentation.**
+
+---
+
 ## ⚠️ IMPORTANT: Always Run Commands from the Correct Directory
 
 **CRITICAL:** All npm commands (including `npm start`) must be run from the `bjj-skill-matrix` folder, NOT the parent directory.

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, useTheme, useMediaQuery, Drawer } from '@mui/material';
+import RetroMessage from '../components/RetroMessage';
 
 interface HeaderProps {
   onMobileMenuToggle?: () => void;
@@ -100,6 +101,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ sidebar, header, children }) =>
           {children}
         </Box>
       </Box>
+      
+      {/* Retro Message Overlay */}
+      <RetroMessage />
     </Box>
   );
 };

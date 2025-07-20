@@ -207,6 +207,19 @@
         "top": "Gi"
       },
       "_id": "local-1752744648882"
+    },
+    {
+      "name": "Anatomy Awareness",
+      "color": "#848a94",
+      "xAxis": {
+        "left": "External",
+        "right": "Internal"
+      },
+      "yAxis": {
+        "bottom": "Muscles",
+        "top": "Bones"
+      },
+      "_id": "local-1752904997059"
     }
   ],
   "skillsMasterList": [
@@ -585,10 +598,10 @@
     {
       "id": "BJJ-033",
       "concept": "Real-Time Learning",
-      "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.",
+      "description": "Learn something about your opponent from each grip and move and reaction. Update your knowledge about them in real time.  OODA Loop Adjacent.  (Observe-Orient-Decide-Act)",
       "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
+      "category": "Tactics",
+      "color": "#8A2BE2",
       "axis_self_opponent": 0.86,
       "axis_mental_physical": 0.32,
       "brightness": 1,
@@ -2019,6 +2032,222 @@
       "color": "#4f7e16",
       "axis_self_opponent": 0.24,
       "axis_mental_physical": 0.03,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-128",
+      "concept": "Passing Definition",
+      "description": "Occupying the space between the knee and the armpit.  Regardless of the dozens of passes, they all accomplish some version of doing this; you started with their legs or hands as obstacles between you and the space between their knees/hip and armpit.\n\nIf you've passed the knee but they're still framing with their hands, you haven't really passed.\n\nIf you do some fancy reverse de la worm grip and you've reached the stage where you got above their knee, you've lowkey already passed, essentially. (\"Omae no Gaado ha mou shinderu\")",
+      "short_description": "",
+      "category": "Grappling Primitives",
+      "color": "#848a94",
+      "axis_self_opponent": 0.35,
+      "axis_mental_physical": 0.5,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-129",
+      "concept": "Suffocating Comfort",
+      "description": "You're chilling, they're dying.\n\nThe idea is to maintain a relaxed, energy-efficient position while forcing our opponent into a state of escalating discomfort and desperation. Rather than chasing submissions or transitions aggressively, the focus is on creating a biomechanical and psychological trap: the opponent feels pressure mounting, breathing restricted, and escape options dwindling.   All while the controlling grappler expends minimal effort. \n\nThis can occur from dominant pins, Dagestani Cuffs, tight bodylocks, spine-twists; any slow-cooking positional advantage. The essence of Suffocating Comfort is that asymmetry where one person suffers and scrambles, while the other remains calm, heavy, and opportunistic, waiting for fatigue or panic to create the opening.\n\n\nDead Weight.\n\"Make sure they're always uncomfortable\"\nPain maximization.\nRelaxed torture; your leisure is their torment.",
+      "short_description": "",
+      "category": "Strategy",
+      "color": "#FF8C00",
+      "axis_self_opponent": 0.23,
+      "axis_mental_physical": 0.19,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-130",
+      "concept": "Young Competition Beast",
+      "description": "Something to prove.  Great and always ready to show it off, accumulating trophies, be it literal cheap ones from the IBJJF, or figurative ones like tapping the slightly out-of-shape hobbyist browns and blacks.",
+      "short_description": "",
+      "category": "Player Types",
+      "color": "#1b4b01",
+      "axis_self_opponent": 0.9,
+      "axis_mental_physical": 0.16,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-131",
+      "concept": "Dominant Champion",
+      "description": "So good they don't really need to be aggro.  Gordon Ryan's competition style stands out in this way.",
+      "short_description": "",
+      "category": "Player Types",
+      "color": "#1b4b01",
+      "axis_self_opponent": 0.99,
+      "axis_mental_physical": 0.96,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-132",
+      "concept": "Thenar Muscles",
+      "description": "They're the fat pads at the base of the thumb and the base of the little finger.  Crucial to control the hand.\n\nuse the opponent's Thenar and Hypothenar eminences as control point and levers for wristlocks, use your own for grips and chin-straps.\n\nAn awareness of those muscles allows more precise control in grips, with mechanical advantage and reduction in tension to fatigue more slowly.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.58,
+      "axis_mental_physical": 0.61,
+      "brightness": 5,
+      "size": 1
+    },
+    {
+      "id": "BJJ-133",
+      "concept": "Elbow Point",
+      "description": "The bony tip of the elbow serves as a powerful wedge when inserted into tight spaces, such as under an armpit, against a hip, or into a neck fold. Its sharp structure allows for high pressure with minimal effort, creating space or immobilizing a limb when used in framing.\n\nOne direct use of the elbow point is to break an attempt to prevent the Kimura by holding one's belt.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.72,
+      "axis_mental_physical": 0.34,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-134",
+      "concept": "Tibia",
+      "description": "The Shin-Bone.\n\nFor knee-slices, knee-on-belly, leg-ride, shin-on-shin.\n\nThe ridge of the shin acts as a slicing or grinding tool When driven across the opponent’s body, it is sharp and creates discomfort and disrupts alignment.\n\nAlso key to angle it properly for calf-slicers.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.67,
+      "axis_mental_physical": 0.27,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-135",
+      "concept": "Ulna",
+      "description": "Ulna and Radius.  The forearm bones.\n\nUse it to frame, or to drive your weight into the soft tissue of the neck.\n\nSlice it into their biceps as your elbow controls theirs.\n\n",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.81,
+      "axis_mental_physical": 0.25,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-136",
+      "concept": "Heel",
+      "description": "Heel as an anchor and pressure tool.  Set-it close to their hips to reduce movement, or in their neck or ribs, back heel, hook.\n\nJust bringing attention to the idea that whereas its obvious you have heels, start to recognize it as an active tool.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.64,
+      "axis_mental_physical": 0.3,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-137",
+      "concept": "Inion",
+      "description": "I knew that one in Japanese first 後頭部隆起 (literal : Back of the head protuberance), had to look it up.\n\nIt's the best spot to control someone's head, and helpfully there's a little protuberance that allows for some slight hooking.\n\n",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.62,
+      "axis_mental_physical": 0.15,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-138",
+      "concept": "Glute Dominance",
+      "description": "The Glutes are the engine of bridging, and having strong glutes is key to protecting one's knees.\n\nFeel what's activating when you move.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.8,
+      "axis_mental_physical": 0.76,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-139",
+      "concept": "Lats",
+      "description": "The latissimus dorsi forms a powerful link between your arms and core. I mainly focus on that when doing armpit grips a la Silver Fox.\n\nWhether you're dragging, collar-tying, or maintaining a clamp, lats stabilize the shoulder girdle and transmit force efficiently. Lat connection ensures pulling doesn’t rely only on biceps or grip, but the full body chain.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.92,
+      "axis_mental_physical": 0.85,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-140",
+      "concept": "Sternum Stacking",
+      "description": "aligning the head and chest over the hips to maintain structure, prevent folding, and generate clean pressure during pins or passes.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.21,
+      "axis_mental_physical": 0.18,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-141",
+      "concept": "Scapular Glide",
+      "description": "The scapulae must move smoothly over the rib cage to allow functional arm movement without compromising posture. Grapplers benefit from controlled scapular positioning,i.e. retracting, protracting, depressing as needed to maintain frames, deliver pressure, relieve pressure, rotate out of an armbar attempt, etc. \n\nLose Scapula = lack of connection",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.35,
+      "axis_mental_physical": 0.3,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-142",
+      "concept": "Pelvic Tilt",
+      "description": "The sacrum's orientation can be 1) tucking (posterior tilt) or 2) arching (anterior tilt).\n\nThis influences pelvic posture and spinal mechanics. A neutral or slightly posterior tilt stabilizes the core, reinforces base in guard, and supports safe spinal stacking. Awareness of sacral tilt is foundational for resisting sweeps or generating hip motion.\n\nThere's a \"trick\" in close guard whereby engaging the pelvis can mostly negate attempts to break you forward with strong harmstring leg pulls.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.2,
+      "axis_mental_physical": 0.3,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-143",
+      "concept": "Psoas",
+      "description": "The psoas connects the spine to the femur and plays a vital role in hip flexion and core stability.   It is the only (?) muscle connecting upper and lower body.\n\nSubtle but powerful, conscious psoas engagement improves posture, it can anchor the hips and spine together.\n\n",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.35,
+      "axis_mental_physical": 0.74,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-144",
+      "concept": "Diaphragm Breathing",
+      "description": "Diaphragmatic breathing shifts the work of respiration from the chest to the core, promoting relaxation, endurance, and internal pressure control. In grappling, it enables you to feel more bottom-weighted, anchored, engaging your core.\n\nA key component of calm, efficient movement under pressure.",
+      "short_description": "",
+      "category": "Anatomy Awareness",
+      "color": "#848a94",
+      "axis_self_opponent": 0.27,
+      "axis_mental_physical": 0.7,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-145",
+      "concept": "The Injury Collector",
+      "description": "somehow always injured... ",
+      "short_description": "",
+      "category": "Player Types",
+      "color": "#1b4b01",
+      "axis_self_opponent": 0.5,
+      "axis_mental_physical": 0.5,
       "brightness": 1,
       "size": 1
     }
