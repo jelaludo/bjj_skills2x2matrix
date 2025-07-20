@@ -5,6 +5,7 @@ const RetroMessage: React.FC = () => {
   const [text, setText] = useState('');
   const [textJa, setTextJa] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [isDisplayingMessage, setIsDisplayingMessage] = useState(false);
   const [matrixPosition, setMatrixPosition] = useState({ top: 0, left: 0, width: 0, height: 0 });
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -51,6 +52,40 @@ const RetroMessage: React.FC = () => {
 
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
 
+  // Check if any modal is currently open
+  const isModalOpen = (): boolean => {
+    // Check for concept modals (both view and edit) - more comprehensive
+    const conceptModals = document.querySelectorAll('div[style*="position: fixed"][style*="z-index: 1000"]');
+    if (conceptModals.length > 0) {
+      // Check if any of these are concept modals
+      for (let i = 0; i < conceptModals.length; i++) {
+        const modal = conceptModals[i] as HTMLElement;
+        // Check for concept modal characteristics
+        if (modal.style.background === '#222' || 
+            modal.style.backgroundColor === '#222' ||
+            modal.style.background === 'rgb(34, 34, 34)' ||
+            modal.style.backgroundColor === 'rgb(34, 34, 34)' ||
+            modal.innerHTML.includes('Edit Concept') ||
+            modal.innerHTML.includes('Create New Concept') ||
+            modal.innerHTML.includes('Technical Focus') ||
+            modal.innerHTML.includes('Save') ||
+            modal.innerHTML.includes('Cancel')) {
+          console.log('Concept modal detected, pausing motivational messages');
+          return true;
+        }
+      }
+    }
+    
+    // Check for other modals (DevMode, Help, etc.)
+    const otherModals = document.querySelectorAll('[role="dialog"], .MuiDialog-root, [style*="position: fixed"][style*="z-index: 1000"]');
+    if (otherModals.length > 0) {
+      console.log('Other modal detected, pausing motivational messages');
+      return true;
+    }
+    
+    return false;
+  };
+
   // Simple typing animation for both languages
   const typeMessage = async (message: string, messageJa: string) => {
     setIsTyping(true);
@@ -77,6 +112,7 @@ const RetroMessage: React.FC = () => {
   // Show message sequence
   const showMessage = async () => {
     console.log('Showing message:', currentMessageIndex);
+    setIsDisplayingMessage(true);
     setIsVisible(true);
     
     const message = messages[currentMessageIndex];
@@ -89,6 +125,7 @@ const RetroMessage: React.FC = () => {
     setIsVisible(false);
     setText('');
     setTextJa('');
+    setIsDisplayingMessage(false);
     
     // Move to next message
     setCurrentMessageIndex(prev => (prev + 1) % messages.length);
@@ -96,11 +133,24 @@ const RetroMessage: React.FC = () => {
 
   // Start inactivity timer
   const startTimer = () => {
-    console.log('Starting 1-second timer');
+    // Don't start timer if any modal is open
+    if (isModalOpen()) {
+      console.log('Modal is open, skipping motivational message timer');
+      return;
+    }
+    
+    console.log('Starting 1-second timer for motivational message');
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
+      // Check again before showing message
+      if (isModalOpen()) {
+        console.log('Modal opened while timer was running, skipping message');
+        startTimer(); // Restart timer
+        return;
+      }
+      console.log('Timer completed, showing motivational message');
       showMessage();
     }, 1000);
   };
@@ -137,6 +187,7 @@ const RetroMessage: React.FC = () => {
     window.addEventListener('resize', updateMatrixPosition);
     
     // Start initial timer
+    console.log('RetroMessage: Initial setup complete, starting timer');
     startTimer();
     
     // Add event listeners
@@ -169,6 +220,39 @@ const RetroMessage: React.FC = () => {
       startTimer();
     }
   }, [isVisible, isTyping]);
+
+  // Monitor for modal state changes and restart timer when modals close
+  useEffect(() => {
+    let lastModalState = isModalOpen();
+    
+    const checkModalState = () => {
+      const currentModalState = isModalOpen();
+      
+      // If modal just opened, immediately hide motivational message (unless we're in the middle of displaying)
+      if (!lastModalState && currentModalState && isVisible && !isDisplayingMessage) {
+        console.log('Modal opened, immediately hiding motivational message');
+        setIsVisible(false);
+        setText('');
+        setTextJa('');
+        setIsTyping(false);
+      }
+      
+      // Only restart timer if modal state changed from open to closed and we're not displaying
+      if (lastModalState && !currentModalState && !isVisible && !isTyping && !isDisplayingMessage) {
+        console.log('Modal closed, restarting motivational timer');
+        startTimer();
+      }
+      
+      lastModalState = currentModalState;
+    };
+
+    // Check every 500ms for modal state changes
+    const modalCheckInterval = setInterval(checkModalState, 500);
+
+    return () => {
+      clearInterval(modalCheckInterval);
+    };
+  }, [isVisible, isTyping, isDisplayingMessage]);
 
   if (!isVisible) {
     return null;

@@ -9,11 +9,9 @@ export const categories = [
     "yAxis": {
       "bottom": "Self",
       "top": "Opponent"
-    },
-    "_id": "local-1752564808495"
+    }
   },
   {
-    "_id": "683334f56fd5182fa18c7832",
     "name": "Tactics",
     "color": "#8A2BE2",
     "xAxis": {
@@ -26,7 +24,6 @@ export const categories = [
     }
   },
   {
-    "_id": "683334f56fd5182fa18c7831",
     "name": "Strategy",
     "color": "#FF8C00",
     "xAxis": {
@@ -39,7 +36,6 @@ export const categories = [
     }
   },
   {
-    "_id": "683334f56fd5182fa18c7833",
     "name": "Training",
     "color": "#00CED1",
     "xAxis": {
@@ -61,11 +57,9 @@ export const categories = [
     "yAxis": {
       "bottom": "Self",
       "top": "Opponent"
-    },
-    "_id": "local-1752563198899"
+    }
   },
   {
-    "_id": "683334f56fd5182fa18c7834",
     "name": "Memes",
     "color": "#8A2BE2",
     "xAxis": {
@@ -78,7 +72,6 @@ export const categories = [
     }
   },
   {
-    "_id": "683334f56fd5182fa18c7830",
     "name": "21 Immutable Principles",
     "color": "#FFD700",
     "xAxis": {
@@ -91,7 +84,6 @@ export const categories = [
     }
   },
   {
-    "_id": "683334f56fd5182fa18c7835",
     "name": "32 Principles",
     "color": "#FFD700",
     "xAxis": {
@@ -113,11 +105,9 @@ export const categories = [
     "yAxis": {
       "bottom": "Self",
       "top": "Opponent"
-    },
-    "_id": "local-1752563284607"
+    }
   },
   {
-    "_id": "683334f56fd5182fa18c782d",
     "name": "Techniques",
     "color": "#4F8EF7",
     "xAxis": {
@@ -139,8 +129,7 @@ export const categories = [
     "yAxis": {
       "bottom": "Self",
       "top": "Opponent"
-    },
-    "_id": "local-1752567752666"
+    }
   },
   {
     "name": "Black Belt Wisdom",
@@ -152,8 +141,7 @@ export const categories = [
     "yAxis": {
       "bottom": "Self-deprecating",
       "top": "Self-aggrandizing"
-    },
-    "_id": "local-1752567752667"
+    }
   },
   {
     "name": "Competition",
@@ -165,8 +153,7 @@ export const categories = [
     "yAxis": {
       "bottom": "Self",
       "top": "Opponent"
-    },
-    "_id": "local-1752634838945"
+    }
   },
   {
     "name": "Player Types",
@@ -178,8 +165,7 @@ export const categories = [
     "yAxis": {
       "bottom": "Chill",
       "top": "Aggro"
-    },
-    "_id": "local-1752635201422"
+    }
   },
   {
     "name": "Resources",
@@ -191,8 +177,7 @@ export const categories = [
     "yAxis": {
       "bottom": "Expensive",
       "top": "Free"
-    },
-    "_id": "local-1752742949370"
+    }
   },
   {
     "name": "Noteworthy Grapplers",
@@ -204,8 +189,7 @@ export const categories = [
     "yAxis": {
       "bottom": "No Gi",
       "top": "Gi"
-    },
-    "_id": "local-1752744648882"
+    }
   },
   {
     "name": "Anatomy Awareness",
@@ -217,8 +201,19 @@ export const categories = [
     "yAxis": {
       "bottom": "Muscles",
       "top": "Bones"
+    }
+  },
+  {
+    "name": "Why Do We Train?",
+    "color": "#6c9aea",
+    "xAxis": {
+      "left": "Internal",
+      "right": "External"
     },
-    "_id": "local-1752904997059"
+    "yAxis": {
+      "bottom": "Self",
+      "top": "Others"
+    }
   }
 ];
 
@@ -1739,7 +1734,7 @@ export const skillsMasterList: BJJConcept[] = [
   {
     "id": "BJJ-102",
     "concept": "Distance Management",
-    "description": "You can neither let them get away nor invade your space.  Especially crucial if striking is involved.",
+    "description": "You can neither let them get away nor invade your space.  Especially crucial if striking is involved.\n\nThe tools to prevent them coming in are frames and protecting the inside space.\nThe tools to prevent them from retreating too much are hooks, clamps, entanglements, russian-tie, grips, etc.",
     "short_description": "",
     "category": "Grappling Primitives",
     "color": "#848a94",
@@ -2285,6 +2280,198 @@ export const skillsMasterList: BJJConcept[] = [
     "color": "#ff00d4",
     "axis_self_opponent": 0.97,
     "axis_mental_physical": 0.05,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-148",
+    "concept": "Problem-Solving Itch",
+    "description": "There's an element of puzzle-solving in BJJ that scratches a cognitive itch.  Every opponent is slightly different, either in build, experience or intensity.  Each with a  unique set of reactions, habits, and structural patterns. Training becomes a lively back-and-forth, your strategies are built, tested, broken, and refined. It's the joy of figuring things out, over and over again. ",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.77,
+    "axis_mental_physical": 0.83,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-149",
+    "concept": "Coaching Fullfilment",
+    "description": "Teaching someone grateful to learn is an extremely rewarding human interaction.   Teaching can be more rewarding than winning. Watching someone get light-bulbs moments, seeing confidence and competence bloom, techniques sharpening, etc. can be a profound source of satisfaction. Coaching others also deepens your own understanding, as you need to grok everything more deeply.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.91,
+    "axis_mental_physical": 0.15,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-150",
+    "concept": "Fitness",
+    "description": "we have to do *something*! to stay active.  might as well also have all those other benefits.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.93,
+    "axis_mental_physical": 0.65,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-151",
+    "concept": "Self-Defense",
+    "description": "Everything has limitations, many martial arts claim to be \"the best\" for self-defense.  There's a case to be made that striking arts can be better at self-defense via offense, e.g. knocking out someone cold.  That comes with a host of other potential legal issues.\n\nThe ability to protect your space, get up if taken down, hopefully some awareness of rolling while avoiding punches, etc. can be beneficial if a situation ever gets hands on.  \n\nCeteris Paribus, other things being equal.\nMultiple Attackers, Weapons, Drug-crazed maniacs, Syringes full of HIV and broken glass on the ground, there are of course limits to what Jocko Willink called a \"super power\" and \"the 2nd best tool for self-defense\" (concealed carry #1).\n\nStill, any blue belt should be able to handle someone untrained with a good amount of control.\n\nI certainly prefer that my nieces know how to strangle someone with their legs effectively rather than being totally defenseless.\n\nHaving self-defense has a goal is not paranoia.  Some cities are safer than others (Tokyo, Singapore), none are entirely free of personal danger.  Being prepared just in case while having fun training is not a bad idea.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.89,
+    "axis_mental_physical": 0.81,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-152",
+    "concept": "Existential",
+    "description": "Training can give a sense of identity, a sense of lifelong pursuit. \n\nMiyamoto Musashi and others spoke of \"the path\", a way of life shaped not just by what we do, but by how we do it ? or that walking the path itself is more important than the destination.  Grappling can become more than a hobby; it becomes an obsession, something that reflects your values, evolves with you, allows you to meet others on a similar path, from wildly different backgrounds, yet kindred spirits. It's not (just) about winning or mastering others, but it can be about walking a path of refinement, humility (in the face of injuries, or those stronger than us), and deep engagement with the self, overcoming lack of motivation, tapping into the discipline to push forward. For those driven by this existential motivation, quitting can feel like abandoning a part of who they are, perhaps more so than other hobbies ?",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.97,
+    "axis_mental_physical": 0.88,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-153",
+    "concept": "Self-Mastery",
+    "description": "You definitely learn about yourself under pressure.  You learn to handle various types of people and your own emotions, be it in the day-to-day struggle to get better, or when entering competition and the clash of egos and skills.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.87,
+    "axis_mental_physical": 0.89,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-154",
+    "concept": "Curisosity & Exploration",
+    "description": "Some people, perhaps especially older black belts, perhaps train simply because they're curious. What happens if I try this grip? Can I solve that escape? Grappling becomes a sandbox for experimentation,an endless field of biomechanical and strategic possibilities, you constantly think of your body in three dimensions and how it entertwines with that of the opponent.\n\nNot every skill or move we learn has to be the absolute best and most effective meta.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.78,
+    "axis_mental_physical": 0.65,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-155",
+    "concept": "Tribe & Belonging",
+    "description": "The need for belonging is 3rd in Maslow's pyramid (well, 4th if you consider Wifi access before physiological needs).\n\nOnce you join a grappling tribe, you know that wherever you travel you'll meet fellow members of that crazy tribe.  I'm sure it's true of Golfers and Bridge Players too.  For many, training fills a social gap: friendship, camaraderie, mutual struggle. You first show up for the techniques, then stay for the people.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.37,
+    "axis_mental_physical": 0.87,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-156",
+    "concept": "Recognition",
+    "description": "Achievements, recognition from your peers. \n\nBelts, medals, praise, social status perhaps.  These matter to some. Not always in a shallow way either, but as a way to mark progress. Grappling provides structure, milestones, and the validation of a hard-earned nod from those you respect.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.28,
+    "axis_mental_physical": 0.73,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-157",
+    "concept": "Therapy",
+    "description": "Some show up because it’s the only place they can breathe and forget about the world.  You don't think about that work presentation that went wrong or a problem in your couple while Joe is trying to strangle you. Grappling grounds you in the moment, offers an outlet for stress, grief, or restless thoughts. Being on the mats becomes a kinetic meditation.  \n\nr/bjj will always recommend that you do not *substitute true therapy with BJJ, it's not a panacea :)",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.68,
+    "axis_mental_physical": 0.86,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-158",
+    "concept": "Shared Practice & Bonding",
+    "description": "Whether it’s parent-child, a couple, siblings or lifelong friends, grappling becomes a shared language. Training together builds trust like few other things can, there's something about the body-to-body, moment-to-moment, about the shared struggles, about growing better together.\n\nI've trained with my son since he was 10 or 11, now he's a young adult, and rolling with him is still in the top 3 most fullfilling things in life.  I hope one day I get to roll with my grand-children.\n\nEspecially in a world where increasingly everything is done through a screen, there's something...primal... primitive... about grappling with our closed ones.\n\nSo many other animals do it too! All the big cats, bears, wolves and dogs, primates... they all play-fight, even elephants and horses and meerkats and otters and... ^^",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.76,
+    "axis_mental_physical": 0.22,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-159",
+    "concept": "Routine & Structure",
+    "description": "2x, 3x, 5x a week.  It becomes part of the rhytm of your life, it gives a reason to get up early, or a place to go after work (and excuse to refuse drinks with colleagues), it can become part of a more balanced and healthy life.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.59,
+    "axis_mental_physical": 0.61,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-160",
+    "concept": "Career",
+    "description": "Building toward pro athlete status or coaching roles.  There's not much money to be made, yet, but the sports is growing.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.1,
+    "axis_mental_physical": 0.9,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-161",
+    "concept": "Competition as Entertainment",
+    "description": "If it becomes professional fighting, with money on the line, you're not just doing it to win the fight anymore, it must also be entertaining for the audience.   The locus shifts.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.39,
+    "axis_mental_physical": 0.37,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-162",
+    "concept": "Social Media Identity",
+    "description": "Making content as a public persona, whether it’s as a coach or athlete, or lifestyle brand, or thirst trap.  It's meant to be consumed by others.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.32,
+    "axis_mental_physical": 0.23,
+    "brightness": 1,
+    "size": 1
+  },
+  {
+    "id": "BJJ-163",
+    "concept": "External Pressure",
+    "description": "Maybe it's in the family, or your parents really think you should... Like the Williams Sisters from Tennis.  Not the most stable of motivations, but it can happen.",
+    "short_description": "",
+    "category": "Why Do We Train?",
+    "color": "#6c9aea",
+    "axis_self_opponent": 0.22,
+    "axis_mental_physical": 0.3,
     "brightness": 1,
     "size": 1
   }
