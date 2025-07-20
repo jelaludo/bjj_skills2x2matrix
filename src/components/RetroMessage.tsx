@@ -177,7 +177,7 @@ const RetroMessage: React.FC = () => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 font-mono z-50">
       <div 
-        className="absolute bg-black border border-white rounded p-6 max-w-lg"
+        className="absolute bg-black border border-white rounded p-4 md:p-6 max-w-xs md:max-w-lg mx-2"
         style={{
           fontFamily: 'Courier New, monospace',
           textShadow: '0 0 2px rgba(255, 255, 255, 0.5)',
@@ -186,30 +186,32 @@ const RetroMessage: React.FC = () => {
           top: matrixPosition.top + (matrixPosition.height / 2),
           left: matrixPosition.left + (matrixPosition.width / 2),
           transform: 'translate(-50%, -50%)',
-          zIndex: 1000
+          zIndex: 1000,
+          width: '90vw',
+          maxWidth: '500px'
         }}
       >
-        <div className="text-white text-lg" style={{ lineHeight: '1.5rem' }}>
-          <div style={{ height: '1.5rem', display: 'flex', alignItems: 'center' }}>
-            <span className="text-gray-400">root@grapplingprimitives:~$</span> 
-            <span className="ml-2">./motivational_message</span>
+        <div className="text-sm md:text-lg" style={{ lineHeight: '1.2rem', wordWrap: 'break-word' }}>
+          <div style={{ minHeight: '1.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span className="text-white text-xs md:text-sm">root@grapplingprimitives:~$</span> 
+            <span className="text-white ml-2 text-xs md:text-sm">./motivational_message</span>
           </div>
-          <div style={{ height: '1.5rem', display: 'flex', alignItems: 'center' }}>
-            {text}
+          <div style={{ minHeight: '1.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span className="text-blue-400" style={{ wordBreak: 'break-word' }}>{text}</span>
             {isTyping && !textJa && (
               <span 
-                className="inline-block w-2 h-6 bg-white ml-1"
+                className="inline-block w-1 md:w-2 h-4 md:h-6 bg-blue-400 ml-1"
                 style={{
                   animation: 'blink 1s infinite'
                 }}
               ></span>
             )}
           </div>
-          <div style={{ height: '1.5rem', display: 'flex', alignItems: 'center' }}>
-            {textJa}
+          <div style={{ minHeight: '1.2rem', display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+            <span className="text-green-400" style={{ wordBreak: 'break-word' }}>{textJa}</span>
             {isTyping && textJa && (
               <span 
-                className="inline-block w-2 h-6 bg-white ml-1"
+                className="inline-block w-1 md:w-2 h-4 md:h-6 bg-green-400 ml-1"
                 style={{
                   animation: 'blink 1s infinite'
                 }}
