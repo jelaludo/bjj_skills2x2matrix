@@ -1,9 +1,9 @@
-// Production data file - imports the latest master list for production
+// Production data file - dynamically imports the latest master list for production
 // This file is used by the production build (GitHub >> Vercel + MongoDB)
-// Last updated: 2025-07-16
+// Last updated: 2025-07-20
 
-// Direct import of the latest master list
-import { categories, skillsMasterList } from './BJJMasterList_20250716_144Nodes';
+// Dynamic import of the latest master list
+import { categories, skillsMasterList, masterListMetadata } from './dynamicMasterList';
 
 // Export the data directly
 export const getProductionData = async () => {

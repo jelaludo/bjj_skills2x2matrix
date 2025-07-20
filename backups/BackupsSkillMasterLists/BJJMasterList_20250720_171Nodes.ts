@@ -2275,5 +2275,17 @@ export const skillsMasterList: BJJConcept[] = [
     "axis_mental_physical": 0.95,
     "brightness": 1,
     "size": 1
+  },
+  {
+    "id": "BJJ-147",
+    "concept": "Roger Gracie",
+    "description": "Old School GOAT",
+    "short_description": "",
+    "category": "Noteworthy Grapplers",
+    "color": "#ff00d4",
+    "axis_self_opponent": 0.97,
+    "axis_mental_physical": 0.05,
+    "brightness": 1,
+    "size": 1
   }
 ];
