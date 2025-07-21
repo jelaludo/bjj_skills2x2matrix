@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const RetroMessage: React.FC = () => {
+interface RetroMessageProps {
+  disabled?: boolean;
+}
+
+const RetroMessage: React.FC<RetroMessageProps> = ({ disabled = false }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [text, setText] = useState('');
   const [textJa, setTextJa] = useState('');
@@ -253,6 +257,11 @@ const RetroMessage: React.FC = () => {
       clearInterval(modalCheckInterval);
     };
   }, [isVisible, isTyping, isDisplayingMessage]);
+
+  // If disabled, don't render anything
+  if (disabled) {
+    return null;
+  }
 
   if (!isVisible) {
     return null;

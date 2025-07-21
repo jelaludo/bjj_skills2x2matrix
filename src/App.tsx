@@ -971,6 +971,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
             />
           ) : null
         }
+        disableRetroMessage={currentView === 'articles' || currentView === 'studies'}
       >
         {currentView === 'matrix' ? (
           <ScatterPlot

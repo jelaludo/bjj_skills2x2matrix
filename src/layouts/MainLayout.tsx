@@ -10,12 +10,13 @@ interface MainLayoutProps {
   sidebar: React.ReactNode;
   header: React.ReactElement<HeaderProps>;
   children: React.ReactNode;
+  disableRetroMessage?: boolean;
 }
 
 const SIDEBAR_WIDTH = 260;
 const HEADER_HEIGHT = 64;
 
-const MainLayout: React.FC<MainLayoutProps> = ({ sidebar, header, children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ sidebar, header, children, disableRetroMessage = false }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,7 +104,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ sidebar, header, children }) =>
       </Box>
       
       {/* Retro Message Overlay */}
-      <RetroMessage />
+      <RetroMessage disabled={disableRetroMessage} />
     </Box>
   );
 };
