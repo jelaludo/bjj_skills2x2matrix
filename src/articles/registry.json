@@ -1,0 +1,161 @@
+{
+  "articles": [
+    {
+      "id": "placeholder-article",
+      "title": "Coaching Advice for Grappling Athletes: Wrestling, Judo, and BJJ",
+      "contentFile": "placeholder-article.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-01-20T10:00:00.000Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "0KB",
+        "extractedAt": "2025-01-20T10:00:00.000Z"
+      }
+    },
+    {
+      "id": "test-article-123",
+      "title": "Test Article",
+      "contentFile": "test-article-123.json",
+      "sourcePdf": "test.pdf",
+      "createdAt": "2025-07-21T03:26:16.524Z",
+      "metadata": {
+        "pages": 1,
+        "fileSize": "10KB",
+        "extractedAt": "2025-07-21T03:26:16.524Z"
+      }
+    },
+    {
+      "id": "article-1753068659933",
+      "title": "Coaching Grappling Athletes",
+      "contentFile": "article-1753068659933.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:30:59.933Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:30:59.933Z"
+      }
+    },
+    {
+      "id": "article-1753068942271",
+      "title": "Advices for Grappling Athletes",
+      "contentFile": "article-1753068942271.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:35:42.271Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:35:42.271Z"
+      }
+    },
+    {
+      "id": "article-1753069142434",
+      "title": "Grappling Athletes Advices",
+      "contentFile": "article-1753069142434.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:39:02.434Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:39:02.434Z"
+      }
+    },
+    {
+      "id": "article-1753069368676",
+      "title": "Grappling Athletes",
+      "contentFile": "article-1753069368676.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:42:48.676Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:42:48.676Z"
+      }
+    },
+    {
+      "id": "article-1753069910859",
+      "title": "test 1",
+      "contentFile": "article-1753069910859.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:51:50.860Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:51:50.860Z"
+      }
+    },
+    {
+      "id": "article-1753070113441",
+      "title": "test2",
+      "contentFile": "article-1753070113441.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T03:55:13.441Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T03:55:13.441Z"
+      }
+    },
+    {
+      "id": "article-1753070463455",
+      "title": "Test 3 better formatting",
+      "contentFile": "article-1753070463455.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T04:01:03.455Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T04:01:03.455Z"
+      }
+    },
+    {
+      "id": "article-1753070547223",
+      "title": "test4",
+      "contentFile": "article-1753070547223.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T04:02:27.223Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T04:02:27.223Z"
+      }
+    },
+    {
+      "id": "article-1753070849091",
+      "title": "test 5",
+      "contentFile": "article-1753070849091.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T04:07:29.091Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T04:07:29.091Z"
+      }
+    },
+    {
+      "id": "article-1753072906984",
+      "title": "test6 pdf2json",
+      "contentFile": "article-1753072906984.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T04:41:46.984Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T04:41:46.984Z"
+      }
+    },
+    {
+      "id": "article-1753079022216",
+      "title": "test better pdf",
+      "contentFile": "article-1753079022216.json",
+      "sourcePdf": "Coaching Advice for Grappling Athletes_ Wrestling, Judo, and BJJ.pdf",
+      "createdAt": "2025-07-21T06:23:42.216Z",
+      "metadata": {
+        "pages": 0,
+        "fileSize": "158KB",
+        "extractedAt": "2025-07-21T06:23:42.216Z"
+      }
+    }
+  ],
+  "lastUpdated": "2025-07-21T06:23:42.229Z"
+}

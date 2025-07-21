@@ -9,9 +9,10 @@ interface HeaderProps {
   onCreateNode?: () => void;
   onHelpClick?: () => void;
   onArticlesClick?: () => void;
+  onStudiesClick?: () => void;
 }
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle, onCreateNode, onHelpClick, onArticlesClick }, ref) => {
+const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuToggle, onCreateNode, onHelpClick, onArticlesClick, onStudiesClick }, ref) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -81,6 +82,20 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(({ onMobileMenuTogg
             }}
           >
             Articles
+          </Button>
+          <Button 
+            variant="outlined" 
+            size="small"
+            onClick={onStudiesClick}
+            sx={{ 
+              color: 'text.primary',
+              borderColor: 'divider',
+              '&:hover': {
+                borderColor: 'primary.main',
+              }
+            }}
+          >
+            Studies
           </Button>
           <Button 
             variant="outlined" 

@@ -1,0 +1,12 @@
+{
+  "id": "test-article-123",
+  "title": "Test Article",
+  "content": "This is a test article content.",
+  "sourcePdf": "test.pdf",
+  "createdAt": "2025-07-21T03:26:16.524Z",
+  "metadata": {
+    "pages": 1,
+    "fileSize": "10KB",
+    "extractedAt": "2025-07-21T03:26:16.524Z"
+  }
+}

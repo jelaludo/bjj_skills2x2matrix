@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const cors = require('cors');
-const pdfParse = require('pdf-parse');
+const PDFParser = require('pdf2json');
 const multer = require('multer');
 
 const app = express();
@@ -440,46 +440,211 @@ app.post('/api/save-to-src-data', (req, res) => {
   }
 });
 
-// PDF extraction endpoint
+// PDF extraction endpoint using pdf2json
 app.post('/api/extract-pdf', upload.single('pdf'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No PDF file provided' });
     }
 
-    // Extract text from PDF
-    const data = await pdfParse(req.file.buffer);
+    // Extract text using pdf2json
+    const pdfParser = new PDFParser();
     
-    // Clean up the extracted text
-    let text = data.text;
-    
-    // Remove excessive whitespace and normalize line breaks
-    text = text
-      .replace(/\r\n/g, '\n')
-      .replace(/\r/g, '\n')
-      .replace(/\n\s*\n\s*\n/g, '\n\n') // Remove multiple consecutive empty lines
-      .replace(/[ \t]+/g, ' ') // Replace multiple spaces/tabs with single space
-      .trim();
+    const extractText = () => {
+      return new Promise((resolve, reject) => {
+        pdfParser.on('pdfParser_dataReady', (pdfData) => {
+          try {
+            let text = '';
+            let pages = 0;
+            
+            // Extract text from each page
+            if (pdfData.Pages && pdfData.Pages.length > 0) {
+              pages = pdfData.Pages.length;
+              
+              pdfData.Pages.forEach((page, pageIndex) => {
+                if (page.Texts && page.Texts.length > 0) {
+                  page.Texts.forEach((textItem) => {
+                    // Decode the text (pdf2json encodes special characters)
+                    const decodedText = decodeURIComponent(textItem.R[0].T);
+                    text += decodedText + ' ';
+                  });
+                  text += '\n\n'; // Add page break
+                }
+                
+                // Also check for links in the page
+                if (page.Links && page.Links.length > 0) {
+                  console.log(`Found ${page.Links.length} links on page ${pageIndex + 1}`);
+                  page.Links.forEach((link, linkIndex) => {
+                    console.log(`Link ${linkIndex + 1}:`, link);
+                  });
+                }
+              });
+            }
+            
+            // Process the extracted text
+            text = text
+              // Normalize line breaks
+              .replace(/\r\n/g, '\n')
+              .replace(/\r/g, '\n')
+              // Clean up excessive whitespace while preserving structure
+              .replace(/\n{3,}/g, '\n\n')
+              .replace(/[ ]{2,}/g, ' ')
+              .trim();
 
-    // Add metadata
-    const result = {
-      text: text,
-      metadata: {
-        pages: data.numpages,
-        info: data.info,
-        extractedAt: new Date().toISOString(),
-        originalFilename: req.file.originalname,
-        fileSize: req.file.size
-      }
+            // Process hyperlinks - only convert actual URLs to markdown links
+            text = text
+              // Convert plain URLs to markdown links (but be more careful)
+              .replace(/(https?:\/\/[^\s]+)/g, (match) => {
+                // Don't convert if it's already in markdown format
+                if (match.includes('[') || match.includes(']')) {
+                  return match;
+                }
+                // Clean up the URL (remove trailing punctuation)
+                const cleanUrl = match.replace(/[.,;!?]+$/, '');
+                return `[${cleanUrl}](${cleanUrl})`;
+              })
+              // Clean up spacing around links
+              .replace(/\s+\[/g, ' [')
+              .replace(/\]\s+/g, '] ');
+
+            resolve({
+              text: text,
+              metadata: {
+                pages: pages,
+                info: pdfData.Meta || {},
+                extractedAt: new Date().toISOString(),
+                originalFilename: req.file.originalname,
+                fileSize: req.file.size,
+                method: 'pdf2json'
+              }
+            });
+          } catch (error) {
+            reject(error);
+          }
+        });
+        
+        pdfParser.on('pdfParser_dataError', (error) => {
+          reject(new Error(`PDF parsing error: ${error}`));
+        });
+        
+        // Parse the PDF buffer
+        pdfParser.parseBuffer(req.file.buffer);
+      });
     };
 
-    console.log(`PDF extracted successfully: ${req.file.originalname} (${data.numpages} pages)`);
+    const result = await extractText();
+    
+    console.log(`PDF extracted successfully using pdf2json: ${req.file.originalname} (${result.metadata.pages} pages)`);
     
     res.status(200).json(result);
+    
   } catch (error) {
     console.error('PDF extraction error:', error);
     res.status(500).json({ 
       error: 'Failed to extract PDF text',
+      details: error.message 
+    });
+  }
+});
+
+// Load articles registry endpoint
+app.get('/api/articles/registry', (req, res) => {
+  try {
+    const articlesDir = path.resolve(__dirname, 'src/articles');
+    const registryPath = path.join(articlesDir, 'registry.json');
+    
+    if (!fs.existsSync(registryPath)) {
+      return res.json({ articles: [], lastUpdated: new Date().toISOString() });
+    }
+    
+    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    res.json(registry);
+  } catch (error) {
+    console.error('Failed to load articles registry:', error);
+    res.status(500).json({ 
+      error: 'Failed to load articles registry', 
+      details: error.message 
+    });
+  }
+});
+
+// Load specific article endpoint
+app.get('/api/articles/:filename', (req, res) => {
+  try {
+    const { filename } = req.params;
+    const articlesDir = path.resolve(__dirname, 'src/articles');
+    const articlePath = path.join(articlesDir, filename);
+    
+    if (!fs.existsSync(articlePath)) {
+      return res.status(404).json({ error: 'Article not found' });
+    }
+    
+    const articleData = JSON.parse(fs.readFileSync(articlePath, 'utf8'));
+    res.json(articleData);
+  } catch (error) {
+    console.error('Failed to load article:', error);
+    res.status(500).json({ 
+      error: 'Failed to load article', 
+      details: error.message 
+    });
+  }
+});
+
+// Save article endpoint
+app.post('/api/save-article', (req, res) => {
+  try {
+    const { articleData, contentFileName } = req.body;
+    
+    if (!articleData || !contentFileName) {
+      return res.status(400).json({ error: 'Missing article data or filename' });
+    }
+    
+    // Create articles directory if it doesn't exist
+    const articlesDir = path.resolve(__dirname, 'src/articles');
+    if (!fs.existsSync(articlesDir)) {
+      fs.mkdirSync(articlesDir, { recursive: true });
+    }
+    
+    // Save article content file
+    const articleFilePath = path.join(articlesDir, contentFileName);
+    fs.writeFileSync(articleFilePath, JSON.stringify(articleData, null, 2));
+    
+    // Update registry
+    const registryPath = path.join(articlesDir, 'registry.json');
+    let registry = { articles: [], lastUpdated: new Date().toISOString() };
+    
+    if (fs.existsSync(registryPath)) {
+      registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    }
+    
+    // Add new article to registry
+    registry.articles.push({
+      id: articleData.id,
+      title: articleData.title,
+      contentFile: contentFileName,
+      sourcePdf: articleData.sourcePdf,
+      createdAt: articleData.createdAt,
+      metadata: articleData.metadata
+    });
+    
+    registry.lastUpdated = new Date().toISOString();
+    
+    // Save updated registry
+    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
+    
+    console.log(`Article saved: ${contentFileName}`);
+    
+    res.json({
+      success: true,
+      message: 'Article saved successfully',
+      articleId: articleData.id,
+      fileName: contentFileName
+    });
+    
+  } catch (error) {
+    console.error('Failed to save article:', error);
+    res.status(500).json({ 
+      error: 'Failed to save article', 
       details: error.message 
     });
   }

@@ -70,7 +70,7 @@ const RetroMessage: React.FC = () => {
             modal.innerHTML.includes('Technical Focus') ||
             modal.innerHTML.includes('Save') ||
             modal.innerHTML.includes('Cancel')) {
-          console.log('Concept modal detected, pausing motivational messages');
+          // console.log('Concept modal detected, pausing motivational messages');
           return true;
         }
       }
@@ -79,7 +79,7 @@ const RetroMessage: React.FC = () => {
     // Check for other modals (DevMode, Help, etc.)
     const otherModals = document.querySelectorAll('[role="dialog"], .MuiDialog-root, [style*="position: fixed"][style*="z-index: 1000"]');
     if (otherModals.length > 0) {
-      console.log('Other modal detected, pausing motivational messages');
+      // console.log('Other modal detected, pausing motivational messages');
       return true;
     }
     
@@ -111,7 +111,7 @@ const RetroMessage: React.FC = () => {
 
   // Show message sequence
   const showMessage = async () => {
-    console.log('Showing message:', currentMessageIndex);
+    // console.log('Showing message:', currentMessageIndex);
     setIsDisplayingMessage(true);
     setIsVisible(true);
     
@@ -135,29 +135,29 @@ const RetroMessage: React.FC = () => {
   const startTimer = () => {
     // Don't start timer if any modal is open
     if (isModalOpen()) {
-      console.log('Modal is open, skipping motivational message timer');
+      // console.log('Modal is open, skipping motivational message timer');
       return;
     }
     
-    console.log('Starting 1-second timer for motivational message');
+    // console.log('Starting 1-second timer for motivational message');
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
       // Check again before showing message
       if (isModalOpen()) {
-        console.log('Modal opened while timer was running, skipping message');
+        // console.log('Modal opened while timer was running, skipping message');
         startTimer(); // Restart timer
         return;
       }
-      console.log('Timer completed, showing motivational message');
+      // console.log('Timer completed, showing motivational message');
       showMessage();
     }, 1000);
   };
 
   // Reset timer on user interaction
   const resetTimer = () => {
-    console.log('User interaction detected, resetting timer');
+    // console.log('User interaction detected, resetting timer');
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
@@ -166,7 +166,7 @@ const RetroMessage: React.FC = () => {
 
   // Initialize timer and event listeners
   useEffect(() => {
-    console.log('Setting up RetroMessage component');
+    // console.log('Setting up RetroMessage component');
     
     // Get matrix position
     const updateMatrixPosition = () => {
@@ -187,7 +187,7 @@ const RetroMessage: React.FC = () => {
     window.addEventListener('resize', updateMatrixPosition);
     
     // Start initial timer
-    console.log('RetroMessage: Initial setup complete, starting timer');
+    // console.log('RetroMessage: Initial setup complete, starting timer');
     startTimer();
     
     // Add event listeners
@@ -230,7 +230,7 @@ const RetroMessage: React.FC = () => {
       
       // If modal just opened, immediately hide motivational message (unless we're in the middle of displaying)
       if (!lastModalState && currentModalState && isVisible && !isDisplayingMessage) {
-        console.log('Modal opened, immediately hiding motivational message');
+        // console.log('Modal opened, immediately hiding motivational message');
         setIsVisible(false);
         setText('');
         setTextJa('');
@@ -239,7 +239,7 @@ const RetroMessage: React.FC = () => {
       
       // Only restart timer if modal state changed from open to closed and we're not displaying
       if (lastModalState && !currentModalState && !isVisible && !isTyping && !isDisplayingMessage) {
-        console.log('Modal closed, restarting motivational timer');
+        // console.log('Modal closed, restarting motivational timer');
         startTimer();
       }
       

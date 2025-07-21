@@ -7,6 +7,7 @@ import { ScatterPlot } from './components/ScatterPlot';
 import { DevModeToggle } from './components/DevModeToggle';
 import { HelpDialog } from './components/HelpDialog';
 import Articles from './components/Articles';
+import { Studies } from './components/Studies';
 import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -73,7 +74,7 @@ function App() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'matrix' | 'articles'>('matrix');
+  const [currentView, setCurrentView] = useState<'matrix' | 'articles' | 'studies'>('matrix');
 
   // Load data source preference from localStorage
   useEffect(() => {
@@ -869,24 +870,59 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
     setCurrentView('articles');
   };
 
+  const handleStudiesClick = () => {
+    setCurrentView('studies');
+  };
+
   // Handle navigation back to matrix
   const handleBackToMatrix = () => {
     setCurrentView('matrix');
   };
 
   // Handle article creation from PDF
-  const handleCreateArticle = async (pdfFile: File, articleTitle: string) => {
+  const handleCreateArticle = async (pdfFile: File, articleTitle: string, extractedText: string) => {
     try {
-      // For now, we'll create a simple article component
-      // In a full implementation, you might want to save this to a database or file system
       console.log('Creating article:', articleTitle, 'from PDF:', pdfFile.name);
       
-      // Show success message
-      setSnackbarMessage(`Article "${articleTitle}" created successfully!`);
-      setSnackbarOpen(true);
+      // Generate unique ID for the article
+      const articleId = `article-${Date.now()}`;
+      const contentFileName = `${articleId}.json`;
       
-      // You could also navigate to the articles view here
-      // setCurrentView('articles');
+      // Create article data structure
+      const articleData = {
+        id: articleId,
+        title: articleTitle,
+        content: extractedText,
+        sourcePdf: pdfFile.name,
+        createdAt: new Date().toISOString(),
+        metadata: {
+          pages: 0,
+          fileSize: `${(pdfFile.size / 1024).toFixed(0)}KB`,
+          extractedAt: new Date().toISOString()
+        }
+      };
+      
+      // Save article to backend
+      const response = await fetch('http://localhost:3001/api/save-article', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          articleData,
+          contentFileName
+        }),
+      });
+      
+      if (response.ok) {
+        setSnackbarMessage(`Article "${articleTitle}" created successfully!`);
+        setSnackbarOpen(true);
+        
+        // Optionally navigate to articles view
+        // setCurrentView('articles');
+      } else {
+        throw new Error('Failed to save article');
+      }
       
     } catch (error) {
       console.error('Error creating article:', error);
@@ -904,6 +940,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
             onCreateNode={handleCreateNode} 
             onHelpClick={() => setHelpDialogOpen(true)}
             onArticlesClick={handleArticlesClick}
+            onStudiesClick={handleStudiesClick}
           />
         }
         sidebar={
@@ -953,8 +990,13 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
             setSelected={setSelected}
             selectedCategories={selectedCategories}
           />
-        ) : (
-          <div style={{ padding: '20px' }}>
+        ) : currentView === 'articles' ? (
+          <div style={{ 
+            padding: '20px', 
+            height: '100vh', 
+            overflowY: 'auto',
+            overflowX: 'hidden'
+          }}>
             <div style={{ marginBottom: '20px' }}>
               <button
                 onClick={handleBackToMatrix}
@@ -968,10 +1010,35 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
                   color: '#333'
                 }}
               >
-                ↁEBack to Matrix
+                ← Back to Matrix
               </button>
             </div>
             <Articles />
+          </div>
+        ) : (
+          <div style={{ 
+            padding: '20px', 
+            height: '100vh', 
+            overflowY: 'auto',
+            overflowX: 'hidden'
+          }}>
+            <div style={{ marginBottom: '20px' }}>
+              <button
+                onClick={handleBackToMatrix}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#f5f5f5',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  color: '#333'
+                }}
+              >
+                ← Back to Matrix
+              </button>
+            </div>
+            <Studies />
           </div>
         )}
       </MainLayout>
