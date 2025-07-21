@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box,
   Card,
@@ -12,7 +12,9 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  IconButton
+  IconButton,
+  TextField,
+  CircularProgress
 } from '@mui/material';
 import {
   Storage as StorageIcon,
@@ -20,7 +22,9 @@ import {
   CloudUpload as CloudUploadIcon,
   Warning as WarningIcon,
   Close as CloseIcon,
-  Backup as BackupIcon
+  Backup as BackupIcon,
+  Article as ArticleIcon,
+  Description as DescriptionIcon
 } from '@mui/icons-material';
 
 interface DevModeToggleProps {
@@ -41,6 +45,7 @@ interface DevModeToggleProps {
   onSeedFromLocal?: () => void;
   onCreateBackup?: () => void;
   onRestoreFromBackup?: (backupFile: string) => void;
+  onCreateArticle?: (pdfFile: File, articleTitle: string) => Promise<void>;
 }
 
 export const DevModeToggle: React.FC<DevModeToggleProps> = ({
@@ -53,7 +58,8 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
   onConvertToMongo,
   onSeedFromLocal,
   onCreateBackup,
-  onRestoreFromBackup
+  onRestoreFromBackup,
+  onCreateArticle
 }) => {
   const [open, setOpen] = useState(false);
   const [backups, setBackups] = useState<Array<{
@@ -70,6 +76,12 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
     };
   }>>([]);
   const [showBackups, setShowBackups] = useState(false);
+  const [showPdfCreator, setShowPdfCreator] = useState(false);
+  const [selectedPdfFile, setSelectedPdfFile] = useState<File | null>(null);
+  const [articleTitle, setArticleTitle] = useState('');
+  const [isCreatingArticle, setIsCreatingArticle] = useState(false);
+  const [extractedText, setExtractedText] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (!isDevelopment) {
     return null;
@@ -94,6 +106,60 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
       }
     } catch (error) {
       console.error('Failed to load backups:', error);
+    }
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type === 'application/pdf') {
+      setSelectedPdfFile(file);
+      setArticleTitle(file.name.replace('.pdf', ''));
+      setExtractedText('');
+    }
+  };
+
+  const handleExtractPdf = async () => {
+    if (!selectedPdfFile) return;
+
+    setIsCreatingArticle(true);
+    try {
+      const formData = new FormData();
+      formData.append('pdf', selectedPdfFile);
+
+      const response = await fetch('http://localhost:3001/api/extract-pdf', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setExtractedText(data.text);
+      } else {
+        console.error('Failed to extract PDF text');
+        setExtractedText('Failed to extract PDF text. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error extracting PDF:', error);
+      setExtractedText('Error extracting PDF text. Please try again.');
+    } finally {
+      setIsCreatingArticle(false);
+    }
+  };
+
+  const handleCreateArticle = async () => {
+    if (!selectedPdfFile || !articleTitle.trim() || !extractedText) return;
+
+    setIsCreatingArticle(true);
+    try {
+      await onCreateArticle?.(selectedPdfFile, articleTitle);
+      setSelectedPdfFile(null);
+      setArticleTitle('');
+      setExtractedText('');
+      setShowPdfCreator(false);
+    } catch (error) {
+      console.error('Error creating article:', error);
+    } finally {
+      setIsCreatingArticle(false);
     }
   };
 
@@ -359,6 +425,119 @@ export const DevModeToggle: React.FC<DevModeToggleProps> = ({
                       </Box>
                     </>
                   )}
+
+                  <Divider sx={{ my: 2 }} />
+
+                  {/* PDF Article Creator */}
+                  <Typography variant="subtitle2" gutterBottom>
+                    PDF Article Creator:
+                  </Typography>
+                  
+                  <Box display="flex" flexDirection="column" gap={2}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      startIcon={<ArticleIcon />}
+                      onClick={() => setShowPdfCreator(!showPdfCreator)}
+                      title="Create articles from PDF files"
+                    >
+                      {showPdfCreator ? 'Hide PDF Creator' : 'PDF Article Creator'}
+                    </Button>
+
+                    {showPdfCreator && (
+                      <Box sx={{ border: '1px solid #444', borderRadius: 1, p: 2 }}>
+                        {/* File Selection */}
+                        <Typography variant="body2" gutterBottom>
+                          Select PDF File:
+                        </Typography>
+                        
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept=".pdf"
+                          onChange={handleFileSelect}
+                          style={{ display: 'none' }}
+                        />
+                        
+                        <Button
+                          variant="outlined"
+                          fullWidth
+                          startIcon={<DescriptionIcon />}
+                          onClick={() => fileInputRef.current?.click()}
+                          sx={{ mb: 2 }}
+                        >
+                          {selectedPdfFile ? selectedPdfFile.name : 'Choose PDF File'}
+                        </Button>
+
+                        {selectedPdfFile && (
+                          <>
+                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2 }}>
+                              File: {selectedPdfFile.name} ({(selectedPdfFile.size / 1024 / 1024).toFixed(2)} MB)
+                            </Typography>
+
+                            {/* Article Title */}
+                            <TextField
+                              label="Article Title"
+                              value={articleTitle}
+                              onChange={(e) => setArticleTitle(e.target.value)}
+                              fullWidth
+                              size="small"
+                              sx={{ mb: 2 }}
+                            />
+
+                            {/* Extract Button */}
+                            <Button
+                              variant="contained"
+                              fullWidth
+                              onClick={handleExtractPdf}
+                              disabled={isCreatingArticle}
+                              startIcon={isCreatingArticle ? <CircularProgress size={16} /> : <DescriptionIcon />}
+                              sx={{ mb: 2 }}
+                            >
+                              {isCreatingArticle ? 'Extracting...' : 'Extract PDF Text'}
+                            </Button>
+
+                            {/* Extracted Text Preview */}
+                            {extractedText && (
+                              <>
+                                <Typography variant="body2" gutterBottom>
+                                  Extracted Text Preview:
+                                </Typography>
+                                <Box
+                                  sx={{
+                                    maxHeight: 150,
+                                    overflowY: 'auto',
+                                    border: '1px solid #333',
+                                    borderRadius: 1,
+                                    p: 1,
+                                    mb: 2,
+                                    fontSize: '12px',
+                                    fontFamily: 'monospace',
+                                    backgroundColor: '#1a1a1a'
+                                  }}
+                                >
+                                  {extractedText.substring(0, 500)}
+                                  {extractedText.length > 500 && '...'}
+                                </Box>
+
+                                {/* Create Article Button */}
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  fullWidth
+                                  onClick={handleCreateArticle}
+                                  disabled={isCreatingArticle || !articleTitle.trim()}
+                                  startIcon={isCreatingArticle ? <CircularProgress size={16} /> : <ArticleIcon />}
+                                >
+                                  {isCreatingArticle ? 'Creating Article...' : 'Create Article'}
+                                </Button>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </Box>
+                    )}
+                  </Box>
                 </>
               )}
 

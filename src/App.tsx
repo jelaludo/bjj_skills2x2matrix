@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 import { ScatterPlot } from './components/ScatterPlot';
 import { DevModeToggle } from './components/DevModeToggle';
 import { HelpDialog } from './components/HelpDialog';
+import Articles from './components/Articles';
 import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -72,6 +73,7 @@ function App() {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [helpDialogOpen, setHelpDialogOpen] = useState(false);
+  const [currentView, setCurrentView] = useState<'matrix' | 'articles'>('matrix');
 
   // Load data source preference from localStorage
   useEffect(() => {
@@ -177,12 +179,12 @@ function App() {
         setCategories([]);
       }
       
-      setSnackbarMessage(`✅ Loaded master list: ${fileName}`);
+      setSnackbarMessage(`✁ELoaded master list: ${fileName}`);
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Failed to load master list:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      setSnackbarMessage(`❌ Failed to load master list: ${errorMessage}`);
+      setSnackbarMessage(`❁EFailed to load master list: ${errorMessage}`);
       setSnackbarOpen(true);
     }
   };
@@ -194,7 +196,7 @@ function App() {
       const data = await response.json();
       setConcepts(data);
       
-      const catResponse = await fetch('http://localhost:3001/api/categories');
+              const catResponse = await fetch('http://localhost:3001/api/categories');
       const catData = await catResponse.json();
       setCategories(catData);
     } catch (error) {
@@ -221,11 +223,11 @@ function App() {
       const productionData = await getProductionData();
       setConcepts(productionData.skillsMasterList);
       setCategories(productionData.categories);
-      setSnackbarMessage('✅ Loaded production data');
+      setSnackbarMessage('✁ELoaded production data');
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Failed to load production data:', error);
-      setSnackbarMessage('❌ Failed to load production data');
+      setSnackbarMessage('❁EFailed to load production data');
       setSnackbarOpen(true);
       setConcepts([]);
       setCategories([]);
@@ -300,13 +302,13 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(updatedConcepts, 
       );
       setMasterLists(updatedFiles);
       
-      setSnackbarMessage(`✅ Saved changes to ${selectedMasterList}`);
+      setSnackbarMessage(`✁ESaved changes to ${selectedMasterList}`);
       setSnackbarOpen(true);
       console.log('App - saveToLocalFile completed successfully');
       
     } catch (error) {
       console.error('Failed to save to local file:', error);
-      setSnackbarMessage('❌ Failed to save changes');
+      setSnackbarMessage('❁EFailed to save changes');
       setSnackbarOpen(true);
     }
   };
@@ -413,7 +415,7 @@ module.exports = {
         URL.revokeObjectURL(url);
       });
 
-      setSnackbarMessage(`✅ MongoDB-ready files downloaded! (${nodeCount} nodes, ${categories.length} categories)`);
+      setSnackbarMessage(`✁EMongoDB-ready files downloaded! (${nodeCount} nodes, ${categories.length} categories)`);
       setSnackbarOpen(true);
 
       // Also save to backend for easy access
@@ -588,25 +590,25 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
             
             if (updateProductionResponse.ok) {
               const updateResult = await updateProductionResponse.json();
-              setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Production data updated to use latest backup`);
+              setSnackbarMessage(`✁EBackup created: ${result.files.ts} (${result.nodeCount} nodes) - Production data updated to use latest backup`);
             } else {
               console.warn('Could not update production data automatically');
-              setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
+              setSnackbarMessage(`✁EBackup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
             }
           } catch (updateError) {
             console.warn('Failed to update production data:', updateError);
-            setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
+            setSnackbarMessage(`✁EBackup created: ${result.files.ts} (${result.nodeCount} nodes) - Saved to src/data/ for production`);
           }
         } else {
           const errorData = await saveToSrcDataResponse.text();
           console.error('🔍 save-to-src-data error:', errorData);
-          setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
+          setSnackbarMessage(`✁EBackup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
         }
       } catch (error) {
-        console.error('❌ Failed to save to src/data/:', error);
-        console.error('❌ Error details:', error instanceof Error ? error.message : 'Unknown error');
-        console.error('❌ Error stack:', error instanceof Error ? error.stack : 'No stack trace');
-        setSnackbarMessage(`✅ Backup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
+        console.error('❁EFailed to save to src/data/:', error);
+        console.error('❁EError details:', error instanceof Error ? error.message : 'Unknown error');
+        console.error('❁EError stack:', error instanceof Error ? error.stack : 'No stack trace');
+        setSnackbarMessage(`✁EBackup created: ${result.files.ts} (${result.nodeCount} nodes) - Note: Could not save to src/data/`);
       }
       
       setSnackbarOpen(true);
@@ -652,7 +654,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
       setCategories(restoredCategories);
       setConcepts(restoredConcepts);
 
-      setSnackbarMessage(`✅ Restored from backup: ${backupFileName} (${restoredConcepts.length} concepts)`);
+      setSnackbarMessage(`✁ERestored from backup: ${backupFileName} (${restoredConcepts.length} concepts)`);
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Failed to restore from backup:', error);
@@ -797,7 +799,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
 
         if (backupResponse.ok) {
           const result = await backupResponse.json();
-          setSnackbarMessage(`✅ New category "${cat.name}" added and backup created: ${result.files.json} (${result.nodeCount} nodes)`);
+          setSnackbarMessage(`✁ENew category "${cat.name}" added and backup created: ${result.files.json} (${result.nodeCount} nodes)`);
           setSnackbarOpen(true);
           
           // Refresh the master lists to show the new backup
@@ -862,55 +864,116 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
     setCreateAt({ x: 0.5, y: 0.5 }); // Center of the plot
   };
 
+  // Handle Articles button click
+  const handleArticlesClick = () => {
+    setCurrentView('articles');
+  };
+
+  // Handle navigation back to matrix
+  const handleBackToMatrix = () => {
+    setCurrentView('matrix');
+  };
+
+  // Handle article creation from PDF
+  const handleCreateArticle = async (pdfFile: File, articleTitle: string) => {
+    try {
+      // For now, we'll create a simple article component
+      // In a full implementation, you might want to save this to a database or file system
+      console.log('Creating article:', articleTitle, 'from PDF:', pdfFile.name);
+      
+      // Show success message
+      setSnackbarMessage(`Article "${articleTitle}" created successfully!`);
+      setSnackbarOpen(true);
+      
+      // You could also navigate to the articles view here
+      // setCurrentView('articles');
+      
+    } catch (error) {
+      console.error('Error creating article:', error);
+      setSnackbarMessage('Error creating article. Please try again.');
+      setSnackbarOpen(true);
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <MainLayout
-        header={<Header onCreateNode={handleCreateNode} onHelpClick={() => setHelpDialogOpen(true)} />}
+        header={
+          <Header 
+            onCreateNode={handleCreateNode} 
+            onHelpClick={() => setHelpDialogOpen(true)}
+            onArticlesClick={handleArticlesClick}
+          />
+        }
         sidebar={
-          <Sidebar
-            key={`sidebar-${categories.length}`}
-            concepts={concepts}
+          currentView === 'matrix' ? (
+            <Sidebar
+              key={`sidebar-${categories.length}`}
+              concepts={concepts}
+              addConcept={addConcept}
+              updateConcept={updateConcept}
+              deleteConcept={deleteConcept}
+              categories={categories}
+              setCategories={setCategories}
+              addCategory={addCategory}
+              updateCategory={updateCategory}
+              deleteCategory={deleteCategory}
+              createMode={createMode}
+              setCreateMode={setCreateMode}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              filterBrightness={filterBrightness}
+              setFilterBrightness={setFilterBrightness}
+              filterSize={filterSize}
+              setFilterSize={setFilterSize}
+              labelMode={labelMode}
+              setLabelMode={setLabelMode}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          ) : null
+        }
+      >
+        {currentView === 'matrix' ? (
+          <ScatterPlot
+            concepts={filteredConcepts}
             addConcept={addConcept}
             updateConcept={updateConcept}
             deleteConcept={deleteConcept}
             categories={categories}
             setCategories={setCategories}
             addCategory={addCategory}
-            updateCategory={updateCategory}
-            deleteCategory={deleteCategory}
             createMode={createMode}
             setCreateMode={setCreateMode}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            filterBrightness={filterBrightness}
-            setFilterBrightness={setFilterBrightness}
-            filterSize={filterSize}
-            setFilterSize={setFilterSize}
+            createAt={createAt}
+            setCreateAt={setCreateAt}
             labelMode={labelMode}
-            setLabelMode={setLabelMode}
             selected={selected}
             setSelected={setSelected}
+            selectedCategories={selectedCategories}
           />
-        }
-      >
-        <ScatterPlot
-          concepts={filteredConcepts}
-          addConcept={addConcept}
-          updateConcept={updateConcept}
-          deleteConcept={deleteConcept}
-          categories={categories}
-          setCategories={setCategories}
-          addCategory={addCategory}
-          createMode={createMode}
-          setCreateMode={setCreateMode}
-          createAt={createAt}
-          setCreateAt={setCreateAt}
-          labelMode={labelMode}
-          selected={selected}
-          setSelected={setSelected}
-          selectedCategories={selectedCategories}
-        />
+        ) : (
+          <div style={{ padding: '20px' }}>
+            <div style={{ marginBottom: '20px' }}>
+              <button
+                onClick={handleBackToMatrix}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#f5f5f5',
+                  border: '1px solid #ddd',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  color: '#333'
+                }}
+              >
+                ↁEBack to Matrix
+              </button>
+            </div>
+            <Articles />
+          </div>
+        )}
       </MainLayout>
 
       {/* Development Mode Toggle */}
@@ -925,6 +988,7 @@ export const skillsMasterList: BJJConcept[] = ${JSON.stringify(cleanConcepts, nu
         onSeedFromLocal={seedFromLocal}
         onCreateBackup={createBackup}
         onRestoreFromBackup={restoreFromBackup}
+        onCreateArticle={handleCreateArticle}
       />
       <Snackbar
         open={snackbarOpen}

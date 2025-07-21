@@ -17,6 +17,10 @@
     "d3": "^7.9.0",
     "express": "^5.1.0",
     "mongodb": "^6.16.0",
+    "multer": "^1.4.5-lts.1",
+    "pdf-parse": "^1.1.1",
+    "form-data": "^4.0.0",
+    "node-fetch": "^2.7.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-scripts": "^5.0.1",
@@ -35,7 +39,10 @@
     "seed:from-local": "ts-node scripts/seedFromLocal.ts",
     "seed:from-mongo-ready": "node scripts/seedFromMongoReady.js",
     "update:production": "node scripts/updateProductionData.js",
-    "version:info": "node scripts/generateVersionInfo.js"
+    "version:info": "node scripts/generateVersionInfo.js",
+    "test:pdf": "node test-pdf-extraction.js",
+    "test:server": "node test-server-endpoints.js",
+    "debug:masterlist": "node debug-master-list.js"
   },
   "eslintConfig": {
     "extends": [
