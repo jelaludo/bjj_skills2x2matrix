@@ -1296,7 +1296,7 @@
     {
       "id": "BJJ-077",
       "concept": "Loading & Unloading",
-      "description": "Loading and Unloading Limbs\n\nRefers to the shifting of weight and tension through the limbs to enable or restrict movement—core to mobility, balance, and attack setups in grappling.\n\nLoading = transferring weight onto a limb.\n\nFunction: creates base, applies pressure, pins opponent.\n\nExample: posting a leg during a guard pass, weighting an elbow to trap an arm.\n\nBiomechanics: compressive force through joints; engages stabilizers and closes kinetic chains.\n\nUnloading = removing weight from a limb.\n\nFunction: frees limb for movement, redirection, or attack.\n\nExample: lifting a foot for a knee cut, freeing an arm to post or grip.\n\nBiomechanics: initiates open-chain movement; reduces friction and muscular load.\n\nTraining Implication: Elite grapplers cycle load dynamically—loading to create structure, unloading to strike or transition. Mastery lies in timing: unloading just as balance is preserved elsewhere.\n\ne.g. : if the knee is above the heel, pointing upwards, the leg is loaded and a shin-to-shin won't be very effective.  if their knee is forward, the foot will be lighter, and shin-to-shin might be very effective.",
+      "description": "Loading and Unloading Limbs\n\nRefers to the shifting of weight and tension through the limbs to enable or restrict movement—core to mobility, balance, and attack setups in grappling.\n\nLoading = transferring weight onto a limb.\n\nFunction: creates base, applies pressure, pins opponent.\n\nExample: posting a leg during a guard pass, weighting an elbow to trap an arm.\n\nBiomechanics: compressive force through joints; engages stabilizers and closes kinetic chains.\n\nUnloading = removing weight from a limb.\n\nFunction: frees limb for movement, redirection, or attack.\n\nExample: lifting a foot for a knee cut, freeing an arm to post or grip.\n\nBiomechanics: initiates open-chain movement; reduces friction and muscular load.\n\nTraining Implication: Elite grapplers cycle load dynamically—loading to create structure, unloading to strike or transition. Mastery lies in timing: unloading just as balance is preserved elsewhere.",
       "short_description": "",
       "category": "Grappling Primitives",
       "color": "#848a94",
@@ -1572,7 +1572,7 @@
     {
       "id": "BJJ-077",
       "concept": "Loading & Unloading",
-      "description": "Loading and Unloading Limbs\n\nRefers to the shifting of weight and tension through the limbs to enable or restrict movement—core to mobility, balance, and attack setups in grappling.\n\nLoading = transferring weight onto a limb.\n\nFunction: creates base, applies pressure, pins opponent.\n\nExample: posting a leg during a guard pass, weighting an elbow to trap an arm.\n\nBiomechanics: compressive force through joints; engages stabilizers and closes kinetic chains.\n\nUnloading = removing weight from a limb.\n\nFunction: frees limb for movement, redirection, or attack.\n\nExample: lifting a foot for a knee cut, freeing an arm to post or grip.\n\nBiomechanics: initiates open-chain movement; reduces friction and muscular load.\n\nTraining Implication: Elite grapplers cycle load dynamically—loading to create structure, unloading to strike or transition. Mastery lies in timing: unloading just as balance is preserved elsewhere.\n\ne.g. : if the knee is above the heel, pointing upwards, the leg is loaded and a shin-to-shin won't be very effective.  if their knee is forward, the foot will be lighter, and shin-to-shin might be very effective.",
+      "description": "Loading and Unloading Limbs\n\nRefers to the shifting of weight and tension through the limbs to enable or restrict movement—core to mobility, balance, and attack setups in grappling.\n\nLoading = transferring weight onto a limb.\n\nFunction: creates base, applies pressure, pins opponent.\n\nExample: posting a leg during a guard pass, weighting an elbow to trap an arm.\n\nBiomechanics: compressive force through joints; engages stabilizers and closes kinetic chains.\n\nUnloading = removing weight from a limb.\n\nFunction: frees limb for movement, redirection, or attack.\n\nExample: lifting a foot for a knee cut, freeing an arm to post or grip.\n\nBiomechanics: initiates open-chain movement; reduces friction and muscular load.\n\nTraining Implication: Elite grapplers cycle load dynamically—loading to create structure, unloading to strike or transition. Mastery lies in timing: unloading just as balance is preserved elsewhere.",
       "short_description": "",
       "category": "Grappling Primitives",
       "color": "#848a94",
@@ -2742,54 +2742,6 @@
       "color": "#FF8C00",
       "axis_self_opponent": 0.87,
       "axis_mental_physical": 0.15,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-185",
-      "concept": "Grip θ Decay",
-      "description": "Act fast once you have a dominant grip.\n\n\"Grips Don't Getter With Time\" is how I first remember hearing it from Marcelo Garcia.\n\nNo Grip is Eternal.\n\nOpponents start to fight against them, probe the weaknesses, change angles forcing re-gripping.\n\nDon't miss the window of opportunity.\n",
-      "short_description": "",
-      "category": "Tactics",
-      "color": "#8A2BE2",
-      "axis_self_opponent": 0.22,
-      "axis_mental_physical": 0.19,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-186",
-      "concept": "Match Head Height",
-      "description": "This comes from wrestling and matching level changes, yet applicable in BJJ when passing an opponent on the floor too.  If you don't, you leave your legs accessible for all sorts of wrestling up.",
-      "short_description": "",
-      "category": "Tactics",
-      "color": "#8A2BE2",
-      "axis_self_opponent": 0.48,
-      "axis_mental_physical": 0.45,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-187",
-      "concept": "Overlapping Pressure",
-      "description": "Never let go of a point of control until another one takes over.\n\nForearm can be a placeholder until a shin comes in, allowing for the forearm to do another job.\n\nAvoid letting one limb go do another job while its current one has not been covered.",
-      "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.47,
-      "axis_mental_physical": 0.43,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-188",
-      "concept": "",
-      "description": "",
-      "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.92,
-      "axis_mental_physical": 0.17,
       "brightness": 1,
       "size": 1
     }

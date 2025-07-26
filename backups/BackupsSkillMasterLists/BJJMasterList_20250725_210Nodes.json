@@ -246,6 +246,19 @@
         "top": "Trivial"
       },
       "_id": "local-1753062937869"
+    },
+    {
+      "name": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "xAxis": {
+        "left": "Pure Bu$$ine$$",
+        "right": "Pure Love of the Art"
+      },
+      "yAxis": {
+        "bottom": "Full Intensity",
+        "top": "Low Intensity"
+      },
+      "_id": "local-1753420322392"
     }
   ],
   "skillsMasterList": [
@@ -2766,30 +2779,6 @@
       "color": "#8A2BE2",
       "axis_self_opponent": 0.48,
       "axis_mental_physical": 0.45,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-187",
-      "concept": "Overlapping Pressure",
-      "description": "Never let go of a point of control until another one takes over.\n\nForearm can be a placeholder until a shin comes in, allowing for the forearm to do another job.\n\nAvoid letting one limb go do another job while its current one has not been covered.",
-      "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.47,
-      "axis_mental_physical": 0.43,
-      "brightness": 1,
-      "size": 1
-    },
-    {
-      "id": "BJJ-188",
-      "concept": "",
-      "description": "",
-      "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.92,
-      "axis_mental_physical": 0.17,
       "brightness": 1,
       "size": 1
     }

@@ -246,6 +246,19 @@
         "top": "Trivial"
       },
       "_id": "local-1753062937869"
+    },
+    {
+      "name": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "xAxis": {
+        "left": "Pure Bu$$ine$$",
+        "right": "Pure Love of the Art"
+      },
+      "yAxis": {
+        "bottom": "Full Intensity",
+        "top": "Low Intensity"
+      },
+      "_id": "local-1753420322392"
     }
   ],
   "skillsMasterList": [
@@ -2771,25 +2784,85 @@
     },
     {
       "id": "BJJ-187",
-      "concept": "Overlapping Pressure",
-      "description": "Never let go of a point of control until another one takes over.\n\nForearm can be a placeholder until a shin comes in, allowing for the forearm to do another job.\n\nAvoid letting one limb go do another job while its current one has not been covered.",
+      "concept": "Chill Garage Bros",
+      "description": "Couple of enthusiasts watching instagram and teaching themselves while smoking weed",
       "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.47,
-      "axis_mental_physical": 0.43,
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.25,
+      "axis_mental_physical": 0.25,
       "brightness": 1,
       "size": 1
     },
     {
       "id": "BJJ-188",
-      "concept": "",
-      "description": "",
+      "concept": "Scam Cults",
+      "description": "False advertising, cultish tendencies, nickel and diming students with extra fees for everything, forbidding students to cross-train, little or no live-rolling.  \"Our techniques are too dangerous to train live\".",
       "short_description": "",
-      "category": "Grappling Primitives",
-      "color": "#848a94",
-      "axis_self_opponent": 0.92,
-      "axis_mental_physical": 0.17,
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.98,
+      "axis_mental_physical": 0.03,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-189",
+      "concept": "Professional Hobbyist Gym",
+      "description": "Professional & Ethical.  Run as a business because coach has to pay the bills and keeps the lights on the showers running.  \n\nCatering to hobbyists rather than pro-athletes.\n\nNo abusive monetization (obscure pricing, forcing purchase of club gis, paying for grades, etc.)",
+      "short_description": "",
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.5,
+      "axis_mental_physical": 0.5,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-190",
+      "concept": "Professional Competitive Gym",
+      "description": "Run as a business and for good reasons; full of pro-athletes, trying to churn competitive players to go out and win prize money.\n\nGood Facilities, Clean Showers, Strict Time Slots.\n\nmedium to high training intensity on the regular, turned up to 11 for folks doing training camps.\n\nMuch harder than your typical hobbyist training regimen.",
+      "short_description": "",
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.8,
+      "axis_mental_physical": 0.75,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-191",
+      "concept": "Hardcore Porrada Competition",
+      "description": "Survival of the Fittest and PEDs + we'll milk you on private lessons were upper belts just beat you up lol because that's how we learned.  \n\nGrit > Flow\nHeart > Techniques\n\nMedals for the Glory of the Team!",
+      "short_description": "",
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.75,
+      "axis_mental_physical": 0.9,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-192",
+      "concept": "Mc Dojos",
+      "description": "Mc Dojos exist on a spectrum, we can imagine the key dimensions of a training environment, and that McDojos are deficient in most of them.  Not necessarily scams, just lacking.\n\nAnd obsessed with decorum and rank usually : BOW TO YOUR SENSEI!\n\nmeh.\n\nMaybe we can think of it in terms of Aristotle's Golden Mean.\nCourage is great, but too much and you have recklessness, too little and it's cowardice.\ngenerosity, wastefulness, stinginess\nambition, sloth, greed\nhumor, boringness, absurdity\ncomposure, irritabgility, apathy\netc.\n\n\nChallenging training:\nExcess: Recklessly unsafe, aggressive\nDeficiency: Unrealistic samurai roleplay\n\n\nPhysical conditioning:\nExcess: Overtraining, leading to burnout or injury\nDeficiency: Insufficient conditioning, resulting in limited progress\n\n\nTechnical instruction:\nExcess: Overemphasis on complex techniques, neglecting fundamentals\nDeficiency: Oversimplification of techniques, limiting effectiveness\n\n\nSparring intensity:\nExcess: Full-contact sparring without proper safety measures or supervision\nDeficiency: Limited or no contact sparring, preventing the development of practical skills\n\n\nTeaching methodology:\nExcess: Rigid, dogmatic instruction, stifling creativity and growth\nDeficiency: Unstructured, laissez-faire teaching, resulting in confusion and lack of direction\n\n\nRespect and discipline:\nExcess: Authoritarian, overly strict environment, discouraging open communication\nDeficiency: Disorganized, chaotic atmosphere, lacking in respect for tradition and hierarchy\n\n\nFocus on tradition and history:\nExcess: Overemphasis on historical aspects, neglecting practical application\nDeficiency: Ignoring cultural context, reducing martial arts to mere physical activity\n\nInclusivity and community:\nExcess: Overemphasis on group dynamics, neglecting individual needs and development\nDeficiency: Excessive focus on individual competition, undermining the sense of community and support\n\nBalancing self-defense and personal development:\nExcess: Sole focus on self-defense techniques, ignoring character growth and discipline\nDeficiency: Overemphasis on personal development, neglecting practical self-defense skills\n\nCompetition and performance:\nExcess: Overemphasis on winning tournaments, fostering a win-at-all-costs mentality\nDeficiency: Disregarding the value of competition, missing opportunities for growth and skill development",
+      "short_description": "",
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.75,
+      "axis_mental_physical": 0.25,
+      "brightness": 1,
+      "size": 1
+    },
+    {
+      "id": "BJJ-193",
+      "concept": "Hardcore Meatheads",
+      "description": "Dirty Warehouse, fuck money, let's SMESH BRO!\n\nMight include training on concrete with broken glass, syringes and weapons for realism, because they're just Alpha like that.",
+      "short_description": "",
+      "category": "Dojos/Clubs Types",
+      "color": "#958c09",
+      "axis_self_opponent": 0.2,
+      "axis_mental_physical": 0.9,
       "brightness": 1,
       "size": 1
     }
